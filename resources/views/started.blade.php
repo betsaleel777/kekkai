@@ -125,8 +125,8 @@
 
         });
 </script>
-<script src="{{asset('assets/semantic/components/visibility.js')}}"></script>
-<script src="{{asset('assets/semantic/components/sidebar.js')}}"></script>
+<script src="{{asset('sementic-theme/assets/semantic/components/visibility.js')}}"></script>
+<script src="{{asset('semantic-theme/assets/semantic/components/sidebar.js')}}"></script>
 @endsection
 @section('content')
 <div class="ui large top fixed hidden menu">
@@ -178,7 +178,7 @@
         <div class="ui text container">
             <h1 class="ui inverted header">Kekkai-no </h1>
             <h2>Administrez facilement vos UFR.</h2>
-            <div class="ui huge primary button">Commencer<i class="right arrow icon"></i></div>
+            <div class="ui huge primary button">Commencer !!<i class="right arrow icon"></i></div>
         </div>
     </div>
 </div>

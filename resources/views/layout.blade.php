@@ -1,11 +1,12 @@
 @include('head')
+
 <body>
     <div class="ui container">
         <!-- menu start  -->
         <div class="ui inverted menu">
-            <a class="header item">Acceuil</a>
-            <a class="active item">Enseignant</a>
-            <a class="item">Ues</a>
+            <a href="{{route('start')}}" class="header item">Acceuil</a>
+            <a href="{{route('enseignant_index')}}" class="active item">Enseignant</a>
+            <a href="{{route('ues_index')}}" class="item">Ues</a>
             <a href="" class="item">Assignation</a>
             <div class="ui dropdown item">
                 Parametres
@@ -51,10 +52,6 @@
 <!--- Component JS -->
 <script type="text/javascript" src="{{asset('semantic-theme/assets/semantic/components/transition.js')}}"></script>
 <script type="text/javascript" src="{{asset('semantic-theme/assets/semantic/components/dropdown.js')}}"></script>
+<script type="text/javascript" src="{{asset('semantic-theme/assets/semantic/semantic.min.js')}}"></script>
 @yield('java-script')
-<script>
-    $(document).ready(function() {
-        $('.ui.selection.dropdown').dropdown();
-    });
-</script>
 </html>
