@@ -8,7 +8,7 @@
 
 @endsection
 @section('content')
-<h2 class="ui dividing header">LISTE DES ENSEIGNANTS</h2>
+<h2 class="ui dividing header"><i class="clipboard list icon"></i> LISTE DES ENSEIGNANTS</h2>
 
 <div class="ui container">
     <div class="ui grid container">
@@ -17,6 +17,14 @@
         <div class="two wide column"><a href="{{route('enseignant_trashed')}}" class="yellow ui labeled icon button"><i class="archive icon"></i>Archives</a></div>
     </div>
     <div class="ui divider"></div>
+    @php
+    $grades = ['AUCUN' => 'SANS GRADE' ,
+                    'A' => 'ASSISTANT',
+                    'MA' => 'MAITRE ASSISTANT',
+                    'MC' => 'MAITRE DE CONFERENCE',
+                    'PT' =>'PROFESSEUR TITULAIRE'
+              ] ;
+    @endphp
     <table id="tableau" class="ui celled selectable right aligned table">
         <thead>
             <th class="left aligned">Nom et Prénom</th>
@@ -29,13 +37,13 @@
             @forelse ($enseignants as $enseignant)
             <tr>
                 <td class="left aligned">{{$enseignant->titre.' '.$enseignant->nomination}}</td>
-                <td>{{$enseignant->grade}}</td>
+                <td>{{$grades[$enseignant->grade]}}</td>
                 <td>{{$enseignant->statut}}</td>
                 <td>{{$enseignant->phone}}</td>
                 <td>
                     <a href="{{route('enseignant_alter',$enseignant)}}"><i class="large edit icon"></i></a>
-                    <a href="{{route('enseignant_delete',$enseignant)}}"><i class="large trash alternate icon"></i></a>
-                    <a href="{{route('enseignant_show',$enseignant)}}"><i class="large crosshairs icon"></i></a>
+                    <a href="{{route('enseignant_delete',$enseignant)}}"><i class="large trash alternate icon red"></i></a>
+                    <a href="{{route('enseignant_show',$enseignant)}}"><i class="large crosshairs icon green"></i></a>
                 </td>
             </tr>
             @empty
@@ -63,5 +71,24 @@ $(document).ready( function () {
         ]
     })
 } );
+</script>
+<script>
+   $(document).ready(function() {
+     let elt = document.getElementById('message') ;
+    //  let message = 
+
+        new Noty({
+            type: 'success',
+            layout: 'topRight',
+            theme: 'semanticui',
+            text: 'Hello, just testing!',
+            timeout: '4000',
+            closeWith: ['click'],
+            animation: {
+                    open : 'animated fadeInRight',
+                    close: 'animated fadeOutRight'
+                }
+            }).show();
+   }) ;
 </script>
 @endsection

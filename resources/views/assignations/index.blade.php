@@ -8,43 +8,44 @@
 
 @endsection
 @section('content')
-<h2 class="ui dividing header"><i class="clipboard list icon"></i>LISTE DES UNITES D'ENSEIGNEMENT (UE)</h2>
+<h2 class="ui dividing header"><i class="clipboard list icon"></i>ASSIGNATIONS</h2>
 
 <div class="ui container">
     <div class="ui grid container">
         <div class="twelve wide column"></div>
-        <div class="two wide column"><a href="{{route('ues_add')}}" class="blue ui labeled icon button"><i class="plus icon"></i>Ajouter</a></div>
-        <div class="two wide column"><a href="{{route('ues_trashed')}}" class="yellow ui labeled icon button"><i class="archive icon"></i>Archives</a></div>
+        <div class="two wide column"><a href="{{route('assignations_add')}}" class="blue ui labeled icon button"><i class="plus icon"></i>Ajouter</a></div>
+        <div class="two wide column"><a href="{{route('assignations_trashed')}}" class="yellow ui labeled icon button"><i class="archive icon"></i>Archives</a></div>
     </div>
-    <div class="ui divider">
-
-    </div>
+    <div class="ui divider"></div>
     <table id="tableau" class="ui celled selectable right aligned table">
         <thead>
-            <th class="left aligned">Libelle</th>
-            <th>Filiere</th>
-            <th>Ufr</th>
+            <th class="left aligned">Enseignants</th>
+            <th>Ues</th>
             <th>Niveau</th>
-            <th>Options</th>
+            <th>CM</th>
+            <th>TD</th>
+            <th>TP</th>
+            <th>Option</th>
         </thead>
         <tbody>
-           @forelse ($ues as $ue)
-             <tr>
-                 <td class="left aligned">{{$ue->libelle}}</td>
-                 <td>{{$ue->filiere}}</td>
-                 <td>{{$ue->ufr}}</td>
-                 <td>{{$ue->niveau}}</td>
-                 <td>
-                     <a href="{{route('ues_alter',$ue)}}"><i class="large edit icon"></i></a>
-                     <a href="{{route('ues_delete',$ue)}}"><i class="large trash alternate icon red"></i></a>
-                     <a href="{{route('ues_show',$ue)}}"><i class="large crosshairs icon green"></i></a>
-                 </td>
-             </tr>
-           @empty
-             <tr>
-                 <td colspan="5">AUCUNE DONNEE TROUVEE</td>
-             </tr>
-           @endforelse
+            @forelse ($assignements as $assignement)
+            <tr>
+                <td class="left aligned">{{$assignement->nomination}}</td>
+                <td>{{$assignement->libelle}}</td>
+                <td>{{$assignement->niveau}}</td>
+                <td>{{$assignement->cm}}</td>
+                <td>{{$assignement->td}}</td>
+                <td>{{$assignement->tp}}</td>
+                <td>
+                    <a href="{{route('assignations_alter',$assignement->id)}}"><i class="large edit icon"></i></a>
+                    <a href="{{route('assignations_delete',$assignement->id)}}"><i class="large trash alternate icon red"></i></a>
+                </td>
+            </tr>
+            @empty
+            <tr>
+                <td colspan="6">AUCUNE DONNEE TROUVEE</td>
+            </tr>
+            @endforelse
         </tbody>
     </table>
 </div>

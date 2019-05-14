@@ -1,13 +1,15 @@
 @include('head')
 
 <body>
+    @include('flash')
     <div class="ui container">
         <!-- menu start  -->
         <div class="ui inverted menu">
+          {{-- class="active item" --}}
             <a href="{{route('start')}}" class="header item">Acceuil</a>
-            <a href="{{route('enseignant_index')}}" class="active item">Enseignant</a>
+            <a href="{{route('enseignant_index')}}" class="item">Enseignant</a>
             <a href="{{route('ues_index')}}" class="item">Ues</a>
-            <a href="" class="item">Assignation</a>
+            <a href="{{route('assignations_index')}}" class="item">Assignation</a>
             <div class="ui dropdown item">
                 Parametres
                 <i class="dropdown icon"></i>
@@ -48,6 +50,7 @@
         <!--footer end  -->
     </div>
 </body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js"></script>
 <script type="text/javascript" src="{{asset('semantic-theme/assets/semantic/components/popup.js')}}"></script>
 <!--- Component JS -->
 <script type="text/javascript" src="{{asset('semantic-theme/assets/semantic/components/transition.js')}}"></script>

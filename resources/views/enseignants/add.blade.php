@@ -6,7 +6,7 @@
     <div class="field">
         <label>Nom et Prenom:</label>
         <div class="ui labeled input">
-            <input type="text" name="nomination">
+            <input value="{{old('nomination')}}" type="text" name="nomination">
             <div class="red ui corner label">
                 <i class="asterisk icon"></i>
             </div>
@@ -15,8 +15,8 @@
     </div>
     <div class="field">
         <label>Grade:</label>
-        <div class="ui selection dropdown labeled input">
-            <input id="grade" type="hidden" name="grade">
+        <div id="grade" class="ui selection dropdown labeled input">
+            <input type="hidden" name="grade">
             <i class="dropdown icon"></i>
             <div class="default text">Grade</div>
             <div class="menu">
@@ -34,14 +34,14 @@
     </div>
     <div class="field">
         <label>Statut:</label>
-        <div class="ui selection dropdown labeled input">
+        <div id="statut"  class="ui selection dropdown labeled input">
             <input type="hidden" name="statut">
             <i class="dropdown icon"></i>
             <div class="default text">Statut</div>
             <div class="menu">
-                <div class="item" data-value="moniteur">moniteur</div>
-                <div class="item" data-value="vacataire">vacataire</div>
-                <div class="item" data-value="permanent">permanent</div>
+                <div class="item" data-value="MONITEUR">moniteur</div>
+                <div class="item" data-value="VACATAIRE">vacataire</div>
+                <div class="item" data-value="PERMANENT">permanent</div>
             </div>
             <div class="red ui corner label">
                 <i class="asterisk icon"></i>
@@ -49,14 +49,10 @@
         </div>
         {!!$errors->first('statut','<p  style="color:#a94442">:message</p>')!!}
     </div>
-    <div hidden class="field">
-        <label>Titre:</label>
-        <input id="titre" type="text" name="titre" value="">
-    </div>
     <div class="field">
         <label>Adresse mail:</label>
         <div class="ui labeled input">
-            <input type="text" name="email">
+            <input value="{{old('email')}}" type="text" name="email">
             <div class="red ui corner label">
                 <i class="asterisk icon"></i>
             </div>
@@ -66,12 +62,16 @@
     <div class="field">
         <label>Telephone:</label>
         <div class="ui labeled input">
-            <input type="text" name="phone">
+            <input value="{{old('phone')}}" type="text" name="phone">
             <div class="red ui corner label">
                 <i class="asterisk icon"></i>
             </div>
         </div>
         {!!$errors->first('phone','<p  style="color:#a94442">:message</p>')!!}
+    </div>
+    <div hidden class="field">
+        <label>Titre:</label>
+        <input id="titre" type="text" name="titre" value="">
     </div>
     <button type="submit" class="ui labeled submit icon button">
         <i class="icon send"></i>envoyer
@@ -82,6 +82,16 @@
   <script>
       $(document).ready(function() {
           $('.ui.selection.dropdown').dropdown();
+      });
+  </script>
+  <script>
+      $(document).ready(function() {
+          $('#grade').dropdown('set selected', '{{old('grade')}}');
+      });
+  </script>
+  <script>
+      $(document).ready(function() {
+          $('#statut').dropdown('set selected', '{{old('statut')}}');
       });
   </script>
 @endsection

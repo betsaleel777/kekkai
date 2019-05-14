@@ -9,6 +9,7 @@
     <link rel="stylesheet" type="text/css" href="{{asset('semantic-theme/assets/semantic/components/reset.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('semantic-theme/assets/semantic/components/site.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('semantic-theme/assets/semantic/components/grid.css')}}">
+    <link rel="stylesheet" href="{{asset('css/animate.css')}}">
     <!--- Component CSS -->
     <link rel="stylesheet" type="text/css" href="{{asset('semantic-theme/assets/semantic/components/menu.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('semantic-theme/assets/semantic/components/input.css')}}">
@@ -17,6 +18,7 @@
     <link rel="stylesheet" type="text/css" href="{{asset('semantic-theme/assets/semantic/components/button.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('semantic-theme/assets/semantic/components/transition.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('semantic-theme/assets/semantic/components/popup.css')}}">
+    <link rel="stylesheet" href="{{asset('css/noty.min.css')}}">
     @yield('link')
 
     <script src="{{asset('semantic-theme/assets/library/jquery.min.js')}}"></script>
@@ -46,5 +48,6 @@
             });
         });
     </script>
+    <script src="{{asset('js/noty.min.js')}}"></script>
     @yield('general_script')
 </head>
