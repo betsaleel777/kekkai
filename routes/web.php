@@ -27,7 +27,7 @@ Route::get('/home/enseignant/add', 'EnseignantsController@add')->name('enseignan
 Route::get('/home/enseignant/{id}/alter', 'EnseignantsController@edit')->name('enseignant_alter') ;
 Route::post('/home/enseignant/{id}/update', 'EnseignantsController@update')->name('enseignant_update') ;
 Route::get('/home/enseignant/{id}/restore', 'EnseignantsController@restore')->name('enseignant_restore') ;
-
+Route::post('/home/enseignant/infos', 'EnseignantsController@infos')->name('enseignant_infos') ;
 
 Route::get('/home/ues/', 'UesController@index')->name('ues_index') ;
 Route::get('/home/ues/trashed', 'UesController@trashed')->name('ues_trashed') ;
@@ -44,10 +44,13 @@ Route::get('/home/ues/{id}/restore', 'UesController@restore')->name('ues_restore
 Route::get('/home/assignations/', 'AssignationsController@index')->name('assignations_index') ;
 Route::get('/home/assignations/trashed', 'AssignationsController@trashed')->name('assignations_trashed') ;
 Route::post('/home/assignations/new', 'AssignationsController@insert')->name('assignations_insert') ;
-Route::get('/home/assignations/{id}/show', 'AssignationsController@show')->name('assignations_show') ;
-Route::get('/home/assignations/{id}/delete', 'AssignationsController@delete')->name('assignations_delete') ;
-Route::get('/home/assignations/{id}/purge', 'AssignationsController@purge')->name('assignations_purge') ;
+Route::get('/home/assignations/{enseignant}/{ue}/delete', 'AssignationsController@delete')->name('assignations_delete') ;
 Route::get('/home/assignations/add', 'AssignationsController@add')->name('assignations_add') ;
-Route::get('/home/assignations/{id}/alter', 'AssignationsController@edit')->name('assignations_alter') ;
-Route::post('/home/assignations/{id}/update', 'AssignationsController@update')->name('assignations_update') ;
-Route::get('/home/assignations/{id}/restore', 'AssignationsController@restore')->name('assignations_restore') ;
+Route::get('/home/assignations/{enseignant}/{ue}/alter', 'AssignationsController@edit')->name('assignations_alter') ;
+Route::post('/home/assignations/{enseignant}/{ue}/update', 'AssignationsController@update')->name('assignations_update') ;
+Route::get('/home/assignations/{enseignant}/{ue}/restore', 'AssignationsController@restore')->name('assignations_restore') ;
+
+
+Route::post('/home/verify/cm', 'AjaxController@verify_cm')->name('verify_cm') ;
+Route::post('/home/verify/td', 'AjaxController@verify_td')->name('verify_td') ;
+Route::post('/home/verify/tp', 'AjaxController@verify_tp')->name('verify_tp') ;

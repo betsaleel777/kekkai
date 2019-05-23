@@ -32,7 +32,7 @@ class UesController extends Controller
                               'heure_gr_tp'  => 'required|numeric', ]);
         $ue = new Ue($request->all()) ;
         $ue->save() ;
-        $message = 'l\'unité d\'enseignement '.$request->libelle.' a été enregistré avec succès !!' ;
+        $message = 'l\'unité d\'enseignement <strong>'.$request->libelle.'</strong> a été enregistré avec succès !!' ;
         return redirect()->route('ues_index')->with('success', $message) ;
     }
 
@@ -56,7 +56,7 @@ class UesController extends Controller
                               'heure_gr_td'  => 'required|numeric',
                               'heure_gr_tp'  => 'required|numeric', ]);
         $ue->update($request->all()) ;
-        $message = 'l\'unité d\'enseignement '.$request->libelle.' a été enregistré avec succès !!' ;
+        $message = 'l\'unité d\'enseignement <strong>'.$request->libelle.'</strong> a été modifié avec succès !!' ;
         return redirect()->route('ues_index')->with('success', $message) ;
     }
 
@@ -70,7 +70,8 @@ class UesController extends Controller
     {
         $ue = Ue::findOrFail($id) ;
         $ue->delete() ;
-        return redirect()->route('ues_index') ;
+        $message = 'l\'unité d\'enseignement <strong>'.$ue->libelle.'</strong> vient d\'être archivée avec succès' ;
+        return redirect()->route('ues_index')->with('info',$message) ;
     }
 
     public function trashed()
@@ -81,13 +82,17 @@ class UesController extends Controller
 
     public function restore(int $id)
     {
-        $ue = Ue::withTrashed()->findOrFail($id)->restore();
-        return redirect()->route('ues_index') ;
+        $ue = Ue::withTrashed()->findOrFail($id) ;
+        $ue->restore();
+        $message = 'l\'unité d\'enseignement <strong>'.$ue->libelle.'</strong> vient d\'être restaurée des archives' ;
+        return redirect()->route('ues_index')->with('info',$message) ;
     }
 
     public function purge(int $id)
     {
-        $ue = Ue::withTrashed()->findOrFail($id)->forceDelete() ;
-        return redirect()->route('ues_trashed') ;
+        $ue = Ue::withTrashed()->findOrFail($id) ;
+        $ue->forceDelete() ;
+        $message = 'l\'unité d\'enseignement <strong>'.$ue->libelle.'</strong> vient définitivement supprimée des archives' ;
+        return redirect()->route('ues_trashed')->with('success',$message) ;
     }
 }

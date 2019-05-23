@@ -9,12 +9,12 @@
 @endsection
 @section('content')
 @php
-    $grades = ['AUCUN' => 'SANS GRADE' ,
-               'A' => 'ASSISTANT',
-               'MA' => 'MAITRE ASSISTANT',
-               'MC' => 'MAITRE DE CONFERENCE',
-               'PT' =>'PROFESSEUR TITULAIRE'
-              ] ;
+$grades = ['AUCUN' => 'SANS GRADE' ,
+'A' => 'ASSISTANT',
+'MA' => 'MAITRE ASSISTANT',
+'MC' => 'MAITRE DE CONFERENCE',
+'PT' =>'PROFESSEUR TITULAIRE'
+] ;
 @endphp
 <div class="ui container grid">
     <div class="seven wide column">
@@ -89,13 +89,38 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
 <script type="text/javascript" src="//cdn.datatables.net/buttons/1.5.6/js/buttons.html5.min.js"></script>
 <script type="text/javascript">
-    $(document).ready( function () {
-    $('#tableau').DataTable({
-      dom: 'Bfrtip',
-        buttons: [
-            'csv', 'excel'
-        ]
-    })
-} );
+    $(document).ready(function() {
+        $('#tableau').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                'csv', 'excel'
+            ]
+        })
+    });
+</script>
+<script>
+    $(document).ready(function() {
+        const elt = document.getElementById('message');
+        if (elt) {
+            const message = elt.getElementsByTagName('span')[0].textContent
+            const type = elt.getElementsByTagName('em')[0].textContent
+
+            if (message) {
+
+                new Noty({
+                    type: type,
+                    layout: 'topRight',
+                    theme: 'semanticui',
+                    text: message,
+                    timeout: '4000',
+                    closeWith: ['click'],
+                    animation: {
+                        open: 'animated fadeInRight',
+                        close: 'animated fadeOutRight'
+                    }
+                }).show();
+            }
+        }
+    });
 </script>
 @endsection

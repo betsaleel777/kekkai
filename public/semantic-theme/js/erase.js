@@ -1,3 +1,6 @@
-function erase (self){
-  self.parentNode.parentNode.remove()
+function erase(id){
+  ueForm = document.getElementById(id)
+  if(ueForm){
+    ueForm.remove()
+  }
 }

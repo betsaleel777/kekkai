@@ -20,6 +20,7 @@
     <table id="tableau" class="ui celled selectable right aligned table">
         <thead>
             <th class="left aligned">Enseignants</th>
+            <th>Filières</th>
             <th>Ues</th>
             <th>Niveau</th>
             <th>CM</th>
@@ -30,15 +31,16 @@
         <tbody>
             @forelse ($assignements as $assignement)
             <tr>
-                <td class="left aligned">{{$assignement->nomination}}</td>
-                <td>{{$assignement->libelle}}</td>
+            <td class="left aligned"><a href="{{route('enseignant_show',$assignement->id)}}">{{$assignement->titre.' '.$assignement->nomination}}</a></td>
+                <td>{{$assignement->filiere}}</td>
+                <td><a href="{{route('ues_show',$assignement->ue)}}">{{$assignement->libelle}}</a></td>
                 <td>{{$assignement->niveau}}</td>
                 <td>{{$assignement->cm}}</td>
                 <td>{{$assignement->td}}</td>
                 <td>{{$assignement->tp}}</td>
                 <td>
-                    <a href="{{route('assignations_alter',$assignement->id)}}"><i class="large edit icon"></i></a>
-                    <a href="{{route('assignations_delete',$assignement->id)}}"><i class="large trash alternate icon red"></i></a>
+                    <a href="{{route('assignations_alter',['enseignant' => $assignement->id,'ue'=>$assignement->ue ])}}"><i class="large edit icon"></i></a>
+                    <a href="{{route('assignations_delete',['enseignant' => $assignement->id,'ue'=>$assignement->ue ])}}"><i class="large trash alternate icon red"></i></a>
                 </td>
             </tr>
             @empty
@@ -67,4 +69,37 @@ $(document).ready( function () {
     })
 } );
 </script>
+<script>
+        $(document).ready(function() {
+         const elt = document.getElementById('message') ;
+         if(elt){
+             const message = elt.getElementsByTagName('span')[0].textContent
+             const type = elt.getElementsByTagName('em')[0].textContent
+
+             if(message){
+
+                new Noty({
+                type: type,
+                layout: 'topRight',
+                theme: 'semanticui',
+                text: message,
+                timeout: '4000',
+                closeWith: ['click'],
+                animation: {
+                        open : 'animated fadeInRight',
+                        close: 'animated fadeOutRight'
+                    }
+                }).show();
+           }
+         }
+       }) ;
+</script>
 @endsection
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('.search.selection.dropdown').dropdown({
+            maxSelections: '4',
+            clearable: true,
+        });
+    });
+</script>

@@ -1,15 +1,15 @@
 /**
 * @fileOverview svelte - the lightweight modern DOM manipulation and events library
 * @author Matt Begent
-* @version 1.4.3 
+* @version 1.4.3
 */
 
 (function (window, document) {
 
     'use strict';
-    
+
     var svelteProto = {
-    
+
         /**
         * Each loop
         * @memberOf Svelte
@@ -24,7 +24,7 @@
             }
             return this;
         },
-    
+
         /**
         * Find a new selector within a parent selector
         * @memberOf Svelte
@@ -36,7 +36,7 @@
         find: function(selector) {
             return new Svelte(selector, this.s[0]);
         },
-    
+
         /**
         * Set the CSS for an element
         * @memberOf Svelte
@@ -55,7 +55,7 @@
                 return getComputedStyle(this.s[0])[property];
             }
         },
-    
+
         /**
         * Sets selector to display none
         * @memberOf Svelte
@@ -68,7 +68,7 @@
                 el.style.display = 'none';
             });
         },
-    
+
         /**
         * Sets selector to display block
         * @memberOf Svelte
@@ -81,7 +81,7 @@
                 el.style.display = 'block';
             });
         },
-    
+
         /**
         * Checks whether the selector is visible
         * @memberOf Svelte
@@ -96,7 +96,7 @@
                 return false;
             }
         },
-    
+
         /**
         * Toggles the display property of the selector
         * @memberOf Svelte
@@ -114,7 +114,7 @@
                 }
             });
         },
-    
+
         /**
         * Adds a class to the selector
         * @memberOf Svelte
@@ -128,7 +128,7 @@
                 el.classList.add(className);
             });
         },
-    
+
         /**
         * Removes a class from the selector
         * @memberOf Svelte
@@ -142,7 +142,7 @@
                 el.classList.remove(className);
             });
         },
-    
+
         /**
         * Toggles a class from the selector
         * @memberOf Svelte
@@ -156,7 +156,7 @@
                 el.classList.toggle(className);
             });
         },
-    
+
         /**
         * Checks whether the selector has a specific class
         * @memberOf Svelte
@@ -170,9 +170,9 @@
             } else {
                 return false;
             }
-    
+
         },
-    
+
         /**
         * Attaches an event to the selector
         * @memberOf Svelte
@@ -189,7 +189,7 @@
                 });
             });
         },
-    
+
         /**
         * Attaches an event to the selector and removes after callback
         * @memberOf Svelte
@@ -210,7 +210,7 @@
                 });
             });
         },
-    
+
         /**
         * Removes an event from the selector
         * @memberOf Svelte
@@ -227,7 +227,7 @@
                 });
             });
         },
-    
+
         /**
         * Sets the first selector to be focussed
         * @memberOf Svelte
@@ -241,7 +241,7 @@
             }
             return this;
         },
-    
+
         /**
         * Removes keyboard focus from first selector
         * @memberOf Svelte
@@ -255,7 +255,7 @@
             }
             return this;
         },
-    
+
         /**
         * Trigger an event from the selector
         * @memberOf Svelte
@@ -274,7 +274,7 @@
                 el.dispatchEvent(triggerEvent);
             });
         },
-    
+
         /**
         * Find the previous sibling to the current selector
         * @memberOf Svelte
@@ -290,7 +290,7 @@
             }
             return this;
         },
-    
+
         /**
         * Find the next sibling to the current selector
         * @memberOf Svelte
@@ -306,7 +306,7 @@
             }
             return this;
         },
-    
+
         /**
         * Find the first element of the selector
         * @memberOf Svelte
@@ -320,7 +320,7 @@
             }
             return this;
         },
-    
+
         /**
         * Find the last element of the selector
         * @memberOf Svelte
@@ -335,7 +335,7 @@
             }
             return this;
         },
-    
+
         /**
         * Find the parent of the selector
         * @memberOf Svelte
@@ -349,7 +349,7 @@
             }
             return this;
         },
-    
+
         /**
         * Find the children of the selector
         * @memberOf Svelte
@@ -365,7 +365,7 @@
             }
             return this;
         },
-    
+
         /**
         * Add HTML to the page in relation to the current selector
         * @memberOf Svelte
@@ -385,7 +385,7 @@
                 }
             });
         },
-    
+
         /**
         * Set the text of a selector
         * @memberOf Svelte
@@ -403,7 +403,7 @@
                 return this.s[0].textContent.trim();
             }
         },
-    
+
         /**
         * Set the HTML of a selector
         * @memberOf Svelte
@@ -421,7 +421,7 @@
                 return this.s[0].innerHTML;
             }
         },
-    
+
         /**
         * Set the outerHTML of a selector
         * @memberOf Svelte
@@ -439,7 +439,7 @@
                 return this.s[0].outerHTML;
             }
         },
-    
+
         /**
         * Empty the HTML of a selector
         * @memberOf Svelte
@@ -452,7 +452,7 @@
                 el.innerHTML = '';
             });
         },
-    
+
         /**
         * Clone a selector
         * @memberOf Svelte
@@ -465,7 +465,7 @@
                 el.clodeNode(true);
             });
         },
-    
+
         /**
         * Removes a selector
         * @memberOf Svelte
@@ -478,7 +478,7 @@
                 el.parentNode.removeChild(el);
             });
         },
-    
+
         /**
         * Get or set the attribute of a selector
         * @memberOf Svelte
@@ -498,7 +498,7 @@
                 });
             }
         },
-    
+
         /**
         * Remove an attribute from a selector
         * @memberOf Svelte
@@ -512,7 +512,7 @@
                 el.removeAttribute(name);
             });
         },
-    
+
         /**
         * Get the value of a selector
         * @memberOf Svelte
@@ -534,7 +534,7 @@
                 }
             }
         },
-    
+
         /**
         * Get the number of matched elements in the selector
         * @memberOf Svelte
@@ -545,7 +545,7 @@
         length: function() {
             return this.s.length;
         },
-    
+
         /**
         * Get the height of the first element in the selector
         * @memberOf Svelte
@@ -560,7 +560,7 @@
                 return null;
             }
         },
-    
+
         /**
         * Get the width of the first element in the selector
         * @memberOf Svelte
@@ -575,7 +575,7 @@
                 return null;
             }
         },
-    
+
         /**
         * Returns the position of the first element in the selector relative to the viewport
         * @memberOf Svelte
@@ -590,7 +590,7 @@
                 return null;
             }
         },
-    
+
         /**
         * Returns true if the element matches the selector string
         * @memberOf Svelte
@@ -602,7 +602,7 @@
         matches: function(selector) {
             return this.s[0].matches(selector);
         },
-    
+
         /**
         * Returns closest element to selector
         * @memberOf Svelte
@@ -614,9 +614,9 @@
         closest: function(selector) {
             return new Svelte(this.s[0].closest(selector));
         }
-    
+
     };
-    
+
     /** @constructor Svelte */
     function Svelte(selector, context) {
         return Object.create(svelteProto, {
@@ -626,11 +626,11 @@
                         var startAt = ((context  === 'string') ? document.querySelectorAll(selector) : context) || document; // tidy up
                         var nl = startAt.querySelectorAll(selector);
                         var arr = [];
-    
+
                         for (var i = 0, len = arr.length = nl.length; i < len; i++) {
                             arr[i] = nl[i];
                         }
-    
+
                         return arr;
                     } else {
                         return [selector]; // could be an object, dom node or a function but always kept in an array
@@ -642,29 +642,29 @@
             }
         });
     }
-    
+
     // AMD support
     if (typeof define === "function" && define.amd) {
         define(function() {
             return Svelte;
         });
     }
-    
+
     // Expose svelte to the world:-)
     window.$ = window.Svelte = Svelte;
-    
+
     // Expose functions to the world
     window.$.fn = svelteProto;
-    
+
     }(window, document));
-    
+
     // Polyfills
-    
+
     // Matches - prefixed in IE, IOS7 Safari and older Android browser versions
     if(!Element.prototype.matches) {
         Element.prototype.matches =  Element.prototype.matchesSelector || Element.prototype.msMatchesSelector || Element.prototype.webkitMatchesSelector;
     }
-    
+
     // Closest - not yet supported by IE and Safari
     if(!Element.prototype.closest) {
         Element.prototype.closest = function closest(selector) {

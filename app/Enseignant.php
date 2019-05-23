@@ -15,6 +15,15 @@ class Enseignant extends Model
     const TITRES = [ 'Mr' =>'SANS TITRE' ,'Pr' =>'PROFESSEUR','Dr' =>'DOCTEUR' ] ;
 
     protected $fillable = ['nomination','grade','statut','email','phone','titre'] ;
+    const MESSAGES = ['cm.required' => 'le temps assigné au CM est obligatoire' ,
+                      'cm.required' => 'veuillez renseigner une valeure numerique',
+                      'td.required' => 'le temps assigné au td est requis',
+                      'td.numeric' =>  'veuillez renseigner une valeure numerique',
+                      'tp.required' => 'le temps assigné au tp est requis',
+                      'tp.numeric' => 'veuillez renseigner une valeure numerique',
+                      'ue_id' => 'le choix de l\'UE est obligatoire',
+                      'enseignant_id' => 'le choix de l\'enseignant est obligatoire',  
+                     ] ;
 
     public function setNominationAttribute($value){
       $this->attributes['nomination']= mb_strtoupper($value) ;

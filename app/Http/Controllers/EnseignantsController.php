@@ -28,7 +28,7 @@ class EnseignantsController extends Controller
 
         $enseignant = new Enseignant($request->all()) ;
         $enseignant->save() ;
-        $message = 'l\'enseignant '.$request->nomination.' a été enregistré avec succès !!' ;
+        $message = 'l\'enseignant <b>'.$request->nomination.'</b> a été enregistré avec succès !!' ;
         return redirect()->route('enseignant_index')->with('success',$message) ;
     }
 
@@ -55,13 +55,13 @@ class EnseignantsController extends Controller
       $enseignant->phone = $request->phone ;
       $enseignant->titre = $request->titre ;
       $enseignant->save() ;
-      $message = 'l\'enseignant '.$request->nomination.' a été enregistré avec succès !!' ;
+      $message = 'l\'enseignant <strong>'.$request->nomination.'</strong> a été modifié avec succès !!' ;
       return redirect()->route('enseignant_index')->with('success',$message) ;
     }
 
     public function show($id)
     {
-        $enseignant = Enseignant::findOrFail($id) ; 
+        $enseignant = Enseignant::findOrFail($id) ;
         return view('enseignants.show', compact('enseignant')) ;
     }
 
@@ -69,7 +69,8 @@ class EnseignantsController extends Controller
     {
         $enseignant = Enseignant::findOrFail($id) ;
         $enseignant->delete() ;
-        return redirect()->route('enseignant_index') ;
+        $message = 'l\'enseignant <strong>'.$enseignant->nomination.'</strong> a été archivé' ;
+        return redirect()->route('enseignant_index')->with('info',$message) ;
     }
 
     public function trashed()
@@ -79,12 +80,32 @@ class EnseignantsController extends Controller
     }
 
     public function restore(int $id){
-      $enseignant = Enseignant::withTrashed()->findOrFail($id)->restore();
-      return redirect()->route('enseignant_index') ;
+      $enseignant = Enseignant::withTrashed()->findOrFail($id) ;
+      $enseignant->restore() ;
+      $message = 'l\'enseignant <strong>'.$enseignant->nomination.'</strong> a été restauré des archives' ;
+      return redirect()->route('enseignant_index')->with('info',$message) ;
     }
 
     public function purge(int $id){
-      $enseignant = Enseignant::withTrashed()->findOrFail($id)->forceDelete() ;
-      return redirect()->route('enseignant_trashed') ;
+      $enseignant = Enseignant::withTrashed()->findOrFail($id) ;
+      $enseignant->forceDelete() ;
+      $message = 'l\'enseignant <strong>'.$enseignant->nomination.'</strong> a été définitivement supprimé' ;
+      return redirect()->route('enseignant_trashed')->with('success',$message) ;
+    }
+
+    public function infos(Request $request){
+      $enseignant = Enseignant::with('ues')->findOrFail($request->input('teacher')) ;
+      $cm = 0 ;
+      $td = 0 ;
+      $tp = 0 ;
+      foreach ($enseignant->ues as $ue) {
+        $cm += $ue->pivot->cm ;
+        $td += $ue->pivot->td ;
+        $tp += $ue->pivot->tp ;
+      }
+      return response()->json(
+        ['enseignant' => $enseignant,
+         'total' => ['cm' => $cm, 'td' => $td, 'tp' => $tp]
+        ]) ;
     }
 }

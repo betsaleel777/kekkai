@@ -14,7 +14,7 @@ class AssignationsController extends Controller
     public function index()
     { //desactiver le stric mode de mysql pour faire fonctionner les requette laeavel comme celle de phpmyadmin
         $assignements = DB::table('assignations')
-            ->select(DB::raw('assignations.id,enseignants.nomination,ues.libelle,ues.niveau,assignations.cm,assignations.td,assignations.tp'))
+            ->select(DB::raw('enseignants.id,enseignants.nomination,enseignants.titre,ues.id as ue,ues.libelle,ues.filiere,ues.niveau,assignations.cm,assignations.td,assignations.tp'))
             ->join('ues', 'assignations.ue_id', '=', 'ues.id')
             ->join('enseignants', 'assignations.enseignant_id', '=', 'enseignants.id')
             ->get()->toArray();
@@ -30,72 +30,96 @@ class AssignationsController extends Controller
 
     public function insert(Request $request)
     {
-        $rules = ['enseignant_id' => 'required'];
-        $validator = Validator::make($request->all(), $rules);
-        if ($validator->fails()) {
-            return Response::json(['errors' => $validator->getMessageBag()->toArray()], 400);
-        }
-
+        $errors = [] ;
         $data = json_decode($request->data, true);
-        $toAssign = [];
-        foreach ($data as $value) {
-            [$ue, $cm, $td, $tp] = $value;
-            $toAssign = $toAssign + [$ue => ["cm" => $cm, "td" => $td, "tp" => $tp]];
+
+        if (empty($data)) {
+            array_push($errors, 'aucune assignations d\'UE détectée !') ;
         }
-        $enseignant = Enseignant::findOrFail($request->enseignant_id);
-        $enseignant->ues()->attach($toAssign);
+        if(empty($request->enseignant_id)) {
+            array_push($errors, 'Vous devez selectioner un enseignant !') ;
+        }
 
-        return Response::json(['success' => $toAssign], 200);
+        if (!empty($errors)) {
+            return Response::json(['errors' => $errors,'data' => $request->data]) ;
+        } else {
+            $toAssign = [];
+            foreach ($data as $value) {
+                [$ue, $cm, $td, $tp] = $value;
+                $toAssign = $toAssign + [$ue => ["cm" => $cm, "td" => $td, "tp" => $tp]];
+            }
+            $enseignant = Enseignant::findOrFail($request->enseignant_id);
+            $enseignant->ues()->attach($toAssign);
+
+            return Response::json(['success' => ["cm" => $cm, "td" => $td, "tp" => $tp]]);
+        }
     }
 
-    public function edit($id)
+    public function edit($id, $ue)
+    {
+        $enseignants = Enseignant::get() ;
+        $enseignant = Enseignant::findOrFail($id);
+        $ues = Ue::get() ;
+        $ue_link = $enseignant->ues()->findOrFail($ue) ;
+        return view('assignations.edit', compact('enseignant', 'enseignants', 'ue_link', 'ues'));
+    }
+
+    public function update(Request $request, $id, $ue)
     {
         $enseignant = Enseignant::findOrFail($id);
-        return view('assignations.edit', compact('assignement'));
+        $this->validate($request, ['cm' => 'required|numeric',
+            'td' => 'required|numeric',
+            'tp' => 'required|numeric',
+            'enseignant_id' => 'required',
+            'ue_id' => 'required'], Enseignant::MESSAGES);
+
+        $ue_link = $enseignant->ues()->find($ue) ;
+
+        $ue_link->pivot->ue_id = $request->ue_id ;
+        $ue_link->pivot->cm = $request->cm ;
+        $ue_link->pivot->td = $request->td ;
+        $ue_link->pivot->tp = $request->tp ;
+        $ue_link->pivot->save() ;
+
+        $message = '<p>modification d\'heure a été effectuée avec succès !!</p>
+                    <ul>
+                     <li><strong>CM => '.$request->cm.'</strong></li>
+                     <li><strong>TD => '.$request->td.'</strong></li>
+                     <li><strong>TP => '.$request->tp.'</strong></li>
+                    </ul>';
+        return redirect()->route('assignations_index')->with('success', $message);
     }
 
-    public function update(Request $request, $id)
+    public function delete(int $id, $ue)
     {
         $enseignant = Enseignant::findOrFail($id);
-        $this->validate($request, ['nomination' => 'required|max:170',
-            'statut' => 'required',
-            'grade' => 'required',
-            'email' => 'required|unique:assignations,email,' . $enseignant->id,
-            'phone' => 'required|numeric|unique:assignations,phone,' . $enseignant->id]);
-
-        $message = 'l\'assignation a été enregistré avec succès !!';
-        noty($message);
-        return redirect()->route('assignations_index');
+        $ue_link = $enseignant->ues()->find($ue) ;
+        $ue_link->pivot->delete() ;
+        $message = 'l\'unité d\'enseignement <strong>'.$ue_link->libelle.'</strong> assignée à <strong>'.$enseignant->titre.' '.$enseignant->nomination.'</strong> vient d\'être archivée' ;
+        return redirect()->route('enseignant_index')->with('success', $message) ;
     }
 
-    public function show($id)
-    {
-        $enseignant = Enseignant::findOrFail($id)->first();
-        return view('assignations.show', compact('enseignant'));
-    }
+    // public function trashed()
+    // {
+    //     $assignements = Enseignant::onlyTrashed()->get();
+    //     return view('assignations.archives', compact('assignations'));
+    // }
 
-    public function delete(int $id)
-    {
-        $enseignant = Enseignant::findOrFail($id);
-        $enseignant->delete();
-        return redirect()->route('enseignant_index');
-    }
+    // public function restore(int $id,$ue)
+    // {
+    //     $enseignant = Enseignant::withTrashed()->findOrFail($id);
+    //     $ue_link = $enseignant->ues()->find($ue) ;
+    //     $ue_link->pivot->restore() ;
+    //     $message = 'l\'unité d\'enseignement <strong>'.$ue_link->libelle.'</strong> assignée à <strong>'.$enseignant->titre.' '.$enseignant->nomination.'</strong> vient d\'être restaurée' ;
+    //     return redirect()->route('enseignant_index')->with('info',$message) ;
+    // }
 
-    public function trashed()
-    {
-        $assignements = Enseignant::onlyTrashed()->get();
-        return view('assignations.archives', compact('assignations'));
-    }
-
-    public function restore(int $id)
-    {
-        $enseignant = Enseignant::withTrashed()->findOrFail($id)->restore();
-        return redirect()->route('enseignant_index');
-    }
-
-    public function purge(int $id)
-    {
-        $enseignant = Enseignant::withTrashed()->findOrFail($id)->forceDelete();
-        return redirect()->route('enseignant_trashed');
-    }
+    // public function purge(int $id,$ue)
+    // {
+    //     $enseignant = Enseignant::withTrashed()->findOrFail($id) ;
+    //     $ue_link = $enseignant->ues()->find($ue) ;
+    //     $message = 'l\'unité d\'enseignement <strong>'.$ue_link->libelle.'</strong> assignée à <strong>'.$enseignant->titre.' '.$enseignant->nomination.'</strong> vient d\'être définitivement supprimée' ;
+    //     $ue_link->pivot->forceDelete();
+    //     return redirect()->route('enseignant_trashed');
+    // }
 }

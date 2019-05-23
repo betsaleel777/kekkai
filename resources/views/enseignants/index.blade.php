@@ -1,10 +1,10 @@
 @extends('layout')
 @section('link')
-  {{-- <link href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet"> --}}
+{{-- <link href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" rel="stylesheet"> --}}
 
-  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css">
-  <link rel="stylesheet" href="//cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
-  <link rel="stylesheet" href="//cdn.datatables.net/buttons/1.5.6/css/buttons.dataTables.min.css">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css">
+<link rel="stylesheet" href="//cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="//cdn.datatables.net/buttons/1.5.6/css/buttons.dataTables.min.css">
 
 @endsection
 @section('content')
@@ -13,17 +13,19 @@
 <div class="ui container">
     <div class="ui grid container">
         <div class="twelve wide column"></div>
-        <div class="two wide column"><a href="{{route('enseignant_add')}}" class="blue ui labeled icon button"><i class="plus icon"></i>Ajouter</a></div>
-        <div class="two wide column"><a href="{{route('enseignant_trashed')}}" class="yellow ui labeled icon button"><i class="archive icon"></i>Archives</a></div>
+        <div class="two wide column"><a href="{{route('enseignant_add')}}" class="blue ui labeled icon button"><i
+                    class="plus icon"></i>Ajouter</a></div>
+        <div class="two wide column"><a href="{{route('enseignant_trashed')}}" class="yellow ui labeled icon button"><i
+                    class="archive icon"></i>Archives</a></div>
     </div>
     <div class="ui divider"></div>
     @php
     $grades = ['AUCUN' => 'SANS GRADE' ,
-                    'A' => 'ASSISTANT',
-                    'MA' => 'MAITRE ASSISTANT',
-                    'MC' => 'MAITRE DE CONFERENCE',
-                    'PT' =>'PROFESSEUR TITULAIRE'
-              ] ;
+    'A' => 'ASSISTANT',
+    'MA' => 'MAITRE ASSISTANT',
+    'MC' => 'MAITRE DE CONFERENCE',
+    'PT' =>'PROFESSEUR TITULAIRE'
+    ] ;
     @endphp
     <table id="tableau" class="ui celled selectable right aligned table">
         <thead>
@@ -42,7 +44,8 @@
                 <td>{{$enseignant->phone}}</td>
                 <td>
                     <a href="{{route('enseignant_alter',$enseignant)}}"><i class="large edit icon"></i></a>
-                    <a href="{{route('enseignant_delete',$enseignant)}}"><i class="large trash alternate icon red"></i></a>
+                    <a href="{{route('enseignant_delete',$enseignant)}}"><i
+                            class="large trash alternate icon red"></i></a>
                     <a href="{{route('enseignant_show',$enseignant)}}"><i class="large crosshairs icon green"></i></a>
                 </td>
             </tr>
@@ -63,7 +66,7 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
 <script type="text/javascript" src="//cdn.datatables.net/buttons/1.5.6/js/buttons.html5.min.js"></script>
 <script type="text/javascript">
-$(document).ready( function () {
+    $(document).ready( function () {
     $('#tableau').DataTable({
       dom: 'Bfrtip',
         buttons: [
@@ -73,15 +76,19 @@ $(document).ready( function () {
 } );
 </script>
 <script>
-   $(document).ready(function() {
-     let elt = document.getElementById('message') ;
-    //  let message = 
-
-        new Noty({
-            type: 'success',
+    $(document).ready(function() {
+     const elt = document.getElementById('message') ;
+     if(elt){
+         const message = elt.getElementsByTagName('span')[0].textContent 
+         const type = elt.getElementsByTagName('em')[0].textContent
+       
+         if(message){
+          
+            new Noty({
+            type: type,
             layout: 'topRight',
             theme: 'semanticui',
-            text: 'Hello, just testing!',
+            text: message,
             timeout: '4000',
             closeWith: ['click'],
             animation: {
@@ -89,6 +96,8 @@ $(document).ready( function () {
                     close: 'animated fadeOutRight'
                 }
             }).show();
+       }
+     } 
    }) ;
 </script>
 @endsection
