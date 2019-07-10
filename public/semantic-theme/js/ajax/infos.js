@@ -1,17 +1,52 @@
 function infos() {
-    const parcours = function(iterable) {
-      calebasse = ''
-      for (ue of iterable) {
-        calebasse += `<tr><td>${ue.libelle}</td>
-                      <td>${ue.pivot.cm}</td>
-                      <td>${ue.pivot.td}</td>
-                      <td>${ue.pivot.tp}</td></tr>`
-
-      }
-      return calebasse
+    const array_sum = function(array) {
+        let key
+        let sum = 0
+        // input sanitation
+        if (typeof array !== 'object') {
+            return null
+        }
+        for (key in array) {
+            if (!isNaN(parseFloat(array[key]))) {
+                sum += parseFloat(array[key])
+            }
+        }
+        return sum
     }
-    const printUes = function(ues,total) {
-        return `<div class="nine wide column">
+    const checkRepeat = function(key, liste) {
+        let cm= [], td = [] ,tp = []
+        data = {
+            cm: null,
+            td: null,
+            tp: null
+        }
+        for (let i = 0, c = liste.length, j = 0; i < c; i++) {
+            if (liste[i].libelle === key) {
+                cm.push(liste[i].pivot.cm)
+                td.push(liste[i].pivot.td)
+                tp.push(liste[i].pivot.tp)
+            }
+        }
+        data.cm = array_sum(cm)
+        data.td = array_sum(td)
+        data.tp = array_sum(tp)
+        return data
+    }
+    const parcours = function(iterable) {
+        calebasse = ''
+        for (ue of iterable) {
+            let {libelle,...rest} = ue
+            pivot = checkRepeat(libelle, iterable)
+            calebasse += `<tr><td>${libelle}</td>
+                      <td>${pivot.cm}</td>
+                      <td>${pivot.td}</td>
+                      <td>${pivot.tp}</td></tr>`
+
+        }
+        return calebasse
+    }
+    const printUes = function(ues, total) {
+        return `<div class="">
         <table id="tableau" class="ui blue celled table">
             <thead>
                 <tr>
@@ -49,7 +84,7 @@ function infos() {
         })
     }).then((response) => {
         response.json().then((data) => {
-            document.getElementById('teacher').innerHTML = printUes(data.enseignant.ues,data.total)
+            document.getElementById('teacher').innerHTML = printUes(data.enseignant.ues, data.total)
         })
     })
 }

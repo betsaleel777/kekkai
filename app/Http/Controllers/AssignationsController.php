@@ -46,12 +46,16 @@ class AssignationsController extends Controller
             $toAssign = [];
             foreach ($data as $value) {
                 [$ue, $cm, $td, $tp] = $value;
-                $toAssign = $toAssign + [$ue => ["cm" => $cm, "td" => $td, "tp" => $tp]];
+                $tab = [$ue, $cm, $td, $tp] ;
+                \array_walk() ;
+                //mapper ce tableau pour verifier si une seule valeure est négative non entière ou vide
+
+                $toAssign = $toAssign + [$ue => ["cm" => (int)$cm, "td" => (int)$td, "tp" => (int)$tp]];
             }
             $enseignant = Enseignant::findOrFail($request->enseignant_id);
             $enseignant->ues()->attach($toAssign);
 
-            return Response::json(['success' => ["cm" => $cm, "td" => $td, "tp" => $tp]]);
+            return Response::json(['success' => ["cm" => $cm, "td" => $td, "tp" => $tp] ], 200);
         }
     }
 

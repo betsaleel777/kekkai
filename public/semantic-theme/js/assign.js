@@ -7,9 +7,8 @@ function createElementFromHTML(htmlString) {
 
 function design(name, ue, position) {
     const htmlString =
-        '<div id="'+ue+'" class="column"><div class="ui orange card"><div class="content"><div class="header">' +
-        name +
-        "</div>" +
+        '<div id="'+ue+'" class="column"><div class="ui orange card"><div class="header"><center>'+name+'</center></div>'+
+        '<div class="content">' +
         '<div class="ui form">'+
         '<div class="field"><div class="ui left icon input"><input hidden value="'+ue+'" /><input ue="'+ue+'" onblur="verify(this)" name="cm" type="text" placeholder="heures cm..."><i class="window minimize icon"></i></div><div hidden class="extra content"></div></div>' +
         '<div class="field"><div class="ui left icon input"><input ue="'+ue+'" name="td" onblur="verify(this)" type="text" placeholder="heures td..."><i class="window minimize icon"></i></div><div hidden class="extra content"></div></div>' +

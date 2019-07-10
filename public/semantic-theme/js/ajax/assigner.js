@@ -46,10 +46,10 @@ $(document).ready(function() {
               })
               .done(function(reponse) {
                   if(reponse.success){
-                    console.log(reponse.success);
-                    // setTimeout(function () {
-                    //   document.location.href = '/home/assignations/'
-                    // }, 3000);
+                    notifier('success','assignation effectuée avec succès !!')
+                    setTimeout(function () {
+                      document.location.href = '/home/assignations/'
+                    }, 3000);
                   }else if (reponse.errors) {
                      const message = reponse.errors.join('\n')
                      notifier('error',message)

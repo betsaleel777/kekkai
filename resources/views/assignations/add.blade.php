@@ -29,27 +29,30 @@
         </div>
         {!!$errors->first('ue_id','<p style="color:#a94442">:message</p>')!!}
     </div>
-    <div class="field">
-        <div style="padding:100px" class="ui hidden divider">
-            <h4 class="ui horizontal divider header">
-                <i class="bar chart icon"></i>
-                enseignant infos
-            </h4>
-            <div id="teacher" class=""></div>
+    <div class="ui segment">
+        <div class="ui two column very relaxed grid">
+            <div class="column">
+                <h4 class="ui horizontal divider header">
+                    <i class="bar chart icon"></i>
+                    enseignant infos
+                </h4>
+                <div id="teacher" class=""></div>
+            </div>
+            <div class="column">
+                <h4 class="ui horizontal divider header">
+                    <i class="tag icon"></i>
+                    UE à assigner
+                </h4>
+                <div id="area" class="ui three column grid"></div>
+            </div>
         </div>
-    </div>
-    <div class="field">
-        <div style="padding:100px" class="ui hidden divider">
-            <h4 class="ui horizontal divider header">
-                <i class="tag icon"></i>
-                UE à assigner
-            </h4>
-            <div id="area" class="ui four column grid"></div>
+        <div class="ui vertical divider">
+             ET
         </div>
     </div>
     <center>
         <div class="field">
-            <br><br><br><br><br><br><br><br><button style="margin:100px" id="button" type="submit" class="ui labeled submit icon button"><i class="icon send"></i>envoyer</button>
+            <button style="margin-bottom:10px;margin-top:10px" id="button" type="submit" class="ui labeled submit icon button"><i class="icon send"></i>envoyer</button>
         </div>
     </center>
 </form>
@@ -59,7 +62,7 @@
 <script type="text/javascript">
     $(document).ready(function() {
         $('.search.selection.dropdown').dropdown({
-            maxSelections: '4',
+            maxSelections: '3',
             clearable: true,
         });
     });
@@ -67,7 +70,7 @@
 <script type="text/javascript">
     $(document).ready(function() {
         $('.multiple.search.selection.dropdown').dropdown({
-            maxSelections: '4',
+            maxSelections: '3',
             allowAdditions: true,
         });
     });
@@ -80,42 +83,18 @@
 <script type="text/javascript">
     $(document).ready(function() {
         $(".multiple.search.selection.dropdown")
-        .dropdown("setting", "onLabelRemove", (value, text) => {
-            erase(value);
-        });
+            .dropdown("setting", "onLabelRemove", (value, text) => {
+                erase(value);
+            });
     });
 </script>
 <script type="text/javascript">
     $(document).ready(function() {
         $(".multiple.search.selection.dropdown")
-        .dropdown("setting", "onAdd", () => {
-            assign();
-        });
+            .dropdown("setting", "onAdd", () => {
+                assign();
+            });
     });
 </script>
-<script>
-    $(document).ready(function() {
-        const elt = document.getElementById('message');
-        if (elt) {
-            const message = elt.getElementsByTagName('span')[0].textContent
-            const type = elt.getElementsByTagName('em')[0].textContent
-
-            if (message) {
-
-                new Noty({
-                    type: type,
-                    layout: 'topRight',
-                    theme: 'semanticui',
-                    text: message,
-                    timeout: '4000',
-                    closeWith: ['click'],
-                    animation: {
-                        open: 'animated fadeInRight',
-                        close: 'animated fadeOutRight'
-                    }
-                }).show();
-            }
-        }
-    });
-</script>
+<script src="{{asset('semantic-theme/js/notify.js')}}"></script>
 @endsection
