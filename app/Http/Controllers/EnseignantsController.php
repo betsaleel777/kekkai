@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB ;
 use App\Enseignant ;
 
 class EnseignantsController extends Controller
@@ -10,6 +11,8 @@ class EnseignantsController extends Controller
     public function index()
     {
         $enseignants = Enseignant::get() ;
+        // dd(DB::select("SELECT sum(assignations.cm) as cm ,sum(assignations.td) as td,sum(assignations.tp) as tp,ues.id,ues.libelle from assignations
+        //       inner join ues on ues.id=assignations.ue_id where assignations.enseignant_id=? group by ues.id",[2]));
         return view('enseignants.index', compact('enseignants')) ;
     }
 
@@ -98,16 +101,18 @@ class EnseignantsController extends Controller
     public function infos(Request $request)
     {
         $enseignant = Enseignant::with('ues')->findOrFail($request->input('teacher')) ;
+        $enseignant_sans_repetition = DB::select("SELECT sum(assignations.cm) as cm ,sum(assignations.td) as td,sum(assignations.tp) as tp,ues.id,ues.libelle from assignations
+              inner join ues on ues.id=assignations.ue_id where assignations.enseignant_id=? group by ues.id",[$request->input('teacher')]) ;
         $cm = 0 ;
         $td = 0 ;
         $tp = 0 ;
-        foreach ($enseignant->ues as $ue) {
+        foreach ($enseignant->ues as $ue){
             $cm += $ue->pivot->cm ;
             $td += $ue->pivot->td ;
             $tp += $ue->pivot->tp ;
         }
         return response()->json(
-        ['enseignant' => $enseignant,
+        ['enseignant' => $enseignant_sans_repetition,
          'total' => ['cm' => $cm, 'td' => $td, 'tp' => $tp]
         ]
       ) ;

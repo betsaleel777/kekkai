@@ -47,7 +47,6 @@ class AssignationsController extends Controller
             foreach ($data as $value) {
                 [$ue, $cm, $td, $tp] = $value;
                 $tab = [$ue, $cm, $td, $tp] ;
-                \array_walk() ;
                 //mapper ce tableau pour verifier si une seule valeure est négative non entière ou vide
 
                 $toAssign = $toAssign + [$ue => ["cm" => (int)$cm, "td" => (int)$td, "tp" => (int)$tp]];
