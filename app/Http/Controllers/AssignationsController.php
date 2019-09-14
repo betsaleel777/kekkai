@@ -101,28 +101,4 @@ class AssignationsController extends Controller
         $message = 'l\'unité d\'enseignement <strong>'.$ue_link->libelle.'</strong> assignée à <strong>'.$enseignant->titre.' '.$enseignant->nomination.'</strong> vient d\'être archivée' ;
         return redirect()->route('enseignant_index')->with('success', $message) ;
     }
-
-    // public function trashed()
-    // {
-    //     $assignements = Enseignant::onlyTrashed()->get();
-    //     return view('assignations.archives', compact('assignations'));
-    // }
-
-    // public function restore(int $id,$ue)
-    // {
-    //     $enseignant = Enseignant::withTrashed()->findOrFail($id);
-    //     $ue_link = $enseignant->ues()->find($ue) ;
-    //     $ue_link->pivot->restore() ;
-    //     $message = 'l\'unité d\'enseignement <strong>'.$ue_link->libelle.'</strong> assignée à <strong>'.$enseignant->titre.' '.$enseignant->nomination.'</strong> vient d\'être restaurée' ;
-    //     return redirect()->route('enseignant_index')->with('info',$message) ;
-    // }
-
-    // public function purge(int $id,$ue)
-    // {
-    //     $enseignant = Enseignant::withTrashed()->findOrFail($id) ;
-    //     $ue_link = $enseignant->ues()->find($ue) ;
-    //     $message = 'l\'unité d\'enseignement <strong>'.$ue_link->libelle.'</strong> assignée à <strong>'.$enseignant->titre.' '.$enseignant->nomination.'</strong> vient d\'être définitivement supprimée' ;
-    //     $ue_link->pivot->forceDelete();
-    //     return redirect()->route('enseignant_trashed');
-    // }
 }

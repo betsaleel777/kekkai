@@ -32,35 +32,44 @@
     <div class="field">
         <label>heures CM attribuées:</label>
         <div class="ui labeled input">
-            <input value="{{$ue_link->pivot->cm}}" type="text" name="cm">
+            <input  onchange="check(this)" value="{{$ue_link->pivot->cm}}" type="text" name="cm">
             <div class="red ui corner label">
                 <i class="asterisk icon"></i>
             </div>
+        </div>
+        <div id="cm_content">
+
         </div>
         {!!$errors->first('cm','<p style="color:#a94442">:message</p>')!!}
     </div>
     <div class="field">
         <label>Heures TD attribuées:</label>
         <div class="ui labeled input">
-            <input value="{{$ue_link->pivot->td}}" type="text" name="td">
+            <input onchange="check(this)" value="{{$ue_link->pivot->td}}" type="text" name="td">
             <div class="red ui corner label">
                 <i class="asterisk icon"></i>
             </div>
+        </div>
+        <div id="td_content">
+
         </div>
         {!!$errors->first('td','<p style="color:#a94442">:message</p>')!!}
     </div>
     <div class="field">
         <label>Heures TP attribuées:</label>
         <div class="ui labeled input">
-            <input value="{{$ue_link->pivot->tp}}" type="text" name="tp">
+            <input onchange="check(this)" value="{{$ue_link->pivot->tp}}" type="text" name="tp">
             <div class="red ui corner label">
                 <i class="asterisk icon"></i>
             </div>
         </div>
+        <div id="tp_content">
+
+        </div>
         {!!$errors->first('tp','<p style="color:#a94442">:message</p>')!!}
     </div>
     <div class="field">
-            <button type="submit" class="ui labeled submit icon button"><i class="icon send"></i>envoyer</button>
+        <button id="button" type="submit" class="ui labeled submit icon button"><i class="icon send"></i>envoyer</button>
     </div>
 </form>
 @endsection
@@ -74,38 +83,39 @@
     });
 </script>
 <script>
-        $(document).ready(function() {
-            $('#enseignant').dropdown('set selected', '{{$enseignant->id}}');
-        });
+    $(document).ready(function() {
+        $('#enseignant').dropdown('set selected', '{{$enseignant->id}}');
+    });
 </script>
 <script>
-        $(document).ready(function() {
-            $('#ue').dropdown('set selected', '{{$ue_link->id}}');
-        });
+    $(document).ready(function() {
+        $('#ue').dropdown('set selected', '{{$ue_link->id}}');
+    });
 </script>
 <script>
-        $(document).ready(function() {
-         const elt = document.getElementById('message') ;
-         if(elt){
-             const message = elt.getElementsByTagName('span')[0].textContent 
-             const type = elt.getElementsByTagName('em')[0].textContent
-           
-             if(message){
-              
+    $(document).ready(function() {
+        const elt = document.getElementById('message');
+        if (elt) {
+            const message = elt.getElementsByTagName('span')[0].textContent
+            const type = elt.getElementsByTagName('em')[0].textContent
+
+            if (message) {
+
                 new Noty({
-                type: type,
-                layout: 'topRight',
-                theme: 'semanticui',
-                text: message,
-                timeout: '4000',
-                closeWith: ['click'],
-                animation: {
-                        open : 'animated fadeInRight',
+                    type: type,
+                    layout: 'topRight',
+                    theme: 'semanticui',
+                    text: message,
+                    timeout: '4000',
+                    closeWith: ['click'],
+                    animation: {
+                        open: 'animated fadeInRight',
                         close: 'animated fadeOutRight'
                     }
                 }).show();
-           }
-         } 
-       }) ;
-    </script>
+            }
+        }
+    });
+</script>
+<script src="{{asset('semantic-theme/js/ajax/check.js')}}"></script>
 @endsection

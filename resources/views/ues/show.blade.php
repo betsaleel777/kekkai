@@ -85,15 +85,50 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($ue->enseignants as $enseignant)
+                @foreach ($enseignant_sans_repetition as $enseignant)
                 <tr>
                     <td>{{ $enseignant->nomination }}</td>
-                    <td>{{ $enseignant->pivot->cm }}</td>
-                    <td>{{ $enseignant->pivot->td }}</td>
-                    <td>{{ $enseignant->pivot->tp }}</td>
+                    <td>{{ $enseignant->cm }}</td>
+                    <td>{{ $enseignant->td }}</td>
+                    <td>{{ $enseignant->tp }}</td>
                 </tr>
                 @endforeach
             </tbody>
+            <tfoot>
+              <tr>
+                <td>TOTAL</td>
+                {{-- cm line --}}
+                @if ($rest['cm'] == 0)
+                  <td class="negative"  data-tooltip="Maximum atteint!" data-position="bottom center">
+                    {{$total['cm']}}
+                  </td>
+                @else
+                  <td class="positive"  data-tooltip="il reste {{$rest['cm']}} heures" data-position="bottom center">
+                    {{$total['cm']}}
+                  </td>
+                @endif
+                {{-- td line --}}
+                @if ($rest['td'] == 0)
+                  <td class="negative"  data-tooltip="Maximum atteint!" data-position="bottom center">
+                    {{$total['td']}}
+                  </td>
+                @else
+                  <td class="positive"  data-tooltip="il reste {{$rest['td']}} heures" data-position="bottom center">
+                    {{$total['td']}}
+                  </td>
+                @endif
+                {{-- tp line --}}
+                @if ($rest['tp'] == 0)
+                  <td class="negative" data-tooltip="Maximum atteint!" data-position="bottom center">
+                    {{$total['tp']}}
+                  </td>
+                @else
+                  <td class="positive" data-tooltip="il reste {{$rest['tp']}} heures" data-position="bottom center">
+                    {{$total['tp']}}
+                  </td>
+                @endif
+              </tr>
+            </tfoot>
         </table>
     </div>
 </div>
@@ -120,11 +155,11 @@
         $(document).ready(function() {
          const elt = document.getElementById('message') ;
          if(elt){
-             const message = elt.getElementsByTagName('span')[0].textContent 
+             const message = elt.getElementsByTagName('span')[0].textContent
              const type = elt.getElementsByTagName('em')[0].textContent
-           
+
              if(message){
-              
+
                 new Noty({
                 type: type,
                 layout: 'topRight',
@@ -138,7 +173,7 @@
                     }
                 }).show();
            }
-         } 
+         }
        }) ;
     </script>
 @endsection

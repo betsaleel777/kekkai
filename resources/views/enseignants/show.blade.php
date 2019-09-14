@@ -66,15 +66,23 @@ $grades = ['AUCUN' => 'SANS GRADE' ,
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($enseignant->ues as $ue)
+                    @foreach ($ues_sans_repetition as $ue)
                     <tr>
                         <td>{{ $ue->libelle }}</td>
-                        <td>{{ $ue->pivot->cm }}</td>
-                        <td>{{ $ue->pivot->td }}</td>
-                        <td>{{ $ue->pivot->tp }}</td>
+                        <td>{{ $ue->cm }}</td>
+                        <td>{{ $ue->td }}</td>
+                        <td>{{ $ue->tp }}</td>
                     </tr>
                     @endforeach
                 </tbody>
+                <tfoot>
+                  <tr class="positive">
+                    <td>TOTAL</td>
+                    <td>{{$total['cm']}}</td>
+                    <td>{{$total['td']}}</td>
+                    <td>{{$total['tp']}}</td>
+                  </tr>
+                </tfoot>
             </table>
         </div>
     </div>

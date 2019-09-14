@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB ;
 use App\Ue ;
 
 class UesController extends Controller
@@ -63,7 +64,23 @@ class UesController extends Controller
     public function show(int $id)
     {
         $ue = Ue::findOrFail($id) ;
-        return view('ues.show', compact('ue')) ;
+        $enseignant_sans_repetition = DB::select("SELECT sum(assignations.cm) as cm ,sum(assignations.td) as td,sum(assignations.tp) as tp,enseignants.id,
+                                      enseignants.nomination from assignations inner join enseignants on enseignants.id=assignations.enseignant_id
+                                      where assignations.ue_id=? group by enseignants.id",[$id]) ;
+        $cm = 0 ;
+        $td = 0 ;
+        $tp = 0 ;
+        foreach ($enseignant_sans_repetition as $enseignant){
+            $cm += $enseignant->cm ;
+            $td += $enseignant->td ;
+            $tp += $enseignant->tp ;
+        }
+        $rest = ['cm' => $ue->heure_gr_cm-$cm ,
+                 'td' => $ue->heure_gr_td-$td ,
+                 'tp' => $ue->heure_gr_tp-$tp
+                ] ;
+        $total = [ 'cm' => $cm, 'td' => $td, 'tp' => $tp] ;
+        return view('ues.show', compact('ue','total','enseignant_sans_repetition','rest')) ;
     }
 
     public function delete(int $id)

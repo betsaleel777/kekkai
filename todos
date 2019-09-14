@@ -1,0 +1,38 @@
+*****************************noter ici ****************************
+
+ENSEIGNANTS
+   les infos de l'enseignant doivent pouvoir afficher les totaux et
+   grouper les ues de meme nom
+--------> fait
+
+UES
+   les infos sur une ue doit afficher les totaux et grouper les
+   enseignants de même nom
+---------> fait
+
+ASSIGNATION
+  en modifiant une assignation il faut lancer les verifications pour
+  cm , td ,tp
+---------> fait
+
+  Dans les trois items le boutton parametre ne marche pas
+----------> le boutton a été retiré
+
+-----------------------------------------------------------------
+nouveaux problèmes
+  empêcher l'assignation si toutes les inputs pour les heures sont vides,
+  il faudrait que pour chaque ues à assigner au moins un champs soit remplit les autres
+  prendront alors la valeure 0 (dans la vue assignation add).
+
+  bloquer le bouton envoyer si l'une des verification a échoué
+  (dans la vue assignation edit)
+
+  mettre tout les messages de validation en français
+---------------------------------------------------------------
+
+ajouter au niveau du show de l'item ue une indication qui permet de montrer
+les statut dans les totaux
+(vert si il y a encore des heures à assigner ce qui sera préciser dans une infos bulle;
+ rouge si il n'y a plus d'heure à assigner et qu la limite a été atteinte) ;
+
+---------> fait

@@ -13,81 +13,82 @@ class AjaxController extends Controller
         $error_message = null ;
         $message = null ;
 
-              $ue = Ue::with('enseignants')->findOrFail($request->input('ue')) ;
-              $deja_assigne = 0 ;
+        $ue = Ue::with('enseignants')->findOrFail($request->input('ue')) ;
+        $deja_assigne = 0 ;
 
-              //calcul du total des heures de cm déjà assignées
-              foreach ($ue->enseignants as $enseignant) {
-                  $deja_assigne += $enseignant->pivot->cm ;
-              }
+        //calcul du total des heures de cm déjà assignées
+        foreach ($ue->enseignants as $enseignant) {
+            $deja_assigne += $enseignant->pivot->cm ;
+        }
 
-              $total_a_assigner = $ue->heure_gr_cm ;
-              $rest = $total_a_assigner - $deja_assigne ;
-              $virtual_rest = $total_a_assigner - ($deja_assigne + (int)$request->input('test')) ;
+        $total_a_assigner = $ue->heure_gr_cm ;
+        $rest = $total_a_assigner - $deja_assigne ;
+        $virtual_rest = $total_a_assigner - ($deja_assigne + (int)$request->input('test')) ;
 
-              if ($virtual_rest>0) {
-                  $message = $message = $virtual_rest.' peuvent être assignées' ;
-              } elseif ($virtual_rest === 0) {
-                  $message = 'nombre maximum d\'heures atteint' ;
-              } else {
-                  $error_message = 'incorrecte!! Il reste '.$rest.' heures.' ;
-              }
+        if ($virtual_rest>0) {
+            $message = $message = $virtual_rest.' peuvent être assignées' ;
+        } elseif ($virtual_rest === 0) {
+            $message = 'nombre maximum d\'heures atteint' ;
+        } else {
+            $error_message = 'incorrecte!! Il reste '.$rest.' heures.' ;
+        }
         return response()->json(['message' => $message , 'error' => $error_message ]) ;
     }
 
     public function verify_td(Request $request)
     {
-      //verifier si td+ancien ne depasse pas total
-      $error_message = null ;
-      $message = null ;
+        //verifier si td+ancien ne depasse pas total
+        $error_message = null ;
+        $message = null ;
 
-            $ue = Ue::with('enseignants')->findOrFail($request->input('ue')) ;
-            $deja_assigne = 0 ;
+        $ue = Ue::with('enseignants')->findOrFail($request->input('ue')) ;
+        $deja_assigne = 0 ;
 
-            //calcul du total des heures de td déjà assignées
-            foreach ($ue->enseignants as $enseignant) {
-                $deja_assigne += $enseignant->pivot->td ;
-            }
+        //calcul du total des heures de td déjà assignées
+        foreach ($ue->enseignants as $enseignant) {
+            $deja_assigne += $enseignant->pivot->td ;
+        }
 
-            $total_a_assigner = $ue->heure_gr_td ;
-            $rest = $total_a_assigner - $deja_assigne ;
-            $virtual_rest = $total_a_assigner - ($deja_assigne + (int)$request->input('test')) ;
+        $total_a_assigner = $ue->heure_gr_td ;
+        $rest = $total_a_assigner - $deja_assigne ;
+        $virtual_rest = $total_a_assigner - ($deja_assigne + (int)$request->input('test')) ;
 
-            if ($virtual_rest>0) {
-                $message = $message = $virtual_rest.' peuvent être assignées .' ; ;
-            } elseif ($virtual_rest === 0) {
-                $message = 'nombre maximum d\'heures atteint' ;
-            } else {
-                $error_message = 'incorrecte!! Il reste '.$rest.' heures.' ;
-            }
-      return response()->json(['message' => $message , 'error' => $error_message ]) ;
+        if ($virtual_rest>0) {
+            $message = $message = $virtual_rest.' peuvent être assignées .' ;
+            ;
+        } elseif ($virtual_rest === 0) {
+            $message = 'nombre maximum d\'heures atteint' ;
+        } else {
+            $error_message = 'incorrecte!! Il reste '.$rest.' heures.' ;
+        }
+        return response()->json(['message' => $message , 'error' => $error_message ]) ;
     }
 
     public function verify_tp(Request $request)
     {
-      //verifier si tp+ancien ne depasse pas total
-      $error_message = null ;
-      $message = null ;
+        //verifier si tp+ancien ne depasse pas total
+        $error_message = null ;
+        $message = null ;
 
-            $ue = Ue::with('enseignants')->findOrFail($request->input('ue')) ;
-            $deja_assigne = 0 ;
+        $ue = Ue::with('enseignants')->findOrFail($request->input('ue')) ;
+        $deja_assigne = 0 ;
 
-            //calcul du total des heures de tp déjà assignées
-            foreach ($ue->enseignants as $enseignant) {
-                $deja_assigne += $enseignant->pivot->tp ;
-            }
+        //calcul du total des heures de tp déjà assignées
+        foreach ($ue->enseignants as $enseignant) {
+            $deja_assigne += $enseignant->pivot->tp ;
+        }
 
-            $total_a_assigner = $ue->heure_gr_tp ;
-            $rest = $total_a_assigner - $deja_assigne ;
-            $virtual_rest = $total_a_assigner - ($deja_assigne + (int)$request->input('test')) ;
+        $total_a_assigner = $ue->heure_gr_tp ;
+        $rest = $total_a_assigner - $deja_assigne ;
+        $virtual_rest = $total_a_assigner - ($deja_assigne + (int)$request->input('test')) ;
 
-            if ($virtual_rest>0) {
-                $message = $virtual_rest.' peuvent être assignées' ;
-            } elseif ($virtual_rest === 0) {
-                $message = 'nombre maximum d\'heures atteint';
-            } else {
-                $error_message = 'incorrecte!! Il reste '.$rest.' heures.' ;
-            }
-      return response()->json(['message' => $message , 'error' => $error_message ]) ;
+        if ($virtual_rest>0) {
+            $message = $virtual_rest.' peuvent être assignées' ;
+        } elseif ($virtual_rest === 0) {
+            $message = 'nombre maximum d\'heures atteint';
+        } else {
+            $error_message = 'incorrecte!! Il reste '.$rest.' heures.' ;
+        }
+        return response()->json(['message' => $message , 'error' => $error_message ]) ;
     }
 }

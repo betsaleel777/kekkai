@@ -13,8 +13,10 @@
 <div class="ui container">
     <div class="ui grid container">
         <div class="twelve wide column"></div>
+        <div class="two wide column">
+          {{-- <a href="{{route('assignations_trashed')}}" class="yellow ui labeled icon button"><i class="archive icon"></i>Archives</a> --}}
+        </div>
         <div class="two wide column"><a href="{{route('assignations_add')}}" class="blue ui labeled icon button"><i class="plus icon"></i>Ajouter</a></div>
-        <div class="two wide column"><a href="{{route('assignations_trashed')}}" class="yellow ui labeled icon button"><i class="archive icon"></i>Archives</a></div>
     </div>
     <div class="ui divider"></div>
     <table id="tableau" class="ui celled selectable right aligned table">
@@ -95,11 +97,3 @@ $(document).ready( function () {
        }) ;
 </script>
 @endsection
-<script type="text/javascript">
-    $(document).ready(function() {
-        $('.search.selection.dropdown').dropdown({
-            maxSelections: '4',
-            clearable: true,
-        });
-    });
-</script>

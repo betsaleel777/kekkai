@@ -10,7 +10,7 @@
             <a href="{{route('enseignant_index')}}" class="item">Enseignant</a>
             <a href="{{route('ues_index')}}" class="item">Ues</a>
             <a href="{{route('assignations_index')}}" class="item">Assignation</a>
-            <div class="ui dropdown item">
+            {{-- <div class="ui dropdown item">
                 Parametres
                 <i class="dropdown icon"></i>
                 <div class="menu">
@@ -22,8 +22,8 @@
                     <div class="divider"></div>
                     <div class="item">One more separated link</div>
                 </div>
-            </div>
-            <div class="right menu">
+            </div> --}}
+            {{-- <div class="right menu">
                 <div class="item">
                     <div class="ui transparent inverted icon input">
                         <i class="search icon"></i>
@@ -31,7 +31,7 @@
                     </div>
                 </div>
                 <a class="item">Link</a>
-            </div>
+            </div> --}}
         </div>
         <!-- menu end  -->
 

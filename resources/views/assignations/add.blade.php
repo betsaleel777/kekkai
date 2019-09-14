@@ -93,7 +93,7 @@
         $(".multiple.search.selection.dropdown")
             .dropdown("setting", "onAdd", () => {
                 assign();
-            });
+        });
     });
 </script>
 <script src="{{asset('semantic-theme/js/notify.js')}}"></script>

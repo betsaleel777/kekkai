@@ -65,7 +65,19 @@ class EnseignantsController extends Controller
     public function show($id)
     {
         $enseignant = Enseignant::findOrFail($id) ;
-        return view('enseignants.show', compact('enseignant')) ;
+        $ues_sans_repetition = (array)DB::select("SELECT sum(assignations.cm) as cm ,sum(assignations.td) as td,sum(assignations.tp)
+                                      as tp,ues.id,ues.libelle from assignations inner join ues on ues.id=assignations.ue_id
+                                      where assignations.enseignant_id=? group by ues.id",[$id]) ;
+        $cm = 0 ;
+        $td = 0 ;
+        $tp = 0 ;
+        foreach ($ues_sans_repetition as $ue){
+            $cm += $ue->cm ;
+            $td += $ue->td ;
+            $tp += $ue->tp ;
+        }
+        $total = [ 'cm' => $cm, 'td' => $td, 'tp' => $tp] ;
+        return view('enseignants.show', compact('enseignant','ues_sans_repetition','total')) ;
     }
 
     public function delete(int $id)
