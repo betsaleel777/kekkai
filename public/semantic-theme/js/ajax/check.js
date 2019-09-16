@@ -1,6 +1,5 @@
 //utilise l'id de l'ue choisit et verifie si la valeur d'heure du cm , du td ou du tp
 //est logique c'est a dire ne depasse pas la valeur maximale à assigner
-
 function check(input) {
     const name = input.getAttribute('name')
     const test = input.value
@@ -9,21 +8,28 @@ function check(input) {
     const url = '/home/verify/'+name
     let button = document.getElementById('button')
 
-    // const thunder = function(){
-    //   messagesCollection = document.getElementsByClassName("extra content")
-    //   if(button.getAttribute('disabled')){
-    //     button.removeAttribute('disabled')
-    //   }
-    //   // console.log(messagesCollection)
-    //   for (messageElement of messagesCollection) {
-    //     if(messageElement.firstElementChild){
-    //       if(messageElement.firstElementChild.className === 'red exclamation circle icon'){
-    //         button.setAttribute('disabled','disabled')
-    //         break
-    //       }
-    //     }
-    //   }
-    // }
+    const class_name = "red exclamation circle icon"
+
+    const thunder = function(){
+      let cm_content = document.getElementById('cm_content').firstElementChild
+      if(cm_content){
+        cm_content = cm_content.className
+      }
+      let td_content = document.getElementById('td_content').firstElementChild
+      if(td_content){
+        td_content = td_content.className
+      }
+      let tp_content = document.getElementById('tp_content').firstElementChild
+      if(tp_content){
+        tp_content = tp_content.className
+      }
+
+      if(cm_content == class_name || td_content == class_name || tp_content == class_name ){
+        button.disabled = true
+      }else{
+        button.disabled = false
+      }
+    }
 
     if (test) {
         fetch(url, {
@@ -41,13 +47,13 @@ function check(input) {
             response.json().then((data) => {
                 space = document.getElementById(`${name}_content`)
                 if (data.error) {
-                    console.log(data.error)
+                    // console.log(data.error)
                     space.innerHTML = `<i class='red exclamation circle icon'></i><span style='color:red'>${data.error}</span>`
-                    // thunder()
+                    thunder()
                 } else if (data.message) {
-                    console.log(data.message)
+                    // console.log(data.message)
                     space.innerHTML = `<i class='green check circle icon'></i><span style='color:green'>${data.message}</span>`
-                    // thunder()
+                    thunder()
                 }
             })
         })
