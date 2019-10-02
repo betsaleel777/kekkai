@@ -27,7 +27,7 @@ class EnseignantsController extends Controller
                                 'statut' => 'required',
                                 'grade' => 'required',
                                 'email' => 'required|unique:enseignants',
-                                'phone' => 'required|numeric|unique:enseignants',]);
+                                'phone' => 'required|numeric|unique:enseignants'],Enseignant::MESSAGES);
 
         $enseignant = new Enseignant($request->all()) ;
         $enseignant->save() ;
@@ -49,7 +49,7 @@ class EnseignantsController extends Controller
                               'grade' => 'required',
                               'email' => 'required|unique:enseignants,email,'.$enseignant->id,
                               'phone' => 'required|numeric|unique:enseignants,phone,'.$enseignant->id
-                             ]);
+                            ],Enseignant::MESSAGES) ;
 
         $enseignant->nomination = $request->nomination ;
         $enseignant->statut = $request->statut ;

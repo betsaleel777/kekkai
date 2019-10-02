@@ -30,7 +30,7 @@ class UesController extends Controller
                               'nb_gr_tp' => 'required|numeric',
                               'heure_gr_cm'  => 'required|numeric',
                               'heure_gr_td'  => 'required|numeric',
-                              'heure_gr_tp'  => 'required|numeric', ]);
+                              'heure_gr_tp'  => 'required|numeric', ],UE::MESSAGES);
         $ue = new Ue($request->all()) ;
         $ue->save() ;
         $message = 'l\'unité d\'enseignement <strong>'.$request->libelle.'</strong> a été enregistré avec succès !!' ;
@@ -55,7 +55,7 @@ class UesController extends Controller
                               'nb_gr_tp' => 'required|numeric',
                               'heure_gr_cm'  => 'required|numeric',
                               'heure_gr_td'  => 'required|numeric',
-                              'heure_gr_tp'  => 'required|numeric', ]);
+                              'heure_gr_tp'  => 'required|numeric', ],UE::MESSAGES);
         $ue->update($request->all()) ;
         $message = 'l\'unité d\'enseignement <strong>'.$request->libelle.'</strong> a été modifié avec succès !!' ;
         return redirect()->route('ues_index')->with('success', $message) ;

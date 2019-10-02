@@ -43,17 +43,18 @@
             @endforelse
         </tbody>
     </table>
-    <div id="modal" class="mini modal">
+    {{-- <div id="modal" class="mini modal">
         <div class="header"><i class="trash alternate"></i>SUPRESSION</div>
         <div class="content">
             <p>Voulez vous supprimer definitivement cet enseignant ?</p>
         </div>
         <div class="actions">
-
-            <a href="{{'/home/enseignant/'.$enseignant->id.'/purge'}}"><i class="times icon"></i></a>
-            <div class="ui cancel button">Annuler</div>
+            @if ($)
+              <a href="{{'/home/enseignant/'.$enseignant->id.'/purge'}}"><i class="times icon"></i></a>
+              <div class="ui cancel button">Annuler</div>
+            @endif
         </div>
-    </div>
+    </div> --}}
 </div>
 @endsection
 @section('java-script')
@@ -84,11 +85,11 @@
         $(document).ready(function() {
          const elt = document.getElementById('message') ;
          if(elt){
-             const message = elt.getElementsByTagName('span')[0].textContent 
+             const message = elt.getElementsByTagName('span')[0].textContent
              const type = elt.getElementsByTagName('em')[0].textContent
-           
+
              if(message){
-              
+
                 new Noty({
                 type: type,
                 layout: 'topRight',
@@ -102,7 +103,7 @@
                     }
                 }).show();
            }
-         } 
+         }
        }) ;
     </script>
 @endsection

@@ -16,19 +16,22 @@ ASSIGNATION
 ---------> fait
 
   Dans les trois items le boutton parametre ne marche pas
-----------> le boutton a été retiré
+---------> le boutton a été retiré
 
 -----------------------------------------------------------------
 nouveaux problèmes
   empêcher l'assignation si toutes les inputs pour les heures sont vides,
   il faudrait que pour chaque ues à assigner au moins un champs soit remplit les autres
   prendront alors la valeure 0 (dans la vue assignation add).
-
-  bloquer le bouton envoyer si l'une des verification a échoué
-  (dans la vue assignation edit)
+------------> pas besoin si il a mal enregistrer il supprime ou il modifie 
 
   mettre tout les messages de validation en français
 ---------------------------------------------------------------
+
+bloquer le bouton envoyer si l'une des verification a échoué
+(dans la vue assignation edit)
+
+---------> fait
 
 ajouter au niveau du show de l'item ue une indication qui permet de montrer
 les statut dans les totaux
