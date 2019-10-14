@@ -11,6 +11,18 @@ class Ue extends Model
     protected $fillable =['libelle','filiere','ufr','niveau','nb_gr_cm','nb_gr_td','nb_gr_tp',
                         'heure_gr_cm','heure_gr_td','heure_gr_tp'] ;
 
+   const RULES = ['libelle' => 'required|max:170',
+                         'filiere' => 'required',
+                         'ufr' => 'required',
+                         'niveau' => 'required',
+                         'nb_gr_cm' => 'required|numeric',
+                         'nb_gr_td' => 'required|numeric',
+                         'nb_gr_tp' => 'required|numeric',
+                         'heure_gr_cm'  => 'required|numeric',
+                         'heure_gr_td'  => 'required|numeric',
+                         'heure_gr_tp'  => 'required|numeric',
+                  ] ;
+
    const MESSAGES = ['libelle.required' =>'le libellé est requis' ,
                      'libelle.max' => 'nombre maximal de caracter dépassé : 170',
                      'ufr.required' => 'le nom de l\'ufr est requis' ,

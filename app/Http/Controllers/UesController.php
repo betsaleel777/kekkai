@@ -21,16 +21,7 @@ class UesController extends Controller
 
     public function insert(Request $request)
     {
-        $this->validate($request, ['libelle' => 'required|max:170',
-                              'filiere' => 'required',
-                              'ufr' => 'required',
-                              'niveau' => 'required',
-                              'nb_gr_cm' => 'required|numeric',
-                              'nb_gr_td' => 'required|numeric',
-                              'nb_gr_tp' => 'required|numeric',
-                              'heure_gr_cm'  => 'required|numeric',
-                              'heure_gr_td'  => 'required|numeric',
-                              'heure_gr_tp'  => 'required|numeric', ],UE::MESSAGES);
+        $this->validate($request, UE::RULES,UE::MESSAGES);
         $ue = new Ue($request->all()) ;
         $ue->save() ;
         $message = 'l\'unité d\'enseignement <strong>'.$request->libelle.'</strong> a été enregistré avec succès !!' ;
@@ -46,16 +37,7 @@ class UesController extends Controller
     public function update(Request $request, int $id)
     {
         $ue = Ue::findOrFail($id) ;
-        $this->validate($request, ['libelle' => 'required|max:170',
-                              'filiere' => 'required',
-                              'ufr' => 'required',
-                              'niveau' => 'required',
-                              'nb_gr_cm' => 'required|numeric',
-                              'nb_gr_td' => 'required|numeric',
-                              'nb_gr_tp' => 'required|numeric',
-                              'heure_gr_cm'  => 'required|numeric',
-                              'heure_gr_td'  => 'required|numeric',
-                              'heure_gr_tp'  => 'required|numeric', ],UE::MESSAGES);
+        $this->validate($request, UE::RULES,UE::MESSAGES);
         $ue->update($request->all()) ;
         $message = 'l\'unité d\'enseignement <strong>'.$request->libelle.'</strong> a été modifié avec succès !!' ;
         return redirect()->route('ues_index')->with('success', $message) ;

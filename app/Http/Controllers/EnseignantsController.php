@@ -44,12 +44,7 @@ class EnseignantsController extends Controller
     public function update(Request $request, $id)
     {
         $enseignant = Enseignant::findOrFail($id) ;
-        $this->validate($request, ['nomination' => 'required|max:170',
-                              'statut' => 'required',
-                              'grade' => 'required',
-                              'email' => 'required|unique:enseignants,email,'.$enseignant->id,
-                              'phone' => 'required|numeric|unique:enseignants,phone,'.$enseignant->id
-                            ],Enseignant::MESSAGES) ;
+        $this->validate($request,Enseignant::regles($enseignant->id),Enseignant::MESSAGES) ;
 
         $enseignant->nomination = $request->nomination ;
         $enseignant->statut = $request->statut ;
@@ -58,7 +53,7 @@ class EnseignantsController extends Controller
         $enseignant->phone = $request->phone ;
         $enseignant->titre = $request->titre ;
         $enseignant->save() ;
-        $message = 'l\'enseignant <strong>'.$request->nomination.'</strong> a été modifié avec succès !!' ;
+        $message = 'l\'enseignant a été modifié avec succès !!' ;
         return redirect()->route('enseignant_index')->with('success', $message) ;
     }
 
@@ -128,5 +123,9 @@ class EnseignantsController extends Controller
          'total' => ['cm' => $cm, 'td' => $td, 'tp' => $tp]
         ]
       ) ;
+    }
+
+    public function generatePdf(){
+      
     }
 }

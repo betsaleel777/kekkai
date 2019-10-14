@@ -8,13 +8,13 @@ use Illuminate\Database\Eloquent\SoftDeletes ;
 class Enseignant extends Model
 {
     use SoftDeletes ;
+    protected $fillable = ['nomination','grade','statut','email','phone','titre'] ;
+
     const TITRES_ABREGE = ['Mr' => ['AUCUN'],
                            'Dr' => ['MA','MC','A'],
                            'Pr' => ['PT']
                           ] ;
     const TITRES = [ 'Mr' =>'SANS TITRE' ,'Pr' =>'PROFESSEUR','Dr' =>'DOCTEUR' ] ;
-
-    protected $fillable = ['nomination','grade','statut','email','phone','titre'] ;
 
     const MESSAGES = [ 'nomination.required' => 'le nom est requis' ,
                  'nomination.max' => 'nombre maximale de caractère dépassé:170' ,
@@ -41,5 +41,15 @@ class Enseignant extends Model
 
     public function ues(){
           return $this->belongsToMany('App\Ue', 'assignations', 'enseignant_id', 'ue_id')->withPivot('cm','td','tp')->withTimestamps();
+    }
+
+    public static function regles(int $id=null){
+      return ['nomination' => 'required|max:170',
+                            'statut' => 'required',
+                            'grade' => 'required',
+                            'email' => 'required|unique:enseignants,email,'.$id,
+                            'phone' => 'required|numeric|unique:enseignants,phone,'.$id
+                          ] ;
+
     }
 }
