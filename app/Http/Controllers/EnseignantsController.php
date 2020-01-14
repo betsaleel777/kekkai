@@ -60,9 +60,10 @@ class EnseignantsController extends Controller
     public function show($id)
     {
         $enseignant = Enseignant::findOrFail($id) ;
-        $ues_sans_repetition = (array)DB::select("SELECT sum(assignations.cm) as cm ,sum(assignations.td) as td,sum(assignations.tp)
-                                      as tp,ues.id,ues.libelle from assignations inner join ues on ues.id=assignations.ue_id
-                                      where assignations.enseignant_id=? group by ues.id",[$id]) ;
+        $ues_sans_repetition = (array)DB::select("SELECT sum(assignations.cm) as cm ,sum(assignations.td)
+                                as td,sum(assignations.tp) as tp,ues.id,ues.libelle from assignations
+                                inner join ues on ues.id=assignations.ue_id where assignations.enseignant_id=?
+                                group by ues.id",[$id]) ;
         $cm = 0 ;
         $td = 0 ;
         $tp = 0 ;
@@ -109,7 +110,7 @@ class EnseignantsController extends Controller
     {
         $enseignant = Enseignant::with('ues')->findOrFail($request->input('teacher')) ;
         $enseignant_sans_repetition = DB::select("SELECT sum(assignations.cm) as cm ,sum(assignations.td) as td,sum(assignations.tp) as tp,ues.id,ues.libelle from assignations
-              inner join ues on ues.id=assignations.ue_id where assignations.enseignant_id=? group by ues.id",[$request->input('teacher')]) ;
+                                      inner join ues on ues.id=assignations.ue_id where assignations.enseignant_id=? group by ues.id",[$request->input('teacher')]) ;
         $cm = 0 ;
         $td = 0 ;
         $tp = 0 ;
@@ -122,10 +123,29 @@ class EnseignantsController extends Controller
         ['enseignant' => $enseignant_sans_repetition,
          'total' => ['cm' => $cm, 'td' => $td, 'tp' => $tp]
         ]
-      ) ;
+        ) ;
     }
 
     public function generatePdf(){
-      
+        $enseignants = Enseignant::with('ues')->get() ;
+        $enseignants_sans_repetition = [] ;
+
+        foreach ($enseignants as $enseignant) {
+          $calebasse = DB::select("SELECT sum(assignations.cm) AS cm ,sum(assignations.td) AS td,sum(assignations.tp) AS tp,ues.id,ues.libelle FROM assignations
+                        INNER JOIN ues ON ues.id=assignations.ue_id WHERE assignations.enseignant_id=? GROUP BY ues.id",[$enseignant->id]) ;
+          $jarre = ['infos' => $enseignant ,'ues' => $calebasse] ;
+          array_push($enseignants_sans_repetition,$jarre) ;
+        }
+        /**nous pourrons améliorer ensuite la requette en effectuant une procedure stocké qui vas recevoir
+           comme parametre la liste des id des enseignant et qui retournera en une seule fois les ues
+           sans repetition dans un gros jeu de resultat
+        **/
+        $title = 'liste d\'assignation' ;
+        $data = [
+                  'enseignants_sans_repetition' => $enseignants_sans_repetition,
+                  'title' => $title
+                ];
+        // $pdf = PDF::loadView('enseignants.expdf', $data);
+        // return $pdf->download(time().'list.pdf');
     }
 }

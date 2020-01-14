@@ -28,6 +28,7 @@ Route::get('/home/enseignant/{id}/alter', 'EnseignantsController@edit')->name('e
 Route::post('/home/enseignant/{id}/update', 'EnseignantsController@update')->name('enseignant_update') ;
 Route::get('/home/enseignant/{id}/restore', 'EnseignantsController@restore')->name('enseignant_restore') ;
 Route::post('/home/enseignant/infos', 'EnseignantsController@infos')->name('enseignant_infos') ;
+Route::get('/home/generate/','EnseignantsController@generatePdf')->name('generate_pdf') ;
 
 Route::get('/home/ues/', 'UesController@index')->name('ues_index') ;
 Route::get('/home/ues/trashed', 'UesController@trashed')->name('ues_trashed') ;

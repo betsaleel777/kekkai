@@ -12,11 +12,16 @@
 
 <div class="ui container">
     <div class="ui grid container">
-        <div class="twelve wide column"></div>
-        <div class="two wide column"><a href="{{route('enseignant_add')}}" class="blue ui labeled icon button"><i
-                    class="plus icon"></i>Ajouter</a></div>
-        <div class="two wide column"><a href="{{route('enseignant_trashed')}}" class="yellow ui labeled icon button"><i
-                    class="archive icon"></i>Archives</a></div>
+        <div class="ten wide column"></div>
+        <div class="two wide column"><a href="{{route('generate_pdf')}}" class="orange ui labeled icon button">
+          <i class="icon file pdf outline"></i>export</a>
+        </div>
+        <div class="two wide column"><a href="{{route('enseignant_add')}}" class="blue ui labeled icon button">
+          <i class="plus icon"></i>Ajouter</a>
+        </div>
+        <div class="two wide column"><a href="{{route('enseignant_trashed')}}" class="yellow ui labeled icon button">
+          <i class="archive icon"></i>Archives</a>
+        </div>
     </div>
     <div class="ui divider"></div>
     @php
@@ -79,11 +84,11 @@
     $(document).ready(function() {
      const elt = document.getElementById('message') ;
      if(elt){
-         const message = elt.getElementsByTagName('span')[0].textContent 
+         const message = elt.getElementsByTagName('span')[0].textContent
          const type = elt.getElementsByTagName('em')[0].textContent
-       
+
          if(message){
-          
+
             new Noty({
             type: type,
             layout: 'topRight',
@@ -97,7 +102,7 @@
                 }
             }).show();
        }
-     } 
+     }
    }) ;
 </script>
 @endsection

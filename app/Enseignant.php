@@ -40,8 +40,17 @@ class Enseignant extends Model
     }
 
     public function ues(){
-          return $this->belongsToMany('App\Ue', 'assignations', 'enseignant_id', 'ue_id')->withPivot('cm','td','tp')->withTimestamps();
+          return $this->belongsToMany('App\Ue', 'assignations', 'enseignant_id', 'ue_id')
+                      ->withPivot('cm','td','tp')
+                      ->withTimestamps();
     }
+
+    // public function uesSansRepetition(){
+    //       return $this->belongsToMany('App\Ue', 'assignations', 'enseignant_id', 'ue_id')
+    //                   ->withPivot('cm','td','tp')
+    //                   ->withTimestamps()
+    //                   ->groupBy('ue_id') ;
+    // }
 
     public static function regles(int $id=null){
       return ['nomination' => 'required|max:170',
