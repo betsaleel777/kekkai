@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB ;
 use App\Enseignant ;
+use PDF ;
 
 class EnseignantsController extends Controller
 {
@@ -145,7 +146,8 @@ class EnseignantsController extends Controller
                   'enseignants_sans_repetition' => $enseignants_sans_repetition,
                   'title' => $title
                 ];
-        // $pdf = PDF::loadView('enseignants.expdf', $data);
+        $pdf = PDF::loadView('enseignants.expdf', $data);
         // return $pdf->download(time().'list.pdf');
+        return  $pdf->stream(time().'list.pdf',["Attachment" => false]) ;
     }
 }
