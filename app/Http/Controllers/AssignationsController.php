@@ -28,6 +28,13 @@ class AssignationsController extends Controller
         return view('assignations.add', compact('enseignants', 'ues'));
     }
 
+    public function addSimple()
+    {
+        $enseignants = Enseignant::get();
+        $ues = Ue::get();
+        return view('assignations.simple', compact('enseignants', 'ues'));
+    }
+
     public function insert(Request $request)
     {
         $errors = [] ;
@@ -56,6 +63,10 @@ class AssignationsController extends Controller
 
             return Response::json(['success' => ["cm" => $cm, "td" => $td, "tp" => $tp] ], 200);
         }
+    }
+
+    public function simpleInsert(Request $request){
+      
     }
 
     public function edit($id, $ue)

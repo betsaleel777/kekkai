@@ -1,6 +1,13 @@
 @extends('layout')
 @section('content')
 <h2 class="ui dividing header">AJOUTER UN ENSEIGNANT</h2>
+<center>
+    <div class="ui buttons">
+        <button class="ui button">multiple</button>
+        <div class="or"></div>
+        <button class="ui positive button">Simple</button>
+    </div>
+</center><br>
 <form id="assignForm" class="ui form" action="{{route('assignations_insert')}}" method="post">
     @csrf
     <div class="field">
@@ -47,7 +54,7 @@
             </div>
         </div>
         <div class="ui vertical divider">
-             ET
+            ET
         </div>
     </div>
     <center>
@@ -62,7 +69,6 @@
 <script type="text/javascript">
     $(document).ready(function() {
         $('.search.selection.dropdown').dropdown({
-            maxSelections: '3',
             clearable: true,
         });
     });
@@ -82,19 +88,18 @@
 <script src="{{asset('semantic-theme/js/ajax/assigner.js')}}"></script>
 <script type="text/javascript">
     $(document).ready(function() {
-        $(".multiple.search.selection.dropdown")
-            .dropdown("setting", "onLabelRemove", (value, text) => {
-                erase(value);
-            });
+        $(".multiple.search.selection.dropdown").dropdown('setting', 'onLabelRemove', (value, text) => {
+            erase(value);
+        });
     });
 </script>
 <script type="text/javascript">
     $(document).ready(function() {
-        $(".multiple.search.selection.dropdown")
-            .dropdown("setting", "onAdd", () => {
-                assign();
+        $(".multiple.search.selection.dropdown").dropdown('setting', 'onAdd', () => {
+            assign();
         });
     });
 </script>
 <script src="{{asset('semantic-theme/js/notify.js')}}"></script>
+{{-- <script type="text/javascript" src="{{asset('js/app.js')}}"></script> --}}
 @endsection

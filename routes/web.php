@@ -47,6 +47,8 @@ Route::get('/home/assignations/trashed', 'AssignationsController@trashed')->name
 Route::post('/home/assignations/new', 'AssignationsController@insert')->name('assignations_insert') ;
 Route::get('/home/assignations/{enseignant}/{ue}/delete', 'AssignationsController@delete')->name('assignations_delete') ;
 Route::get('/home/assignations/add', 'AssignationsController@add')->name('assignations_add') ;
+Route::get('/home/assignations/simple/add', 'AssignationsController@addSimple')->name('assignations_simple_add') ;
+Route::post('/home/assignations/simple/insert', 'AssignationsController@simpleInsert')->name('assignations_simple_insert') ;
 Route::get('/home/assignations/{enseignant}/{ue}/alter', 'AssignationsController@edit')->name('assignations_alter') ;
 Route::post('/home/assignations/{enseignant}/{ue}/update', 'AssignationsController@update')->name('assignations_update') ;
 Route::get('/home/assignations/{enseignant}/{ue}/restore', 'AssignationsController@restore')->name('assignations_restore') ;

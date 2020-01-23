@@ -150,4 +150,9 @@ class EnseignantsController extends Controller
         // return $pdf->download(time().'list.pdf');
         return  $pdf->stream(time().'list.pdf',["Attachment" => false]) ;
     }
+
+    public function getList(){
+      $enseignants = Enseignant::get() ;
+      return response()->json(['enseignants' => $enseignants]) ;
+    }
 }

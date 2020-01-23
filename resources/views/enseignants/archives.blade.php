@@ -11,10 +11,13 @@
 <h2 class="ui dividing header">ENSEIGNANTS ARCHIVES</h2>
 
 <div class="ui container">
-    <div class="ui grid container">
-        <div class="fourteen wide column"></div>
-        <div class="two wide column"><a href="{{route('enseignant_index')}}" class="blue ui labeled icon button"><i class="arrow circle left icon"></i>retour</a></div>
-    </div>
+  <div class="ui grid container">
+   <div class="twelve wide column">
+   </div>
+   <div class="four wide column">
+     {{Breadcrumbs::render('enseignant_trashed')}}
+   </div>
+  </div>
     <div class="ui divider"></div>
     <table id="tableau" class="ui celled selectable right aligned table">
         <thead>

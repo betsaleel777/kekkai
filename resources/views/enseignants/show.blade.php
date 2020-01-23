@@ -17,6 +17,13 @@ $grades = ['AUCUN' => 'SANS GRADE' ,
 ] ;
 @endphp
 <div class="ui container grid">
+    <div class="ui grid container">
+        <div class="twelve wide column">
+        </div>
+        <div class="four wide column">
+            {{Breadcrumbs::render('enseignant_show',$enseignant)}}
+        </div>
+    </div>
     <div class="seven wide column">
         <div class="ui card">
             <div class="content">
@@ -76,12 +83,12 @@ $grades = ['AUCUN' => 'SANS GRADE' ,
                     @endforeach
                 </tbody>
                 <tfoot>
-                  <tr class="positive">
-                    <td>TOTAL</td>
-                    <td>{{$total['cm']}}</td>
-                    <td>{{$total['td']}}</td>
-                    <td>{{$total['tp']}}</td>
-                  </tr>
+                    <tr class="positive">
+                        <td>TOTAL</td>
+                        <td>{{$total['cm']}}</td>
+                        <td>{{$total['td']}}</td>
+                        <td>{{$total['tp']}}</td>
+                    </tr>
                 </tfoot>
             </table>
         </div>

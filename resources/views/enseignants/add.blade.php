@@ -1,6 +1,13 @@
 @extends('layout')
 @section('content')
 <h2 class="ui dividing header">AJOUTER UN ENSEIGNANT</h2>
+<div class="ui grid container">
+ <div class="fourteen wide column">
+ </div>
+ <div class="two wide column">
+   {{Breadcrumbs::render('enseignant_add')}}
+ </div>
+</div>
 <form class="ui form" action="{{route('enseignant_insert')}}" method="post">
     @csrf
     <div class="field">
@@ -98,11 +105,11 @@
         $(document).ready(function() {
          const elt = document.getElementById('message') ;
          if(elt){
-             const message = elt.getElementsByTagName('span')[0].textContent 
+             const message = elt.getElementsByTagName('span')[0].textContent
              const type = elt.getElementsByTagName('em')[0].textContent
-           
+
              if(message){
-              
+
                 new Noty({
                 type: type,
                 layout: 'topRight',
@@ -116,7 +123,7 @@
                     }
                 }).show();
            }
-         } 
+         }
        }) ;
     </script>
 @endsection

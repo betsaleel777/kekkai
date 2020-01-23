@@ -34,11 +34,11 @@
             </div> --}}
         </div>
         <!-- menu end  -->
-
-        <!-- content start  -->
-        @yield('content')
-        <!-- content end  -->
-
+        <div id="app">
+          <!-- content start  -->
+          @yield('content')
+          <!-- content end  -->
+        </div>
         <!--footer start  -->
         <footer>
             <div class="ui inverted segment container">

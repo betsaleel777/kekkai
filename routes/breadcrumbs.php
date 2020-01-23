@@ -22,10 +22,10 @@ Breadcrumbs::for('enseignant_add', function ($trail) {
     $trail->push('Ajouter', route('enseignant_add')) ;
 });
 
-// Acceuil > enseignants_alter
-Breadcrumbs::for('enseignant_alter', function ($trail, $enseignant) {
+// Acceuil > enseignant_show
+Breadcrumbs::for('enseignant_show', function ($trail, $enseignant) {
     $trail->parent('enseignants') ;
-    $trail->push($enseignant->nomination, route('enseignant_alter',$enseignant)) ;
+    $trail->push($enseignant->nomination, route('enseignant_show',$enseignant)) ;
 });
 
 
