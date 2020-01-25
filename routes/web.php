@@ -11,9 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    return view('started');
-})->name('start');
+Route::get('/','HomeController@welcome')->name('start');
 
 Route::get('/home', 'HomeController@open')->name('open') ;
 

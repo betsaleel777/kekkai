@@ -19,6 +19,7 @@
     <link rel="stylesheet" type="text/css" href="{{asset('semantic-theme/assets/semantic/components/transition.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('semantic-theme/assets/semantic/components/popup.css')}}">
     <link rel="stylesheet" href="{{asset('css/noty.min.css')}}">
+    <portal-target name="semantic-ui-vue">
     @yield('link')
 
     <script src="{{asset('semantic-theme/assets/library/jquery.min.js')}}"></script>

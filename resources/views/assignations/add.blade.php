@@ -3,9 +3,9 @@
 <h2 class="ui dividing header">AJOUTER UN ENSEIGNANT</h2>
 <center>
     <div class="ui buttons">
-        <button class="ui button">multiple</button>
+        <a  href="{{route('assignations_add')}}" id="multiple" class="ui button">multiple</a>
         <div class="or"></div>
-        <button class="ui positive button">Simple</button>
+        <a href="{{route('assignations_simple_add')}}" id="simple" class="ui button">Simple</a>
     </div>
 </center><br>
 <form id="assignForm" class="ui form" action="{{route('assignations_insert')}}" method="post">
@@ -101,5 +101,16 @@
     });
 </script>
 <script src="{{asset('semantic-theme/js/notify.js')}}"></script>
-{{-- <script type="text/javascript" src="{{asset('js/app.js')}}"></script> --}}
+<script type="text/javascript">
+   $(document).ready(function(){
+      let multiple = document.getElementById('multiple')
+      let simple = document.getElementById('simple')
+      const url = location.pathname
+      if(url === '/home/assignations/add' ){
+        multiple.className = 'ui positive button'
+      }else if (url === '/home/assignations/simple/add') {
+        simple.className = 'ui positive button'
+      }
+   })
+</script>
 @endsection

@@ -155,4 +155,9 @@ class EnseignantsController extends Controller
       $enseignants = Enseignant::get() ;
       return response()->json(['enseignants' => $enseignants]) ;
     }
+
+    public function getInfos(int $id){
+      $enseignant = Enseignant::findOrfail($id) ;
+      return response()->json(['enseignant' => $enseignant]) ;
+    }
 }

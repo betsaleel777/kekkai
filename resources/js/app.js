@@ -4,6 +4,8 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 import Vue from 'vue'
+import VueNoty from 'vuejs-noty'
+import SuiVue from 'semantic-ui-vue'
 require('./bootstrap')
 window.Vue = require('vue')
 /**
@@ -19,13 +21,23 @@ window.Vue = require('vue')
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default)
 Vue.component('mode-choice-component', require('./components/ModeChoice.vue').default)
-Vue.component('assign-dropdown', require('./components/AssignDropdowns.vue').default)
+Vue.component('assign-dropdowns', require('./components/DropdownsAssign.vue').default)
+Vue.component('attribution-hours', require('./components/HoursAttribution.vue').default)
+Vue.component('ues-infos-table', require('./components/UesInfosTable.vue').default)
+Vue.component('send-button', require('./components/SendButton.vue').default)
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
+Vue.use(VueNoty, {
+  timeout: 6000,
+  progressBar: true,
+  layout: 'topRight',
+  theme: 'semanticui'
+})
 
+Vue.use(SuiVue)
 const app = new Vue({
   el: '#app'
 })

@@ -7,6 +7,10 @@ use App\Enseignant ;
 
 class HomeController extends Controller
 {
+   public function welcome(){
+     return view('started');
+   }
+
     public function open()
     {
         $enseignants = Enseignant::get() ;

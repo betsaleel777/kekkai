@@ -17,5 +17,7 @@ use Illuminate\Http\Request;
 //     return $request->user();
 // });
 
-Route::get('/enseignants/list','EnseignantsController@getList')->name('enseignant_list') ;
-Route::get('/ues/list','UesController@getList')->name('ue_list') ;
+Route::get('/enseignants/list', 'EnseignantsController@getList')->name('enseignant_list') ;
+Route::get('/ues/list', 'UesController@getList')->name('ue_list') ;
+Route::get('/ues/teachers/{id}', 'UesController@getTeacherOf')->name('ue_teachers') ;
+Route::get('/enseignants/infos/{id}', 'EnseignantsController@getInfos')->name('enseignant_infos') ;

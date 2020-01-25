@@ -94,4 +94,30 @@ class UesController extends Controller
         $message = 'l\'unité d\'enseignement <strong>'.$ue->libelle.'</strong> vient définitivement supprimée des archives' ;
         return redirect()->route('ues_trashed')->with('success',$message) ;
     }
+
+    public function getList(){
+      $ues = Ue::get() ;
+      return response()->json(['ues' => $ues]) ;
+    }
+
+    public function getTeacherOf(int $id){
+      $ue = Ue::findOrFail($id) ;
+      $enseignants = DB::select("SELECT sum(assignations.cm) as cm ,sum(assignations.td) as td,sum(assignations.tp) as tp,enseignants.id,
+                                    enseignants.nomination from assignations inner join enseignants on enseignants.id=assignations.enseignant_id
+                                    where assignations.ue_id=? group by enseignants.id",[$id]) ;
+      $cm = 0 ;
+      $td = 0 ;
+      $tp = 0 ;
+      foreach ($enseignants as $enseignant){
+          $cm += $enseignant->cm ;
+          $td += $enseignant->td ;
+          $tp += $enseignant->tp ;
+      }
+      $rest = ['cm' => $ue->heure_gr_cm-$cm ,
+               'td' => $ue->heure_gr_td-$td ,
+               'tp' => $ue->heure_gr_tp-$tp
+              ] ;
+      $total = [ 'cm' => $cm, 'td' => $td, 'tp' => $tp] ;
+      return response()->json(['ue' => $ue,'total' => $total, 'enseignants'=>$enseignants, 'rest'=> $rest]) ;
+    }
 }
