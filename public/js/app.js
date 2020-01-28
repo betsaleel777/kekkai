@@ -1767,13 +1767,24 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+Vue.component('attribution-hours', __webpack_require__(/*! ../components/HoursAttribution.vue */ "./resources/js/components/HoursAttribution.vue")["default"]);
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
+    var _this = this;
+
     this.getUes();
     this.getEnseigants();
+    this.$root.$on('send_disable', function () {
+      _this.hoursDisplay = false;
+    });
+    this.$root.$on('send_enable', function () {
+      _this.hoursDisplay = true;
+    });
   },
   data: function data() {
     return {
+      hoursDisplay: true,
       ues: [],
       ue: null,
       enseignants: [],
@@ -1783,22 +1794,24 @@ __webpack_require__.r(__webpack_exports__);
   },
   watch: {
     ue: function ue() {
-      this.$root.$emit('ues_choosen', this.ue);
+      this.$root.$emit('ues_choosen', this.ue); // to {uesInfosTable}
+
       this.exist = true;
     },
     enseignant: function enseignant() {
-      this.$root.$emit('teacher_choosen', this.enseignant);
+      this.$root.$emit('teacher_choosen', this.enseignant); //to {uesInfosTable}
+
+      this.$root.$emit('take_ens', this.enseignant);
       this.exist = false;
-      this.enseignant = null;
     }
   },
   methods: {
     getUes: function getUes() {
-      var _this = this;
+      var _this2 = this;
 
       axios.get('/api/ues/list').then(function (response) {
         var ues = response.data.ues;
-        _this.ues = ues.map(function (ue) {
+        _this2.ues = ues.map(function (ue) {
           return {
             text: ue.libelle,
             value: ue.id
@@ -1809,11 +1822,11 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     getEnseigants: function getEnseigants() {
-      var _this2 = this;
+      var _this3 = this;
 
       axios.get('/api/enseignants/list').then(function (response) {
         var enseignants = response.data.enseignants;
-        _this2.enseignants = enseignants.map(function (enseignant) {
+        _this3.enseignants = enseignants.map(function (enseignant) {
           return {
             text: enseignant.nomination,
             value: enseignant.id
@@ -1822,9 +1835,6 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (err) {
         console.log(err);
       });
-    },
-    tableCall: function tableCall() {
-      this.$root.$emit('ues_choosen', this.ue);
     }
   }
 });
@@ -1905,42 +1915,136 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
+  mounted: function mounted() {
+    var _this = this;
+
+    this.$root.$on('ues_choosen', function (ue) {
+      _this.ue = ue;
+    });
+  },
   data: function data() {
     return {
       cm: null,
       td: null,
-      tp: null
+      tp: null,
+      ue: null,
+      goodCm: true,
+      goodTp: true,
+      goodTd: true,
+      messages: {
+        cm: {
+          activate: false,
+          content: null
+        },
+        td: {
+          activate: false,
+          content: null
+        },
+        tp: {
+          activate: false,
+          content: null
+        }
+      }
     };
   },
   watch: {
     cm: function cm() {
-      if (this.cmCorrect()) {
-        console.log('passe dans cm watcher');
-        this.$root.$emit('cm_update', this.cm);
-      } else {//do something else
+      this.clearAllMessages();
+      this.cmCorrect();
+
+      if (this.goodCm) {
+        this.$root.$emit('cm_update', this.cm); //uesInfosTable listen
+
+        this.$root.$emit('take_cm', this.cm); //sendButon listen
       }
     },
     td: function td() {
-      if (this.tdCorrect()) {
-        this.$root.$emit('td_update', this.td);
-      } else {}
+      this.clearAllMessages();
+      this.tdCorrect();
+
+      if (this.goodTd) {
+        this.$root.$emit('td_update', this.td); //uesInfosTable listen
+
+        this.$root.$emit('take_td', this.td); //sendButon listen
+      }
     },
     tp: function tp() {
-      if (this.tpCorrect()) {
-        this.$root.$emit('tp_update', this.tp);
+      this.clearAllMessages();
+      this.tpCorrect();
+
+      if (this.goodTp) {
+        this.$root.$emit('tp_update', this.tp); //uesInfosTable listen
+
+        this.$root.$emit('take_tp', this.tp); //sendButon listen
       }
     }
   },
   methods: {
     cmCorrect: function cmCorrect() {
-      return true;
+      var _this2 = this;
+
+      if (this.cm && !isNaN(this.cm)) {
+        axios.post('/api/check/cm/' + this.cm + '/' + this.ue).then(function (response) {
+          var error = response.data.error;
+
+          if (error != null) {
+            _this2.messages.cm.content = 'Valeure incorrecte d\'heures CM détectée.';
+            _this2.messages.cm.activate = true;
+
+            _this2.$root.$emit('button_block');
+          }
+        })["catch"](function (err) {
+          console.log(err);
+        });
+      }
     },
     tdCorrect: function tdCorrect() {
-      return true;
+      var _this3 = this;
+
+      if (this.td && !isNaN(this.td)) {
+        axios.post('/api/check/td/' + this.td + '/' + this.ue).then(function (response) {
+          var error = response.data.error;
+
+          if (error != null) {
+            _this3.messages.td.content = 'Valeure incorrecte d\'heures TD détectée.';
+            _this3.messages.td.activate = true;
+
+            _this3.$root.$emit('button_block');
+          }
+        })["catch"](function (err) {
+          console.log(err);
+        });
+      }
     },
     tpCorrect: function tpCorrect() {
-      return true;
+      var _this4 = this;
+
+      if (this.tp && !isNaN(this.tp)) {
+        axios.post('/api/check/tp/' + this.tp + '/' + this.ue).then(function (response) {
+          var error = response.data.error;
+
+          if (error != null) {
+            _this4.messages.tp.content = 'Valeure incorrecte d\'heures TP détectée.';
+            _this4.messages.tp.activate = true;
+
+            _this4.$root.$emit('button_block');
+          }
+        })["catch"](function (err) {
+          console.log(err);
+        });
+      }
+    },
+    clearAllMessages: function clearAllMessages() {
+      this.messages.cm.content = null;
+      this.messages.td.content = null;
+      this.messages.tp.content = null;
+      this.messages.cm.activate = false;
+      this.messages.td.activate = false;
+      this.messages.tp.activate = false;
     }
   }
 });
@@ -1997,20 +2101,44 @@ __webpack_require__.r(__webpack_exports__);
     var _this = this;
 
     this.$root.$on('send_disable', function () {
-      _this.etat = true; //reactiver le bouton dans le cas contraire
+      _this.etat = true;
     });
-    this.$root.$on('send_enable', function () {
+    this.$root.$on('send_enable', function (ue) {
       _this.etat = false;
+      _this.ue = ue;
+    });
+    this.$root.$on('take_cm', function (cm) {
+      _this.cm = cm;
+    });
+    this.$root.$on('take_td', function (td) {
+      _this.td = td;
+    });
+    this.$root.$on('take_tp', function (tp) {
+      _this.tp = tp;
+    });
+    this.$root.$on('take_ens', function (ens) {
+      _this.enseignant = ens;
+    });
+    this.$root.$on('button_block', function () {
+      _this.etat = true;
     });
   },
   data: function data() {
     return {
-      etat: false
+      etat: false,
+      ue: null,
+      enseignant: null,
+      cm: null,
+      td: null,
+      tp: null
     };
   },
   methods: {
     assign: function assign() {
-      axios.post('', {}).then(function (response) {})["catch"](function (err) {
+      console.log(this.cm, this.td, this.tp, this.ue, this.enseignant);
+      axios.get('/api/assign/' + this.ue + '/' + this.enseignant + '/' + this.cm + '/' + this.td + '/' + this.tp).then(function (response) {
+        console.log(response.data);
+      })["catch"](function (err) {
         console.log(err);
       });
     }
@@ -2069,33 +2197,90 @@ __webpack_require__.r(__webpack_exports__);
 
     this.$root.$on('ues_choosen', function (id) {
       _this.getTeacherOf(id);
+
+      _this.id = id;
     });
     this.$root.$on('teacher_choosen', function (id) {
       _this.getOnlyOneInfosTeacher(id);
     });
     this.$root.$on('cm_update', function (cm) {
-      //faire un objet globale afin que les composant ait un accès centralisé
-      //cet objet sera définit par ue,enseignant,cm,td,tp
-      if (Number(cm) === 0 || isNaN(Number(cm))) {
-        _this.$noty.warning('Veuillez renseignez une valeure Numérique des heures de CM');
+      if (isNaN(cm)) {
+        _this.$noty.warning('Veuillez renseigner une valeure numérique du CM');
       } else {
-        _this.enseignants = _this.enseignants.map(function (enseignant) {
-          if (enseignant.cm === 0 && enseignant.td === 0 && enseignant.tp === 0) {
-            enseignant.cm = cm;
-            _this.total.cm = Number(_this.total.cm) + Number(cm);
-            _this.rest.cm -= cm;
-          }
+        if (_this.enseignants.length > 0) {
+          _this.enseignants = _this.enseignants.map(function (enseignant) {
+            if (enseignant.status) {
+              enseignant.cm = Number(cm);
 
-          return enseignant;
-        });
+              if (Number(cm) == 0) {
+                _this["default"]('cm');
+              } else {
+                console.log('passe aussi');
+                _this.total.cm = Number(_this.total.cm) + Number(cm);
+                _this.rest.cm = Number(_this.rest.cm) - Number(cm);
+              }
+            }
+
+            return enseignant;
+          });
+        }
+      }
+    });
+    this.$root.$on('td_update', function (td) {
+      if (isNaN(td)) {
+        _this.$noty.warning('Veuillez renseigner une valeure numérique du TD');
+      } else {
+        if (_this.enseignants.length > 0) {
+          _this.enseignants = _this.enseignants.map(function (enseignant) {
+            if (enseignant.status) {
+              enseignant.td = Number(td);
+
+              if (Number(td) == 0) {
+                _this["default"]('td');
+              } else {
+                console.log('passe aussi');
+                _this.total.td = Number(_this.total.td) + Number(td);
+                _this.rest.td = Number(_this.rest.td) - Number(td);
+              }
+            }
+
+            return enseignant;
+          });
+        }
+      }
+    });
+    this.$root.$on('tp_update', function (tp) {
+      if (isNaN(tp)) {
+        _this.$noty.warning('Veuillez renseigner une valeure numérique du TP');
+      } else {
+        if (_this.enseignants.length > 0) {
+          _this.enseignants = _this.enseignants.map(function (enseignant) {
+            if (enseignant.status) {
+              enseignant.tp = Number(tp);
+
+              if (Number(tp) == 0) {
+                _this["default"]('tp');
+              } else {
+                console.log('passe aussi');
+                _this.total.tp = Number(_this.total.tp) + Number(tp);
+                _this.rest.tp = Number(_this.rest.tp) - Number(tp);
+              }
+            }
+
+            return enseignant;
+          });
+        }
       }
     });
   },
   data: function data() {
     return {
-      enseignants: null,
+      enseignants: [],
       total: {},
-      rest: {}
+      rest: {},
+      ue: {},
+      id: null,
+      currentEnseignant: null
     };
   },
   methods: {
@@ -2103,34 +2288,56 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       axios.get('/api/ues/teachers/' + id).then(function (response) {
-        _this2.enseignants = response.data.enseignants;
-        _this2.total = response.data.total;
-        _this2.rest = response.data.rest;
-        _this2.ue = response.data.ue;
+        var enseignants = response.data.enseignants;
+        var total = response.data.total;
+        var rest = response.data.rest;
+        var ue = response.data.ue;
+        _this2.enseignants = enseignants;
+        _this2.total = total;
+        _this2.rest = rest;
+        _this2.ue = ue;
       })["catch"](function (err) {
         console.log(err);
       });
     },
-    inserer: function inserer(enseignant) {
-      if (!this.enseignants.includes(enseignant.id)) {
-        this.enseignants.push(enseignant);
-      }
+    "default": function _default(type) {
+      var _this3 = this;
+
+      axios.get('/api/ues/teachers/' + this.id).then(function (response) {
+        var total = response.data.total;
+        var rest = response.data.rest;
+
+        if (type === 'cm') {
+          _this3.total.cm = total.cm;
+          _this3.rest.cm = rest.cm;
+        } else if (type === 'td') {
+          _this3.total.td = total.td;
+          _this3.rest.td = rest.td;
+        } else if (type === 'tp') {
+          _this3.total.tp = total.tp;
+          _this3.rest.tp = rest.tp;
+        }
+      })["catch"](function (err) {
+        console.log(err);
+      });
     },
     getOnlyOneInfosTeacher: function getOnlyOneInfosTeacher(id) {
-      var _this3 = this;
+      var _this4 = this;
 
       if (id) {
         axios.get('/api/enseignants/infos/' + id).then(function (response) {
           var enseignant = response.data.enseignant;
           var object = {
-            id: enseignant.id,
+            id: enseignant.id + 1000,
             nomination: enseignant.nomination,
             cm: 0,
             td: 0,
-            tp: 0
+            tp: 0,
+            status: 'new'
           };
+          _this4.currentEnseignant = enseignant.id;
 
-          _this3.inserer(object);
+          _this4.enseignants.push(object);
         })["catch"](function (err) {
           console.log(err);
         });
@@ -2138,13 +2345,13 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   beforeUpdate: function beforeUpdate() {
-    if (this.rest.cm <= this.total.cm && this.rest.td <= this.total.td && this.rest.tp <= this.total.tp) {
-      this.$noty.warning('l\'unité d\'enseignement ' + this.ue.libelle + ' a atteint la limite d\'heures à attribuer');
-      this.$root.$emit('send_disable');
+    if (this.rest.cm === 0 && this.rest.td === 0 && this.rest.tp === 0) {
+      this.$noty.warning('l\'unité d\'enseignement ' + this.ue.libelle + ' a atteint ses limites');
+      this.$root.$emit('send_disable'); //to {sendButon,dropdownsAssign}
     }
 
-    if (this.rest.cm > this.total.cm || this.rest.td > this.total.td || this.rest.tp > this.total.tp) {
-      this.$root.$emit('send_enable');
+    if (this.rest.cm > 0 || this.rest.td > 0 || this.rest.tp > 0) {
+      this.$root.$emit('send_enable', this.ue.id, this.currentEnseignant); //to {sendButon,dropdownsAssign}
     }
   }
 });
@@ -59047,7 +59254,18 @@ var render = function() {
         }
       }),
       _vm._v(" "),
-      _c("br")
+      _c("br"),
+      _vm._v(" "),
+      _c("attribution-hours", {
+        directives: [
+          {
+            name: "show",
+            rawName: "v-show",
+            value: _vm.hoursDisplay,
+            expression: "hoursDisplay"
+          }
+        ]
+      })
     ],
     1
   )
@@ -59148,7 +59366,13 @@ var render = function() {
         }),
         _vm._v(" "),
         _vm._m(0)
-      ])
+      ]),
+      _vm._v(" "),
+      _vm.messages.cm.activate
+        ? _c("div", { staticClass: "ui red tiny message" }, [
+            _vm._v(_vm._s(_vm.messages.cm.content))
+          ])
+        : _vm._e()
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "field" }, [
@@ -59177,7 +59401,13 @@ var render = function() {
         }),
         _vm._v(" "),
         _vm._m(1)
-      ])
+      ]),
+      _vm._v(" "),
+      _vm.messages.td.activate
+        ? _c("div", { staticClass: "ui red tiny message" }, [
+            _vm._v(_vm._s(_vm.messages.td.content))
+          ])
+        : _vm._e()
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "field" }, [
@@ -59206,7 +59436,13 @@ var render = function() {
         }),
         _vm._v(" "),
         _vm._m(2)
-      ])
+      ]),
+      _vm._v(" "),
+      _vm.messages.tp.activate
+        ? _c("div", { staticClass: "ui red tiny message" }, [
+            _vm._v(_vm._s(_vm.messages.tp.content))
+          ])
+        : _vm._e()
     ])
   ])
 }
@@ -59301,7 +59537,7 @@ var render = function() {
       "button",
       {
         staticClass: "ui labeled submit icon button",
-        attrs: { disabled: _vm.etat, id: "button", type: "submit" },
+        attrs: { disabled: _vm.etat, type: "button", id: "button" },
         on: { click: _vm.assign }
       },
       [_c("i", { staticClass: "icon send" }), _vm._v("envoyer")]
@@ -59387,8 +59623,8 @@ var render = function() {
                 "sui-table-cell",
                 {
                   attrs: {
-                    positive: _vm.rest.cm > _vm.total.cm,
-                    negative: _vm.rest.cm < _vm.total.cm
+                    positive: _vm.rest.cm > 0,
+                    negative: _vm.rest.cm <= 0
                   }
                 },
                 [_vm._v(_vm._s(_vm.total.cm))]
@@ -59398,8 +59634,8 @@ var render = function() {
                 "sui-table-cell",
                 {
                   attrs: {
-                    positive: _vm.rest.cm > _vm.total.cm,
-                    negative: _vm.rest.cm < _vm.total.cm
+                    positive: _vm.rest.td > 0,
+                    negative: _vm.rest.td <= 0
                   }
                 },
                 [_vm._v(_vm._s(_vm.total.td))]
@@ -59409,8 +59645,8 @@ var render = function() {
                 "sui-table-cell",
                 {
                   attrs: {
-                    positive: _vm.rest.cm > _vm.total.cm,
-                    negative: _vm.rest.cm < _vm.total.cm
+                    positive: _vm.rest.tp > 0,
+                    negative: _vm.rest.tp <= 0
                   }
                 },
                 [_vm._v(_vm._s(_vm.total.tp))]
@@ -71661,7 +71897,6 @@ window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('example-component', __webpack_require__(/*! ./components/ExampleComponent.vue */ "./resources/js/components/ExampleComponent.vue")["default"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('mode-choice-component', __webpack_require__(/*! ./components/ModeChoice.vue */ "./resources/js/components/ModeChoice.vue")["default"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('assign-dropdowns', __webpack_require__(/*! ./components/DropdownsAssign.vue */ "./resources/js/components/DropdownsAssign.vue")["default"]);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('attribution-hours', __webpack_require__(/*! ./components/HoursAttribution.vue */ "./resources/js/components/HoursAttribution.vue")["default"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('ues-infos-table', __webpack_require__(/*! ./components/UesInfosTable.vue */ "./resources/js/components/UesInfosTable.vue")["default"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('send-button', __webpack_require__(/*! ./components/SendButton.vue */ "./resources/js/components/SendButton.vue")["default"]);
 /**

@@ -8,6 +8,7 @@
                 <i class="asterisk icon"></i>
             </div>
         </div>
+        <div v-if="messages.cm.activate" class="ui red tiny message">{{messages.cm.content}}</div>
     </div>
     <div class="field">
         <label>Heures TD attribuées:</label>
@@ -17,6 +18,7 @@
                 <i class="asterisk icon"></i>
             </div>
         </div>
+        <div v-if="messages.td.activate" class="ui red tiny message">{{messages.td.content}}</div>
     </div>
     <div class="field">
         <label>Heures TP attribuées:</label>
@@ -26,50 +28,119 @@
                 <i class="asterisk icon"></i>
             </div>
         </div>
+        <div v-if="messages.tp.activate" class="ui red tiny message">{{messages.tp.content}}</div>
     </div>
 </div>
 </template>
 
 <script>
 export default {
+    mounted(){
+      this.$root.$on('ues_choosen',(ue) =>{
+        this.ue = ue
+      })
+    },
     data() {
         return {
             cm: null,
             td: null,
-            tp: null
+            tp: null,
+            ue:null,
+            goodCm:true,
+            goodTp:true,
+            goodTd:true,
+            messages: {
+                cm: {
+                    activate: false,
+                    content: null
+                },
+                td: {
+                    activate: false,
+                    content: null
+                },
+                tp: {
+                    activate: false,
+                    content: null
+                }
+            }
         }
     },
     watch: {
         cm: function() {
-            if (this.cmCorrect()) {
-                console.log('passe dans cm watcher');
-                this.$root.$emit('cm_update', this.cm)
-            } else {
-                //do something else
+            this.clearAllMessages()
+            this.cmCorrect()
+            if (this.goodCm) {
+                this.$root.$emit('cm_update', this.cm) //uesInfosTable listen
+                this.$root.$emit('take_cm', this.cm) //sendButon listen
             }
         },
         td: function() {
-            if (this.tdCorrect()) {
-                this.$root.$emit('td_update', this.td)
-            } else {
-
+            this.clearAllMessages()
+            this.tdCorrect()
+            if (this.goodTd) {
+                this.$root.$emit('td_update', this.td) //uesInfosTable listen
+                this.$root.$emit('take_td', this.td)  //sendButon listen
             }
         },
         tp: function() {
-            if (this.tpCorrect()) {
-                this.$root.$emit('tp_update', this.tp)
+            this.clearAllMessages()
+            this.tpCorrect()
+            if (this.goodTp) {
+                this.$root.$emit('tp_update', this.tp) //uesInfosTable listen
+                this.$root.$emit('take_tp', this.tp) //sendButon listen
             }
         }
     },
     methods: {
         cmCorrect() {
-            return true
+            if(this.cm && !isNaN(this.cm)){
+              axios.post('/api/check/cm/'+this.cm+'/'+this.ue).then((response) => {
+                   const {error} = response.data
+                   if(error != null){
+                     this.messages.cm.content = 'Valeure incorrecte d\'heures CM détectée.'
+                     this.messages.cm.activate = true
+                     this.$root.$emit('button_block')
+                   }
+              }).catch((err) => {
+                  console.log(err)
+              })
+            }
         },
         tdCorrect() {
-            return true
+           if(this.td && !isNaN(this.td)){
+             axios.post('/api/check/td/'+this.td+'/'+this.ue).then((response) => {
+               const {error} = response.data
+               if(error != null){
+                 this.messages.td.content = 'Valeure incorrecte d\'heures TD détectée.'
+                 this.messages.td.activate = true
+                 this.$root.$emit('button_block')
+               }
+             }).catch((err) => {
+               console.log(err)
+             })
+           }
         },
         tpCorrect() {
-            return true
+            if(this.tp && !isNaN(this.tp)){
+              axios.post('/api/check/tp/'+this.tp+'/'+this.ue).then((response) => {
+                  const {error} = response.data
+                  if(error != null){
+                    this.messages.tp.content = 'Valeure incorrecte d\'heures TP détectée.'
+                    this.messages.tp.activate = true
+                    this.$root.$emit('button_block')
+                  }
+              }).catch((err) => {
+                  console.log(err)
+              })
+            }
+        },
+        clearAllMessages() {
+            this.messages.cm.content = null
+            this.messages.td.content = null
+            this.messages.tp.content = null
+            this.messages.cm.activate = false
+            this.messages.td.activate = false
+            this.messages.tp.activate = false
         }
     }
 }

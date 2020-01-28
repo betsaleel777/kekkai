@@ -4,33 +4,42 @@
     <br>
     <sui-dropdown noResultsMessage="Aucun enseignant trouvé" v-show="exist" fluid :options="enseignants" placeholder="Enseignant" search selection v-model="enseignant" />
     <br>
+    <attribution-hours v-show="hoursDisplay"></attribution-hours>
 </div>
 </template>
 
 <script>
+Vue.component('attribution-hours', require('../components/HoursAttribution.vue').default)
 export default {
     mounted() {
         this.getUes()
         this.getEnseigants()
+        this.$root.$on('send_disable', () => {
+            this.hoursDisplay = false
+        })
+        this.$root.$on('send_enable', () => {
+            this.hoursDisplay = true
+        })
     },
     data() {
         return {
+            hoursDisplay: true,
             ues: [],
             ue: null,
             enseignants: [],
             enseignant: null,
-            exist: true
+            exist: true,
         }
     },
     watch: {
         ue: function() {
-            this.$root.$emit('ues_choosen', this.ue)
+            this.$root.$emit('ues_choosen', this.ue) // to {uesInfosTable}
             this.exist = true
         },
         enseignant: function() {
-            this.$root.$emit('teacher_choosen', this.enseignant)
+            this.$root.$emit('teacher_choosen', this.enseignant) //to {uesInfosTable}
+            this.$root.$emit('take_ens',this.enseignant)
             this.exist = false
-            this.enseignant = null
         }
     },
     methods: {
@@ -63,9 +72,6 @@ export default {
             }).catch((err) => {
                 console.log(err);
             })
-        },
-        tableCall() {
-            this.$root.$emit('ues_choosen', this.ue)
         }
     }
 }

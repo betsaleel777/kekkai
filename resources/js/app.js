@@ -22,7 +22,6 @@ window.Vue = require('vue')
 Vue.component('example-component', require('./components/ExampleComponent.vue').default)
 Vue.component('mode-choice-component', require('./components/ModeChoice.vue').default)
 Vue.component('assign-dropdowns', require('./components/DropdownsAssign.vue').default)
-Vue.component('attribution-hours', require('./components/HoursAttribution.vue').default)
 Vue.component('ues-infos-table', require('./components/UesInfosTable.vue').default)
 Vue.component('send-button', require('./components/SendButton.vue').default)
 /**
