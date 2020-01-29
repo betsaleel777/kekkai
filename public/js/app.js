@@ -2135,12 +2135,15 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     assign: function assign() {
-      console.log(this.cm, this.td, this.tp, this.ue, this.enseignant);
-      axios.get('/api/assign/' + this.ue + '/' + this.enseignant + '/' + this.cm + '/' + this.td + '/' + this.tp).then(function (response) {
-        console.log(response.data);
-      })["catch"](function (err) {
-        console.log(err);
-      });
+      if (Number(this.cm) !== 0 && Number(this.td) !== 0 && Number(this.tp) !== 0 && Number(this.ue) !== 0 && Number(this.enseignant) !== 0) {
+        axios.get('/api/assign/' + this.ue + '/' + this.enseignant + '/' + this.cm + '/' + this.td + '/' + this.tp).then(function (response) {
+          console.log(response.data);
+        })["catch"](function (err) {
+          console.log(err);
+        });
+      } else {
+        this.$noty.error('Champs vide détectée, Veuillez renseigner correctement les champs.');
+      }
     }
   }
 });

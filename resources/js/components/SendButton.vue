@@ -42,12 +42,15 @@ export default {
     },
     methods: {
         assign() {
-          console.log(this.cm,this.td,this.tp,this.ue,this.enseignant)
-            axios.get('/api/assign/'+this.ue+'/'+this.enseignant+'/'+this.cm+'/'+this.td+'/'+this.tp).then((response) => {
-               console.log(response.data);
-            }).catch((err) => {
-                console.log(err);
-            })
+            if(Number(this.cm) !== 0 && Number(this.td) !== 0 && Number(this.tp) !== 0 && Number(this.ue) !== 0 && Number(this.enseignant) !== 0){
+              axios.get('/api/assign/'+this.ue+'/'+this.enseignant+'/'+this.cm+'/'+this.td+'/'+this.tp).then((response) => {
+                console.log(response.data);
+              }).catch((err) => {
+                console.log(err)
+              })
+            }else{
+              this.$noty.error('Champs vide détectée, Veuillez renseigner correctement les champs.')
+            }
         }
     }
 }

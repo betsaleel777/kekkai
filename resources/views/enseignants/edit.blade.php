@@ -18,7 +18,7 @@
                 <i class="asterisk icon"></i>
             </div>
         </div>
-        {!!$errors->first('nomination','<p  style="color:#a94442">:message</p>')!!}
+        {!!$errors->first('nomination','<div class="ui red message">:message</div>')!!}
     </div>
     <div class="field">
         <label>Grade:</label>
@@ -37,7 +37,7 @@
                 <i class="asterisk icon"></i>
             </div>
         </div>
-        {!!$errors->first('grade','<p  style="color:#a94442">:message</p>')!!}
+        {!!$errors->first('grade','<div class="ui red message">:message</div>')!!}
     </div>
     <div class="field">
         <label>Statut:</label>
@@ -54,7 +54,7 @@
                 <i class="asterisk icon"></i>
             </div>
         </div>
-        {!!$errors->first('statut','<p  style="color:#a94442">:message</p>')!!}
+        {!!$errors->first('statut','<div class="ui red message">:message</div>')!!}
     </div>
     <div class="field">
         <label>Adresse mail:</label>
@@ -64,7 +64,7 @@
                 <i class="asterisk icon"></i>
             </div>
         </div>
-        {!!$errors->first('email','<p  style="color:#a94442">:message</p>')!!}
+        {!!$errors->first('email','<div class="ui red message">:message</div>')!!}
     </div>
     <div class="field">
         <label>Telephone:</label>
@@ -74,7 +74,7 @@
                 <i class="asterisk icon"></i>
             </div>
         </div>
-        {!!$errors->first('phone','<p  style="color:#a94442">:message</p>')!!}
+        {!!$errors->first('phone','<div class="ui red message">:message</div>')!!}
     </div>
     <div hidden class="field">
         <label>Titre:</label>

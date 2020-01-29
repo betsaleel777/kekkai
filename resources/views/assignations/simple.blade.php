@@ -4,21 +4,26 @@
 @endsection
 @section('content')
 <h2 class="ui dividing header">ASSIGNER DES UES</h2>
+<div class="ui grid container">
+    <div class="ten wide column">
+        {{Breadcrumbs::render('assignations_simple_add')}}
+    </div>
+</div>
 <center>
-    <mode-choice-component></mode-choice-component>
+  <mode-choice-component></mode-choice-component>
 </center><br>
-<div id="assignForm" class="ui form" >
+<div id="assignForm" class="ui form">
     <div class="ui grid container">
-       <div class="ten wide column">
-         <assign-dropdowns></assign-dropdowns>
-       </div>
-       <div class="six wide column">
-         <h4 class="ui horizontal divider header">
-             <i class="compass icon"></i>
-             Visualisation
-         </h4>
-         <ues-infos-table></ues-infos-table>
-       </div>
+        <div class="ten wide column">
+            <assign-dropdowns></assign-dropdowns>
+        </div>
+        <div class="six wide column">
+            <h4 class="ui horizontal divider header">
+                <i class="compass icon"></i>
+                Visualisation
+            </h4>
+            <ues-infos-table></ues-infos-table>
+        </div>
     </div>
     <center>
         <send-button></send-button>

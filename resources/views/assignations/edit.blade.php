@@ -14,7 +14,7 @@
                 @endforeach
             </div>
         </div>
-        {!!$errors->first('enseignant_id','<p style="color:#a94442">:message</p>')!!}
+        {!!$errors->first('enseignant_id','<div class="ui red message">:message</div>')!!}
     </div>
     <div class="field">
         <div id="ue" class="ui fluid search selection dropdown">
@@ -27,12 +27,12 @@
                 @endforeach
             </div>
         </div>
-        {!!$errors->first('ue_id','<p style="color:#a94442">:message</p>')!!}
+        {!!$errors->first('ue_id','<div class="ui red message">:message</div>')!!}
     </div>
     <div class="field">
         <label>heures CM attribuées:</label>
         <div class="ui labeled input">
-            <input  onchange="check(this)" value="{{$ue_link->pivot->cm}}" type="text" name="cm">
+            <input onchange="check(this)" value="{{$ue_link->pivot->cm}}" type="text" name="cm">
             <div class="red ui corner label">
                 <i class="asterisk icon"></i>
             </div>
@@ -40,7 +40,7 @@
         <div id="cm_content">
 
         </div>
-        {!!$errors->first('cm','<p style="color:#a94442">:message</p>')!!}
+        {!!$errors->first('cm','<div class="ui red message">:message</div>')!!}
     </div>
     <div class="field">
         <label>Heures TD attribuées:</label>
@@ -53,7 +53,7 @@
         <div id="td_content">
 
         </div>
-        {!!$errors->first('td','<p style="color:#a94442">:message</p>')!!}
+        {!!$errors->first('td','<div class="ui red message">:message</div>')!!}
     </div>
     <div class="field">
         <label>Heures TP attribuées:</label>
@@ -66,7 +66,7 @@
         <div id="tp_content">
 
         </div>
-        {!!$errors->first('tp','<p style="color:#a94442">:message</p>')!!}
+        {!!$errors->first('tp','<div class="ui red message">:message</div>')!!}
     </div>
     <div class="field">
         <button id="button" type="submit" class="ui labeled submit icon button"><i class="icon send"></i>envoyer</button>

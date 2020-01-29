@@ -10,7 +10,9 @@
 
 <div class="ui container">
     <div class="ui grid container">
-        <div class="fourteen wide column"></div>
+        <div class="fourteen wide column">
+         {{Breadcrumbs::render('ues_trashed')}}
+        </div>
         <div class="two wide column"><a href="{{route('ues_index')}}" class="blue ui labeled icon button"><i class="arrow circle left icon"></i>retour</a></div>
     </div>
     <div class="ui divider">
@@ -65,11 +67,11 @@
         $(document).ready(function() {
          const elt = document.getElementById('message') ;
          if(elt){
-             const message = elt.getElementsByTagName('span')[0].textContent 
+             const message = elt.getElementsByTagName('span')[0].textContent
              const type = elt.getElementsByTagName('em')[0].textContent
-           
+
              if(message){
-              
+
                 new Noty({
                 type: type,
                 layout: 'topRight',
@@ -83,7 +85,7 @@
                     }
                 }).show();
            }
-         } 
+         }
        }) ;
     </script>
 @endsection

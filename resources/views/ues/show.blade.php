@@ -8,6 +8,12 @@
 
 @endsection
 @section('content')
+  <div class="ui grid container">
+   <div class="ten wide column"></div>
+   <div class="six wide column">
+    {{Breadcrumbs::render('ues_show',$ue)}}
+   </div>
+  </div>
 <div class="ui grid container">
     <div class="seven wide column">
         <div class="ui card">

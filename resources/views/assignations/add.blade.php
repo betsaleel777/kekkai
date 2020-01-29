@@ -1,12 +1,17 @@
 @extends('layout')
 @section('content')
 <h2 class="ui dividing header">AJOUTER UN ENSEIGNANT</h2>
-<center>
-    <div class="ui buttons">
-        <a  href="{{route('assignations_add')}}" id="multiple" class="ui button">multiple</a>
-        <div class="or"></div>
-        <a href="{{route('assignations_simple_add')}}" id="simple" class="ui button">Simple</a>
+<div class="ui grid container">
+    <div class="ten wide column">
+        {{Breadcrumbs::render('assignations_add')}}
     </div>
+</div>
+<center>
+  <div class="ui buttons">
+    <a href="{{route('assignations_add')}}" id="multiple" class="ui button">multiple</a>
+    <div class="or"></div>
+    <a href="{{route('assignations_simple_add')}}" id="simple" class="ui button">Simple</a>
+  </div>
 </center><br>
 <form id="assignForm" class="ui form" action="{{route('assignations_insert')}}" method="post">
     @csrf
@@ -21,7 +26,7 @@
                 @endforeach
             </div>
         </div>
-        {!!$errors->first('enseignant_id','<p style="color:#a94442">:message</p>')!!}
+        {!!$errors->first('enseignant_id','<div class="ui red message">:message</div>')!!}
     </div>
     <div class="field">
         <div id="ue_field" class="ui fluid multiple search selection dropdown">
@@ -34,7 +39,7 @@
                 @endforeach
             </div>
         </div>
-        {!!$errors->first('ue_id','<p style="color:#a94442">:message</p>')!!}
+        {!!$errors->first('ue_id','<div class="ui red message">:message</div>')!!}
     </div>
     <div class="ui segment">
         <div class="ui two column very relaxed grid">
@@ -102,15 +107,15 @@
 </script>
 <script src="{{asset('semantic-theme/js/notify.js')}}"></script>
 <script type="text/javascript">
-   $(document).ready(function(){
-      let multiple = document.getElementById('multiple')
-      let simple = document.getElementById('simple')
-      const url = location.pathname
-      if(url === '/home/assignations/add' ){
-        multiple.className = 'ui positive button'
-      }else if (url === '/home/assignations/simple/add') {
-        simple.className = 'ui positive button'
-      }
-   })
+    $(document).ready(function() {
+        let multiple = document.getElementById('multiple')
+        let simple = document.getElementById('simple')
+        const url = location.pathname
+        if (url === '/home/assignations/add') {
+            multiple.className = 'ui positive button'
+        } else if (url === '/home/assignations/simple/add') {
+            simple.className = 'ui positive button'
+        }
+    })
 </script>
 @endsection

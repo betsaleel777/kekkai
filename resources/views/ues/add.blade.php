@@ -1,6 +1,12 @@
 @extends('layout')
 @section('content')
 <h2 class="ui dividing header">AJOUTER UNITE D'ENSEIGNEMENT (UE)</h2>
+<div class="ui grid container">
+ <div class="ten wide column"></div>
+ <div class="six wide column">
+  {{Breadcrumbs::render('ues_add')}}
+ </div>
+</div>
 <form class="ui form" action="{{route('ues_insert')}}" method="post">
     @csrf
     <div class="field">
@@ -11,7 +17,7 @@
                 <i class="asterisk icon"></i>
             </div>
         </div>
-        {!!$errors->first('libelle','<p style="color:#a94442">:message</p>')!!}
+        {!!$errors->first('libelle','<div class="ui red message">:message</div>')!!}
     </div>
     <div class="field">
         <label>Filière</label>
@@ -21,7 +27,7 @@
                 <i class="asterisk icon"></i>
             </div>
         </div>
-        {!!$errors->first('filiere','<p style="color:#a94442">:message</p>')!!}
+        {!!$errors->first('filiere','<div class="ui red message">:message</div>')!!}
     </div>
     <div class="field">
         <label>Niveau</label>
@@ -42,7 +48,7 @@
                 </div>
             </div>
         </div>
-        {!!$errors->first('niveau','<p style="color:#a94442">:message</p>')!!}
+        {!!$errors->first('niveau','<div class="ui red message">:message</div>')!!}
     </div>
     <div class="field">
         <label>UFR</label>
@@ -52,7 +58,7 @@
                 <i class="asterisk icon"></i>
             </div>
         </div>
-        {!!$errors->first('ufr','<p style="color:#a94442">:message</p>')!!}
+        {!!$errors->first('ufr','<div class="ui red message">:message</div>')!!}
     </div>
     <div class="field">
         <label>Nombre de groupe cours magistral (CM)</label>
@@ -62,7 +68,7 @@
                 <i class="asterisk icon"></i>
             </div>
         </div>
-        {!!$errors->first('nb_gr_cm','<p style="color:#a94442">:message</p>')!!}
+        {!!$errors->first('nb_gr_cm','<div class="ui red message">:message</div>')!!}
     </div>
     <div class="field">
         <label>
@@ -74,7 +80,7 @@
                 <i class="asterisk icon"></i>
             </div>
         </div>
-        {!!$errors->first('nb_gr_td','<p style="color:#a94442">:message</p>')!!}
+        {!!$errors->first('nb_gr_td','<div class="ui red message">:message</div>')!!}
     </div>
     <div class="field">
         <label>
@@ -86,7 +92,7 @@
                 <i class="asterisk icon"></i>
             </div>
         </div>
-        {!!$errors->first('nb_gr_tp','<p style="color:#a94442">:message</p>')!!}
+        {!!$errors->first('nb_gr_tp','<div class="ui red message">:message</div>')!!}
     </div>
     <div class="field">
         <label>
@@ -98,7 +104,7 @@
                 <i class="asterisk icon"></i>
             </div>
         </div>
-        {!!$errors->first('heure_gr_cm','<p style="color:#a94442">:message</p>')!!}
+        {!!$errors->first('heure_gr_cm','<div class="ui red message">:message</div>')!!}
     </div>
     <div class="field">
         <label>
@@ -110,7 +116,7 @@
                 <i class="asterisk icon"></i>
             </div>
         </div>
-        {!!$errors->first('heure_gr_td','<p style="color:#a94442">:message</p>')!!}
+        {!!$errors->first('heure_gr_td','<div class="ui red message">:message</div>')!!}
     </div>
     <div class="field">
         <label>
@@ -122,7 +128,7 @@
                 <i class="asterisk icon"></i>
             </div>
         </div>
-        {!!$errors->first('heure_gr_tp','<p style="color:#a94442">:message</p>')!!}
+        {!!$errors->first('heure_gr_tp','<div class="ui red message">:message</div>')!!}
     </div>
     <button type="submit" class="ui labeled submit icon button">
         <i class="icon send"></i>envoyer
@@ -144,11 +150,11 @@
         $(document).ready(function() {
          const elt = document.getElementById('message') ;
          if(elt){
-             const message = elt.getElementsByTagName('span')[0].textContent 
+             const message = elt.getElementsByTagName('span')[0].textContent
              const type = elt.getElementsByTagName('em')[0].textContent
-           
+
              if(message){
-              
+
                 new Noty({
                 type: type,
                 layout: 'topRight',
@@ -162,7 +168,7 @@
                     }
                 }).show();
            }
-         } 
+         }
        }) ;
 </script>
 @endsection
