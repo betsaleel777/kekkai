@@ -74,13 +74,9 @@
                     </div>
                 </div>
             </div>
-            <div onclick="devoiler()" class="ui bottom attached button green">
-                <i class="crosshairs icon"></i>
-                voir repartition par enseignants
-            </div>
         </div>
     </div>
-    <div id="repartition" hidden class="nine wide column">
+    <div class="nine wide column">
         <table id="tableau" class="ui blue celled table">
             <thead>
                 <tr>
@@ -141,7 +137,6 @@
 @endsection
 @section('java-script')
 <script src="//code.jquery.com/jquery-3.3.1.js"></script>
-<script src="{{asset('semantic-theme/js/devoiler.js')}}"></script>
 <script type="text/javascript" src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 <script src="//cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
 <script type="text/javascript" src="//cdn.datatables.net/buttons/1.5.6/js/dataTables.buttons.min.js"></script>

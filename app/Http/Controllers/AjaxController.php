@@ -132,7 +132,6 @@ class AjaxController extends Controller
 
       if ($virtual_rest>0) {
           $message = $message = $virtual_rest.' peuvent être assignées .' ;
-          ;
       } elseif ($virtual_rest === 0) {
           $message = 'nombre maximum d\'heures atteint' ;
       } else {

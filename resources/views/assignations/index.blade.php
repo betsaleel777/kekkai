@@ -10,8 +10,11 @@
 
 <div class="ui container">
     <div class="ui grid container">
-        <div class="fourteen wide column">
+        <div class="twelve wide column">
           {{Breadcrumbs::render('assignations')}}
+        </div>
+        <div class="two wide column"><a href="{{route('generate_pdf')}}" class="orange ui labeled icon button">
+          <i class="icon file pdf outline"></i>export</a>
         </div>
         <div class="two wide column"><a href="{{route('assignations_add')}}" class="blue ui labeled icon button"><i class="plus icon"></i>Ajouter</a></div>
     </div>

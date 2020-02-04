@@ -26,6 +26,11 @@ class RouteServiceProvider extends ServiceProvider
         Route::pattern('id', '[0-9]+');
         Route::Pattern('enseignant','[0-9]+') ;
         Route::Pattern('ue','[0-9]+') ;
+        Route::Pattern('test','[0-9]+') ;
+        Route::Pattern('ens','[0-9]+') ;
+        Route::Pattern('cm','[0-9]+') ;
+        Route::Pattern('td','[0-9]+') ;
+        Route::Pattern('tp','[0-9]+') ;
         parent::boot();
     }
 

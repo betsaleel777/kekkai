@@ -66,7 +66,7 @@ class AssignationsController extends Controller
     }
 
     public function simpleInsert(Request $request){
-      
+
     }
 
     public function edit($id, $ue)
@@ -110,6 +110,6 @@ class AssignationsController extends Controller
         $ue_link = $enseignant->ues()->find($ue) ;
         $ue_link->pivot->delete() ;
         $message = 'l\'unité d\'enseignement <strong>'.$ue_link->libelle.'</strong> assignée à <strong>'.$enseignant->titre.' '.$enseignant->nomination.'</strong> vient d\'être archivée' ;
-        return redirect()->route('enseignant_index')->with('success', $message) ;
+        return redirect()->route('assignations_index')->with('success', $message) ;
     }
 }

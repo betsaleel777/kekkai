@@ -176,8 +176,8 @@
     </div> -->
 
         <div class="ui text container">
-            <h1 class="ui inverted header">TOKITOBASHI !!!</h1>
-            <h2>Administrez facilement vos UFR.</h2>
+            <h1 class="ui inverted header">Clock Machine</h1>
+            <center><img src="{{asset('semantic-theme/assets/images/machine.svg')}}" width="30%" height="50%" alt="machina"></center>
         <a href="{{route('enseignant_index')}}" class="ui huge primary button">Commencer !!<i class="right arrow icon"></i></a>
         </div>
     </div>
