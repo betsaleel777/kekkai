@@ -12,23 +12,21 @@ class EnseignantsController extends Controller
     public function index()
     {
         $enseignants = Enseignant::get() ;
+        $title = 'Enseignants' ;
         // dd(DB::select("SELECT sum(assignations.cm) as cm ,sum(assignations.td) as td,sum(assignations.tp) as tp,ues.id,ues.libelle from assignations
         //       inner join ues on ues.id=assignations.ue_id where assignations.enseignant_id=? group by ues.id",[2]));
-        return view('enseignants.index', compact('enseignants')) ;
+        return view('enseignants.index', compact('enseignants','title')) ;
     }
 
     public function add()
     {
-        return view('enseignants.add') ;
+        $title = 'Ajouter Enseignant' ;
+        return view('enseignants.add',compact('title')) ;
     }
 
     public function insert(Request $request)
     {
-        $this->validate($request, ['nomination' => 'required|max:170',
-                                'statut' => 'required',
-                                'grade' => 'required',
-                                'email' => 'required|unique:enseignants',
-                                'phone' => 'required|numeric|unique:enseignants'],Enseignant::MESSAGES);
+        $this->validate($request,Enseignant::regles(),Enseignant::MESSAGES);
 
         $enseignant = new Enseignant($request->all()) ;
         $enseignant->save() ;
@@ -39,7 +37,8 @@ class EnseignantsController extends Controller
     public function edit($id)
     {
         $enseignant = Enseignant::findOrFail($id) ;
-        return view('enseignants.edit', compact('enseignant')) ;
+        $title = 'Modifier '.$enseignant->nomination ;
+        return view('enseignants.edit', compact('enseignant','title')) ;
     }
 
     public function update(Request $request, $id)
@@ -61,6 +60,7 @@ class EnseignantsController extends Controller
     public function show($id)
     {
         $enseignant = Enseignant::findOrFail($id) ;
+        $title = $enseignant->nomination ;
         $ues_sans_repetition = (array)DB::select("SELECT sum(assignations.cm) as cm ,sum(assignations.td)
                                 as td,sum(assignations.tp) as tp,ues.id,ues.libelle from assignations
                                 inner join ues on ues.id=assignations.ue_id where assignations.enseignant_id=?
@@ -74,7 +74,7 @@ class EnseignantsController extends Controller
             $tp += $ue->tp ;
         }
         $total = [ 'cm' => $cm, 'td' => $td, 'tp' => $tp] ;
-        return view('enseignants.show', compact('enseignant','ues_sans_repetition','total')) ;
+        return view('enseignants.show', compact('enseignant','ues_sans_repetition','total','title')) ;
     }
 
     public function delete(int $id)
@@ -86,9 +86,9 @@ class EnseignantsController extends Controller
     }
 
     public function trashed()
-    {
+    {   $title ='Archives Enseignant' ;
         $enseignants = Enseignant::onlyTrashed()->get() ;
-        return view('enseignants.archives', compact('enseignants')) ;
+        return view('enseignants.archives', compact('enseignants','title')) ;
     }
 
     public function restore(int $id)

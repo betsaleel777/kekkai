@@ -12,27 +12,30 @@ use Illuminate\Support\Facades\Validator;
 class AssignationsController extends Controller
 {
     public function index()
-    { //desactiver le stric mode de mysql pour faire fonctionner les requette laeavel comme celle de phpmyadmin
+    {   //desactiver le stric mode de mysql pour faire fonctionner les requette laeavel comme celle de phpmyadmin
+        $title = 'Assignations' ;
         $assignements = DB::table('assignations')
             ->select(DB::raw('enseignants.id,enseignants.nomination,enseignants.titre,ues.id as ue,ues.libelle,ues.filiere,ues.niveau,assignations.cm,assignations.td,assignations.tp'))
             ->join('ues', 'assignations.ue_id', '=', 'ues.id')
             ->join('enseignants', 'assignations.enseignant_id', '=', 'enseignants.id')
             ->get()->toArray();
-        return view('assignations.index', compact('assignements'));
+        return view('assignations.index', compact('assignements','title'));
     }
 
     public function add()
     {
+        $title = 'Assignation Multiple' ;
         $enseignants = Enseignant::get();
         $ues = Ue::get();
-        return view('assignations.add', compact('enseignants', 'ues'));
+        return view('assignations.add', compact('enseignants', 'ues', 'title'));
     }
 
     public function addSimple()
     {
+        $title = 'Simple Assignation' ;
         $enseignants = Enseignant::get();
         $ues = Ue::get();
-        return view('assignations.simple', compact('enseignants', 'ues'));
+        return view('assignations.simple', compact('enseignants', 'ues','title'));
     }
 
     public function insert(Request $request)
@@ -66,16 +69,17 @@ class AssignationsController extends Controller
     }
 
     public function simpleInsert(Request $request){
-
+        return response()->json([$request->all()]) ;
     }
 
     public function edit($id, $ue)
     {
+        $title = 'Modification d\'assignation' ;
         $enseignants = Enseignant::get() ;
         $enseignant = Enseignant::findOrFail($id);
         $ues = Ue::get() ;
         $ue_link = $enseignant->ues()->findOrFail($ue) ;
-        return view('assignations.edit', compact('enseignant', 'enseignants', 'ue_link', 'ues'));
+        return view('assignations.edit', compact('enseignant', 'enseignants', 'ue_link', 'ues','title'));
     }
 
     public function update(Request $request, $id, $ue)

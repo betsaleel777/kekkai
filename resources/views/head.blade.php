@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     @yield('meta')
-    <title>Document</title>
+    <title>{{$title}}</title>
     <link rel="stylesheet" type="text/css" href="{{asset('semantic-theme/assets/semantic/semantic.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('semantic-theme/assets/semantic/components/reset.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('semantic-theme/assets/semantic/components/site.css')}}">

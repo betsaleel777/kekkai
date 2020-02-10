@@ -9,14 +9,15 @@ use App\Ue ;
 class UesController extends Controller
 {
     public function index()
-    {
+    {   $title = 'Unités d\'enseignements' ;
         $ues = Ue::get() ;
-        return view('ues.index', compact('ues')) ;
+        return view('ues.index', compact('ues','title')) ;
     }
 
     public function add()
     {
-        return view('ues.add') ;
+        $title = 'Ajouter UES' ;
+        return view('ues.add',compact('title')) ;
     }
 
     public function insert(Request $request)
@@ -31,7 +32,8 @@ class UesController extends Controller
     public function edit(int $id)
     {
         $ue = Ue::findOrFail($id) ;
-        return view('ues.edit', compact('ue')) ;
+        $title = 'Modifier '.$ue->libelle ;
+        return view('ues.edit', compact('ue','title')) ;
     }
 
     public function update(Request $request, int $id)
@@ -46,6 +48,7 @@ class UesController extends Controller
     public function show(int $id)
     {
         $ue = Ue::findOrFail($id) ;
+        $title = 'Détails '.$ue->libelle ;
         $enseignant_sans_repetition = DB::select("SELECT sum(assignations.cm) as cm ,sum(assignations.td) as td,sum(assignations.tp) as tp,enseignants.id,
                                       enseignants.nomination from assignations inner join enseignants on enseignants.id=assignations.enseignant_id
                                       where assignations.ue_id=? group by enseignants.id",[$id]) ;
@@ -62,7 +65,7 @@ class UesController extends Controller
                  'tp' => $ue->heure_gr_tp-$tp
                 ] ;
         $total = [ 'cm' => $cm, 'td' => $td, 'tp' => $tp] ;
-        return view('ues.show', compact('ue','total','enseignant_sans_repetition','rest')) ;
+        return view('ues.show', compact('ue','total','enseignant_sans_repetition','rest','title')) ;
     }
 
     public function delete(int $id)
@@ -75,8 +78,9 @@ class UesController extends Controller
 
     public function trashed()
     {
+        $title = 'Archives UES' ;
         $ues = Ue::onlyTrashed()->get() ;
-        return view('ues.archives', compact('ues')) ;
+        return view('ues.archives', compact('ues','title')) ;
     }
 
     public function restore(int $id)

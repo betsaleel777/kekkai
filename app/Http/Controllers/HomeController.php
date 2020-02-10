@@ -8,12 +8,14 @@ use App\Enseignant ;
 class HomeController extends Controller
 {
    public function welcome(){
-     return view('started');
+     $title = 'Acceuil' ;
+     return view('started',compact('title'));
    }
 
     public function open()
     {
+        $title = 'Enseignants' ;
         $enseignants = Enseignant::get() ;
-        return view('enseignants.index',compact('enseignants')) ;
+        return view('enseignants.index',compact('enseignants','title')) ;
     }
 }
