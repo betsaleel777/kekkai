@@ -8,6 +8,11 @@ use App\Ue ;
 
 class UesController extends Controller
 {
+    public function __construct()
+    {
+       $this->middleware('auth');
+    }
+    
     public function index()
     {   $title = 'Unités d\'enseignements' ;
         $ues = Ue::get() ;

@@ -11,6 +11,12 @@ use Illuminate\Support\Facades\Validator;
 
 class AssignationsController extends Controller
 {
+
+    public function __construct()
+    {
+       $this->middleware('auth');
+    }
+    
     public function index()
     {   //desactiver le stric mode de mysql pour faire fonctionner les requette laeavel comme celle de phpmyadmin
         $title = 'Assignations' ;

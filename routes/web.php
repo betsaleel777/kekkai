@@ -14,6 +14,7 @@
 Route::get('/','HomeController@welcome')->name('start');
 
 Route::get('/home', 'HomeController@open')->name('open') ;
+Route::get('/home/deconnexion', 'HomeController@deconnexion')->name('deconnexion') ;
 
 Route::get('/home/enseignant/', 'EnseignantsController@index')->name('enseignant_index') ;
 Route::get('/home/enseignant/trashed', 'EnseignantsController@trashed')->name('enseignant_trashed') ;
@@ -55,3 +56,5 @@ Route::get('/home/assignations/{enseignant}/{ue}/restore', 'AssignationsControll
 Route::post('/home/verify/cm', 'AjaxController@verify_cm')->name('verify_cm') ;
 Route::post('/home/verify/td', 'AjaxController@verify_td')->name('verify_td') ;
 Route::post('/home/verify/tp', 'AjaxController@verify_tp')->name('verify_tp') ;
+
+Auth::routes();

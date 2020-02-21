@@ -5,7 +5,7 @@
     <div class="ui container">
         <!-- menu start  -->
         <div class="ui inverted menu">
-          {{-- class="active item" --}}
+            {{-- class="active item" --}}
             <a href="{{route('start')}}" class="header item">Acceuil</a>
             <a href="{{route('enseignant_index')}}" class="item">Enseignant</a>
             <a href="{{route('ues_index')}}" class="item">Ues</a>
@@ -23,21 +23,24 @@
                     <div class="item">One more separated link</div>
                 </div>
             </div> --}}
-            {{-- <div class="right menu">
-                <div class="item">
-                    <div class="ui transparent inverted icon input">
-                        <i class="search icon"></i>
-                        <input type="text" placeholder="Search">
-                    </div>
-                </div>
-                <a class="item">Link</a>
-            </div> --}}
+            @if (Auth::check())
+              <div class="right menu">
+                  <a class="ui item">
+                     <i class="user circle icon"></i>
+                     {{Auth::user()['name']}}
+                  </a>
+                  <a href="{{route('deconnexion')}}" class="ui item">
+                     <i class="sign-out icon"></i>
+                      Déconnexion!
+                  </a>
+              </div>
+            @endif
         </div>
         <!-- menu end  -->
         <div id="app">
-          <!-- content start  -->
-          @yield('content')
-          <!-- content end  -->
+            <!-- content start  -->
+            @yield('content')
+            <!-- content end  -->
         </div>
         <!--footer start  -->
         <footer>
@@ -57,4 +60,5 @@
 <script type="text/javascript" src="{{asset('semantic-theme/assets/semantic/components/dropdown.js')}}"></script>
 <script type="text/javascript" src="{{asset('semantic-theme/assets/semantic/semantic.min.js')}}"></script>
 @yield('java-script')
+
 </html>

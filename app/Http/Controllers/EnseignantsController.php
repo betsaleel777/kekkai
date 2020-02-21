@@ -9,6 +9,12 @@ use PDF ;
 
 class EnseignantsController extends Controller
 {
+
+    public function __construct()
+    {
+       $this->middleware('auth');
+    }
+
     public function index()
     {
         $enseignants = Enseignant::get() ;
