@@ -2,10 +2,10 @@
 @section('content')
 <h2 class="ui dividing header">AJOUTER UNITE D'ENSEIGNEMENT (UE)</h2>
 <div class="ui grid container">
- <div class="ten wide column"></div>
- <div class="six wide column">
-  {{Breadcrumbs::render('ues_add')}}
- </div>
+    <div class="ten wide column"></div>
+    <div class="six wide column">
+        {{Breadcrumbs::render('ues_add')}}
+    </div>
 </div>
 <form class="ui form" action="{{route('ues_insert')}}" method="post">
     @csrf
@@ -32,7 +32,7 @@
     <div class="field">
         <label>Niveau</label>
         <div class="ui labeled input">
-            <div class="ui selection dropdown labeled input">
+            <div id="niveau" class="ui selection dropdown labeled input">
                 <input type="hidden" name="niveau">
                 <i class="dropdown icon"></i>
                 <div class="default text">Niveau</div>
@@ -47,8 +47,8 @@
                     <i class="asterisk icon"></i>
                 </div>
             </div>
+            {!!$errors->first('niveau','<div class="ui red message">:message</div>')!!}
         </div>
-        {!!$errors->first('niveau','<div class="ui red message">:message</div>')!!}
     </div>
     <div class="field">
         <label>UFR</label>
@@ -143,32 +143,33 @@
 </script>
 <script>
     $(document).ready(function() {
-        $('#niveau').dropdown('set selected', '{{old('niveau ')}}');
+        $('#niveau').dropdown('set selected', '{{old('
+            niveau ')}}');
     });
 </script>
 <script>
-        $(document).ready(function() {
-         const elt = document.getElementById('message') ;
-         if(elt){
-             const message = elt.getElementsByTagName('span')[0].textContent
-             const type = elt.getElementsByTagName('em')[0].textContent
+    $(document).ready(function() {
+        const elt = document.getElementById('message');
+        if (elt) {
+            const message = elt.getElementsByTagName('span')[0].textContent
+            const type = elt.getElementsByTagName('em')[0].textContent
 
-             if(message){
+            if (message) {
 
                 new Noty({
-                type: type,
-                layout: 'topRight',
-                theme: 'semanticui',
-                text: message,
-                timeout: '4000',
-                closeWith: ['click'],
-                animation: {
-                        open : 'animated fadeInRight',
+                    type: type,
+                    layout: 'topRight',
+                    theme: 'semanticui',
+                    text: message,
+                    timeout: '4000',
+                    closeWith: ['click'],
+                    animation: {
+                        open: 'animated fadeInRight',
                         close: 'animated fadeOutRight'
                     }
                 }).show();
-           }
-         }
-       }) ;
+            }
+        }
+    });
 </script>
 @endsection

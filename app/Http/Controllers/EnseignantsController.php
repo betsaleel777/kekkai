@@ -31,7 +31,7 @@ class EnseignantsController extends Controller
         $enseignant = new Enseignant($request->all()) ;
         $enseignant->save() ;
         $message = 'l\'enseignant <b>'.$request->nomination.'</b> a été enregistré avec succès !!' ;
-        return redirect()->route('enseignant_index')->with('success', $message) ;
+        return redirect()->route('enseignant_index')->with('success', $message)->withInput() ;
     }
 
     public function edit($id)
@@ -54,7 +54,7 @@ class EnseignantsController extends Controller
         $enseignant->titre = $request->titre ;
         $enseignant->save() ;
         $message = 'l\'enseignant a été modifié avec succès !!' ;
-        return redirect()->route('enseignant_index')->with('success', $message) ;
+        return redirect()->route('enseignant_index')->with('success', $message)  ;
     }
 
     public function show($id)

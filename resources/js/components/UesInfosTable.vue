@@ -6,6 +6,7 @@
             <sui-table-header-cell>CM</sui-table-header-cell>
             <sui-table-header-cell>TD</sui-table-header-cell>
             <sui-table-header-cell>TP</sui-table-header-cell>
+            <sui-table-header-cell>Option</sui-table-header-cell>
         </sui-table-row>
     </sui-table-header>
     <sui-table-body>
@@ -14,6 +15,11 @@
             <sui-table-cell>{{enseignant.cm}}</sui-table-cell>
             <sui-table-cell>{{enseignant.td}}</sui-table-cell>
             <sui-table-cell>{{enseignant.tp}}</sui-table-cell>
+            <sui-table-cell>
+                <a v-if="!enseignant.status" :href="'/home/assignations/' + enseignant.id + '/' + ue.id + '/alter'">
+                    <i class="violet edit outline icon"></i>
+                </a>
+            </sui-table-cell>
         </sui-table-row>
     </sui-table-body>
     <sui-table-footer>
@@ -22,12 +28,14 @@
             <sui-table-cell :positive="rest.cm>0" :negative="rest.cm<=0">{{total.cm}}</sui-table-cell>
             <sui-table-cell :positive="rest.td>0" :negative="rest.td<=0">{{total.td}}</sui-table-cell>
             <sui-table-cell :positive="rest.tp>0" :negative="rest.tp<=0">{{total.tp}}</sui-table-cell>
+            <sui-table-cell disabled></sui-table-cell>
         </sui-table-row>
         <sui-table-row>
             <sui-table-cell>Reste</sui-table-cell>
             <sui-table-cell>{{rest.cm}}</sui-table-cell>
             <sui-table-cell>{{rest.td}}</sui-table-cell>
             <sui-table-cell>{{rest.tp}}</sui-table-cell>
+            <sui-table-cell disabled></sui-table-cell>
         </sui-table-row>
     </sui-table-footer>
 </sui-table>
@@ -46,69 +54,67 @@ export default {
         this.$root.$on('cm_update', (cm) => {
             if (isNaN(cm)) {
                 this.$noty.warning('Veuillez renseigner une valeure numérique du CM')
-            }else{
-              if (this.enseignants.length > 0) {
-                  this.enseignants = this.enseignants.map((enseignant) => {
-                      if (enseignant.status) {
-                          enseignant.cm = Number(cm)
-                          if(Number(cm) == 0){
-                            this.default('cm')
-                          }else{
-                            console.log('passe aussi');
-                            this.total.cm = Number(this.total.cm) + Number(cm)
-                            this.rest.cm = Number(this.rest.cm) - Number(cm)
-                          }
+            } else {
+                if (this.enseignants.length > 0) {
+                    this.enseignants = this.enseignants.map((enseignant) => {
+                        if (enseignant.status) {
+                            enseignant.cm = Number(cm)
+                            if (Number(cm) == 0) {
+                                this.default('cm')
+                            } else {
+                                console.log('passe aussi');
+                                this.total.cm = Number(this.total.cm) + Number(cm)
+                                this.rest.cm = Number(this.rest.cm) - Number(cm)
+                            }
 
-                      }
-                      return enseignant
-                  })
-              }
+                        }
+                        return enseignant
+                    })
+                }
             }
-
         })
         this.$root.$on('td_update', (td) => {
             if (isNaN(td)) {
                 this.$noty.warning('Veuillez renseigner une valeure numérique du TD')
-            }else{
-              if (this.enseignants.length > 0) {
-                  this.enseignants = this.enseignants.map((enseignant) => {
-                      if (enseignant.status) {
-                          enseignant.td = Number(td)
-                          if(Number(td) == 0){
-                            this.default('td')
-                          }else{
-                            console.log('passe aussi');
-                            this.total.td = Number(this.total.td) + Number(td)
-                            this.rest.td = Number(this.rest.td) - Number(td)
-                          }
+            } else {
+                if (this.enseignants.length > 0) {
+                    this.enseignants = this.enseignants.map((enseignant) => {
+                        if (enseignant.status) {
+                            enseignant.td = Number(td)
+                            if (Number(td) == 0) {
+                                this.default('td')
+                            } else {
+                                console.log('passe aussi');
+                                this.total.td = Number(this.total.td) + Number(td)
+                                this.rest.td = Number(this.rest.td) - Number(td)
+                            }
 
-                      }
-                      return enseignant
-                  })
-              }
+                        }
+                        return enseignant
+                    })
+                }
             }
-
         })
         this.$root.$on('tp_update', (tp) => {
             if (isNaN(tp)) {
                 this.$noty.warning('Veuillez renseigner une valeure numérique du TP')
-            }else{
-              if (this.enseignants.length > 0) {
-                  this.enseignants = this.enseignants.map((enseignant) => {
-                      if (enseignant.status) {
-                          enseignant.tp = Number(tp)
-                          if(Number(tp) == 0){
-                            this.default('tp')
-                          }else{
-                            console.log('passe aussi');
-                            this.total.tp = Number(this.total.tp) + Number(tp)
-                            this.rest.tp = Number(this.rest.tp) - Number(tp)
-                          }
+            } else {
+                if (this.enseignants.length > 0) {
+                    this.enseignants = this.enseignants.map((enseignant) => {
+                        if (enseignant.status) {
+                            enseignant.tp = Number(tp)
+                            if (Number(tp) == 0) {
+                                this.default('tp')
+                            } else {
+                                console.log('passe aussi');
+                                this.total.tp = Number(this.total.tp) + Number(tp)
+                                this.rest.tp = Number(this.rest.tp) - Number(tp)
+                            }
 
-                      }
-                      return enseignant
-                  })
-              }
+                        }
+                        return enseignant
+                    })
+                }
             }
         })
     },
@@ -118,7 +124,7 @@ export default {
             total: {},
             rest: {},
             ue: {},
-            id:null,
+            id: null,
             currentEnseignant: null,
         }
     },
@@ -145,27 +151,27 @@ export default {
                 console.log(err);
             })
         },
-        default(type){
-          axios.get('/api/ues/teachers/' + this.id).then((response) => {
-              const {
-                  total
-              } = response.data
-              const {
-                  rest
-              } = response.data
-              if(type === 'cm'){
-                this.total.cm = total.cm
-                this.rest.cm = rest.cm
-              }else if (type === 'td') {
-                this.total.td = total.td
-                this.rest.td = rest.td
-              } else if (type === 'tp') {
-                this.total.tp = total.tp
-                this.rest.tp = rest.tp
-              }
-          }).catch((err) => {
-              console.log(err);
-          })
+        default (type) {
+            axios.get('/api/ues/teachers/' + this.id).then((response) => {
+                const {
+                    total
+                } = response.data
+                const {
+                    rest
+                } = response.data
+                if (type === 'cm') {
+                    this.total.cm = total.cm
+                    this.rest.cm = rest.cm
+                } else if (type === 'td') {
+                    this.total.td = total.td
+                    this.rest.td = rest.td
+                } else if (type === 'tp') {
+                    this.total.tp = total.tp
+                    this.rest.tp = rest.tp
+                }
+            }).catch((err) => {
+                console.log(err);
+            })
         },
         getOnlyOneInfosTeacher(id) {
             if (id) {

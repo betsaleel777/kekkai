@@ -2,7 +2,7 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Model ;
 use Illuminate\Database\Eloquent\SoftDeletes ;
 
 class Enseignant extends Model
@@ -48,11 +48,11 @@ class Enseignant extends Model
 
     public static function regles(int $id=null){
       return ['nomination' => 'required|max:170',
-                            'statut' => 'required',
-                            'grade' => 'required',
-                            'email' => 'required|unique:enseignants,email,'.$id,
-                            'phone' => 'required|numeric|unique:enseignants,phone,'.$id
-                          ] ;
+              'statut' => 'required',
+              'grade' => 'required',
+              'email' => 'required|unique:enseignants,email,'.$id,
+              'phone' => 'required|numeric|unique:enseignants,phone,'.$id
+             ] ;
 
     }
 }

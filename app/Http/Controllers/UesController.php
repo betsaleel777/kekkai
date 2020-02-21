@@ -26,7 +26,7 @@ class UesController extends Controller
         $ue = new Ue($request->all()) ;
         $ue->save() ;
         $message = 'l\'unité d\'enseignement <strong>'.$request->libelle.'</strong> a été enregistré avec succès !!' ;
-        return redirect()->route('ues_index')->with('success', $message) ;
+        return redirect()->route('ues_index')->with('success', $message)->withInput() ;
     }
 
     public function edit(int $id)

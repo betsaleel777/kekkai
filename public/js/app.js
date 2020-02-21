@@ -2194,6 +2194,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
     var _this = this;
@@ -59585,7 +59593,9 @@ var render = function() {
               _vm._v(" "),
               _c("sui-table-header-cell", [_vm._v("TD")]),
               _vm._v(" "),
-              _c("sui-table-header-cell", [_vm._v("TP")])
+              _c("sui-table-header-cell", [_vm._v("TP")]),
+              _vm._v(" "),
+              _c("sui-table-header-cell", [_vm._v("Option")])
             ],
             1
           )
@@ -59606,7 +59616,26 @@ var render = function() {
               _vm._v(" "),
               _c("sui-table-cell", [_vm._v(_vm._s(enseignant.td))]),
               _vm._v(" "),
-              _c("sui-table-cell", [_vm._v(_vm._s(enseignant.tp))])
+              _c("sui-table-cell", [_vm._v(_vm._s(enseignant.tp))]),
+              _vm._v(" "),
+              _c("sui-table-cell", [
+                !enseignant.status
+                  ? _c(
+                      "a",
+                      {
+                        attrs: {
+                          href:
+                            "/home/assignations/" +
+                            enseignant.id +
+                            "/" +
+                            _vm.ue.id +
+                            "/alter"
+                        }
+                      },
+                      [_c("i", { staticClass: "violet edit outline icon" })]
+                    )
+                  : _vm._e()
+              ])
             ],
             1
           )
@@ -59653,7 +59682,9 @@ var render = function() {
                   }
                 },
                 [_vm._v(_vm._s(_vm.total.tp))]
-              )
+              ),
+              _vm._v(" "),
+              _c("sui-table-cell", { attrs: { disabled: "" } })
             ],
             1
           ),
@@ -59667,7 +59698,9 @@ var render = function() {
               _vm._v(" "),
               _c("sui-table-cell", [_vm._v(_vm._s(_vm.rest.td))]),
               _vm._v(" "),
-              _c("sui-table-cell", [_vm._v(_vm._s(_vm.rest.tp))])
+              _c("sui-table-cell", [_vm._v(_vm._s(_vm.rest.tp))]),
+              _vm._v(" "),
+              _c("sui-table-cell", { attrs: { disabled: "" } })
             ],
             1
           )
