@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB ;
 use App\Ue ;
+use PDF ;
 
 class UesController extends Controller
 {
@@ -12,7 +13,7 @@ class UesController extends Controller
     {
        $this->middleware('auth');
     }
-    
+
     public function index()
     {   $title = 'Unités d\'enseignements' ;
         $ues = Ue::get() ;
@@ -102,6 +103,63 @@ class UesController extends Controller
         $ue->forceDelete() ;
         $message = 'l\'unité d\'enseignement <strong>'.$ue->libelle.'</strong> vient définitivement supprimée des archives' ;
         return redirect()->route('ues_trashed')->with('success',$message) ;
+    }
+
+    public function generatePdf(){
+      $ues = Ue::with('enseignants')->get()->all() ;
+      $ue_infos = [] ;
+      foreach ($ues as $ue) {
+      array_push($ue_infos, [
+                'libelle' => $ue->libelle,
+                'filiere' => $ue->filiere,
+                'niveau' => $ue->niveau,
+                'ufr' => $ue->ufr,
+                'heure_gr_cm' => $ue->heure_gr_cm,
+                'heure_gr_td' => $ue->heure_gr_td,
+                'heure_gr_tp' => $ue->heure_gr_tp,
+               ]) ;
+      }
+
+      $ues_sans_repetition = \array_map(function($ue){
+        $enseignants = $ue->enseignants->groupBy('nomination')->all() ;
+        $marmite = [] ;
+        $cm = null ; $td = null ; $tp = null ;
+        $count = 0 ;
+        foreach ($enseignants as $enseignant) {
+          $cm = 0 ; $td = 0 ; $tp = 0 ;
+          $calebasse = [] ;
+          if(count($enseignant) > 1){
+            $nomination = null ;
+            foreach ($enseignant as $elt) {
+              $nomination = $elt->nomination ;
+              $cm += $elt->pivot->cm ;
+              $td += $elt->pivot->td ;
+              $tp += $elt->pivot->tp ;
+            }
+            $calebasse = [ 'nomination' => $nomination,
+                           'cm' => $cm,
+                           'td' => $td,
+                           'tp' => $tp,
+                         ];
+          }else{
+            $calebasse = ['nomination' => $enseignant[0]->nomination,
+                           'cm' => $enseignant[0]->pivot->cm,
+                           'td' => $enseignant[0]->pivot->td,
+                           'tp' => $enseignant[0]->pivot->tp,
+                         ];
+          }
+          array_push($marmite,$calebasse) ;
+        }
+        return $marmite ;
+      },$ues) ;
+      $title = 'liste de répartition' ;
+      $data = [
+                'ue_infos' => $ue_infos,
+                'ues_sans_repetition' => $ues_sans_repetition,
+                'title' => $title
+              ] ;
+      $pdf = PDF::loadView('ues.expdf', $data);
+      return  $pdf->stream(time().'list.pdf',["Attachment" => false]) ;
     }
 
     public function getList(){

@@ -134,26 +134,75 @@ class EnseignantsController extends Controller
     }
 
     public function generatePdf(){
-        $enseignants = Enseignant::with('ues')->get() ;
-        $enseignants_sans_repetition = [] ;
-
+        $enseignants = Enseignant::with('ues')->get()->all() ;
+        $ens = [] ;
         foreach ($enseignants as $enseignant) {
-          $calebasse = DB::select("SELECT sum(assignations.cm) AS cm ,sum(assignations.td) AS td,sum(assignations.tp) AS tp,ues.id,ues.libelle FROM assignations
-                        INNER JOIN ues ON ues.id=assignations.ue_id WHERE assignations.enseignant_id=? GROUP BY ues.id",[$enseignant->id]) ;
-          $jarre = ['infos' => $enseignant ,'ues' => $calebasse] ;
-          array_push($enseignants_sans_repetition,$jarre) ;
+        array_push($ens, [
+                  'nomination' => $enseignant->nomination,
+                  'grade' => $enseignant->grade,
+                  'statut' => $enseignant->statut,
+                  'phone' => $enseignant->phone,
+                  'email' => $enseignant->email
+                 ]) ;
         }
-        /**nous pourrons améliorer ensuite la requette en effectuant une procedure stocké qui vas recevoir
-           comme parametre la liste des id des enseignant et qui retournera en une seule fois les ues
-           sans repetition dans un gros jeu de resultat
-        **/
+
+        $enseignants_sans_repetition = \array_map(function($enseignant){
+          $ues = $enseignant->ues->groupBy('libelle')->all() ;
+          $marmite = [] ;
+          $cm = null ; $td = null ; $tp = null ;
+          $count = 0 ;
+          foreach ($ues as $ue) {
+            $cm = 0 ; $td = 0 ; $tp = 0 ;
+            $calebasse = [] ;
+            if(count($ue)>1){
+              $libelle = null ;
+              foreach ($ue as $elt) {
+                $libelle = $elt->libelle ;
+                $cm += $elt->pivot->cm ;
+                $td += $elt->pivot->td ;
+                $tp += $elt->pivot->tp ;
+              }
+              $calebasse = [ 'libelle' => $libelle,
+                             'cm' => $cm ,
+                             'td' => $td,
+                             'tp' => $tp,
+                           ];
+            }else{
+              $calebasse = ['libelle' => $ue[0]->libelle,
+                             'cm' => $ue[0]->pivot->cm,
+                             'td' => $ue[0]->pivot->td,
+                             'tp' => $ue[0]->pivot->tp,
+                           ];
+            }
+            array_push($marmite,$calebasse) ;
+          }
+          return $marmite ;
+        },$enseignants) ;
         $title = 'liste d\'assignation' ;
         $data = [
+                  'enseignant' => $ens,
                   'enseignants_sans_repetition' => $enseignants_sans_repetition,
                   'title' => $title
-                ];
+                ] ;
+        // $enseignants_sans_repetition = [] ;
+        //
+        // foreach ($enseignants as $enseignant) {
+        //   $calebasse = DB::select("SELECT sum(assignations.cm) AS cm ,sum(assignations.td) AS td,sum(assignations.tp) AS tp,ues.id,ues.libelle FROM assignations
+        //                 INNER JOIN ues ON ues.id=assignations.ue_id WHERE assignations.enseignant_id=? GROUP BY ues.id",[$enseignant->id]) ;
+        //   $jarre = ['infos' => $enseignant ,'ues' => $calebasse] ;
+        //   array_push($enseignants_sans_repetition,$jarre) ;
+        // }
+        // /**nous pourrons améliorer ensuite la requette en effectuant une procedure stocké qui vas recevoir
+        //    comme parametre la liste des id des enseignant et qui retournera en une seule fois les ues
+        //    sans repetition dans un gros jeu de resultat
+        // **/
+        // $title = 'liste d\'assignation' ;
+        // $data = [
+        //           'enseignants_sans_repetition' => $enseignants_sans_repetition,
+        //           'title' => $title
+        //         ];
         $pdf = PDF::loadView('enseignants.expdf', $data);
-        // return $pdf->download(time().'list.pdf');
+        // //return $pdf->download(time().'list.pdf');
         return  $pdf->stream(time().'list.pdf',["Attachment" => false]) ;
     }
 

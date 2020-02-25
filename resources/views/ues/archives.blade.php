@@ -34,7 +34,7 @@
                 <td>{{$ue->niveau}}</td>
                 <td>
                     <a href="{{route('ues_restore',$ue)}}"><i class="arrow up icon large"></i></a>
-                    <a href="{{'/home/ues/'.$ue->id.'/purge'}}"><i class="trash icon large"></i></a>
+                    <a onclick="modalIt({{$ue->id}})"><i class="trash icon large blue"></i></a>
                 </td>
             </tr>
             @empty
@@ -45,9 +45,28 @@
         </tbody>
     </table>
 </div>
+<div class="ui basic modal">
+    <div class="ui icon header">
+        <i class="trash icon red"></i>
+        Suppression Définitive
+    </div>
+    <div class="content">
+        <p>Cette action va supprimer définitivement l'element séléctionné. Voulez-vous vraiment cela ?</p>
+    </div>
+    <div class="actions">
+        <div class="ui red basic cancel inverted button">
+            <i class="remove icon"></i>
+            NON
+        </div>
+        <div class="ui green ok inverted button">
+            <i class="checkmark icon"></i>
+            OUI
+        </div>
+    </div>
+</div>
 @endsection
 @section('java-script')
-<script src="//code.jquery.com/jquery-3.3.1.js"></script>
+{{-- <script src="//code.jquery.com/jquery-3.3.1.js"></script> --}}
 <script type="text/javascript" src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 <script src="//cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
 <script type="text/javascript" src="//cdn.datatables.net/buttons/1.5.6/js/dataTables.buttons.min.js"></script>
@@ -62,6 +81,21 @@
             ]
         })
     });
+</script>
+<script type="text/javascript">
+    function modalIt(id) {
+        $('.ui.basic.modal')
+            .modal({
+                closable: false,
+                onDeny: function() {
+                    return true;
+                },
+                onApprove: function() {
+                    location.href = '/home/ues/'+id+'/purge';
+                }
+            })
+            .modal('show');
+    }
 </script>
 <script>
         $(document).ready(function() {

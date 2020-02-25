@@ -14,28 +14,24 @@
 
 <body>
     @php
-    $grades = ['AUCUN' => 'SANS GRADE' ,
-    'A' => 'ASSISTANT',
-    'MA' => 'MAITRE ASSISTANT',
-    'MC' => 'MAITRE DE CONFERENCE',
-    'PT' =>'PROFESSEUR TITULAIRE'
-    ] ;
-    $counter = 0 ;
+     $counter = 0 ;
     @endphp
 
     <div style="font-size:9px" class="ui container">
-        @foreach ($enseignants_sans_repetition as $noRepeat)
+        @foreach ($ues_sans_repetition as $noRepeat)
         {{-- affichage des informations de l'enseignant --}}
         <center style="margin-top:100px">
-            <h2>{{$enseignant[$counter]['nomination']}}</h2>
+            <h2>{{$ue_infos[$counter]['libelle']}}</h2>
         </center>
         <div class="ui grid">
             <div class="two wide column"></div>
             <div class="twelve wide column">
-                <p><b>Grade :</b>{{$grades[$enseignant[$counter]['grade']]}}</p>
-                <p><b>Statut :</b>{{$enseignant[$counter]['statut']}}</p>
-                <p><b>Téléphone :</b>{{$enseignant[$counter]['phone']}}</p>
-                <p><b>Email :</b>{{$enseignant[$counter]['email']}}</p>
+                <p><b>Filière :</b>{{$ue_infos[$counter]['filiere']}}</p>
+                <p><b>Niveau :</b>{{$ue_infos[$counter]['niveau']}}</p>
+                <p><b>Ufr :</b>{{$ue_infos[$counter]['ufr']}}</p>
+                <p><b>Total CM :</b>{{$ue_infos[$counter]['heure_gr_cm']}}</p>
+                <p><b>Total TD :</b>{{$ue_infos[$counter]['heure_gr_td']}}</p>
+                <p><b>Total TP :</b>{{$ue_infos[$counter]['heure_gr_tp']}}</p>
             </div>
             <div class="two wide column"></div>
         </div>
@@ -58,12 +54,12 @@
                     </thead>
                     <tbody>
                         {{-- affichage des ues avec les heures (repetition d'ue) --}}
-                        @foreach ($noRepeat as $ue)
+                        @foreach ($noRepeat as $enseignant)
                         <tr>
-                            <td>{{ $ue['libelle'] }}</td>
-                            <td>{{ $ue['cm'].' h' }}</td>
-                            <td>{{ $ue['td'].' h' }}</td>
-                            <td>{{ $ue['tp'].' h' }}</td>
+                            <td>{{ $enseignant['nomination'] }}</td>
+                            <td>{{ $enseignant['cm'].' h' }}</td>
+                            <td>{{ $enseignant['td'].' h' }}</td>
+                            <td>{{ $enseignant['tp'].' h' }}</td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -73,10 +69,10 @@
                         $td = 0 ;
                         $tp = 0 ;
                         //calcul des totaux
-                        foreach ($noRepeat as $ue){
-                        $cm += $ue['cm'] ;
-                        $td += $ue['td'] ;
-                        $tp += $ue['tp'] ;
+                        foreach ($noRepeat as $enseignant){
+                        $cm += $enseignant['cm'] ;
+                        $td += $enseignant['td'] ;
+                        $tp += $enseignant['tp'] ;
                         }
                         $total = ['cm' => $cm,'td' => $td,'tp' => $tp ] ;
                         ++$counter ;

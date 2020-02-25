@@ -27,7 +27,7 @@ Route::get('/home/enseignant/{id}/alter', 'EnseignantsController@edit')->name('e
 Route::post('/home/enseignant/{id}/update', 'EnseignantsController@update')->name('enseignant_update') ;
 Route::get('/home/enseignant/{id}/restore', 'EnseignantsController@restore')->name('enseignant_restore') ;
 Route::post('/home/enseignant/infos', 'EnseignantsController@infos')->name('enseignant_infos') ;
-Route::get('/home/generate/','EnseignantsController@generatePdf')->name('generate_pdf') ;
+Route::get('/home/generate/enseignant','EnseignantsController@generatePdf')->name('generate_ens_pdf') ;
 
 Route::get('/home/ues/', 'UesController@index')->name('ues_index') ;
 Route::get('/home/ues/trashed', 'UesController@trashed')->name('ues_trashed') ;
@@ -39,6 +39,7 @@ Route::get('/home/ues/add', 'UesController@add')->name('ues_add') ;
 Route::get('/home/ues/{id}/alter', 'UesController@edit')->name('ues_alter') ;
 Route::post('/home/ues/{id}/update', 'UesController@update')->name('ues_update') ;
 Route::get('/home/ues/{id}/restore', 'UesController@restore')->name('ues_restore') ;
+Route::get('/home/generate/ue','UesController@generatePdf')->name('generate_ue_pdf') ;
 
 
 Route::get('/home/assignations/', 'AssignationsController@index')->name('assignations_index') ;

@@ -1,5 +1,4 @@
 @include('head')
-
 <body>
     @include('flash')
     <div class="ui container">
@@ -54,11 +53,11 @@
     </div>
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js"></script>
-<script type="text/javascript" src="{{asset('semantic-theme/assets/semantic/components/popup.js')}}"></script>
 <!--- Component JS -->
+<script type="text/javascript" src="{{asset('semantic-theme/assets/semantic/components/popup.js')}}"></script>
+<script type="text/javascript" src="{{asset('semantic-theme/assets/semantic/components/modal.js')}}"></script>
 <script type="text/javascript" src="{{asset('semantic-theme/assets/semantic/components/transition.js')}}"></script>
 <script type="text/javascript" src="{{asset('semantic-theme/assets/semantic/components/dropdown.js')}}"></script>
 <script type="text/javascript" src="{{asset('semantic-theme/assets/semantic/semantic.min.js')}}"></script>
 @yield('java-script')
-
 </html>

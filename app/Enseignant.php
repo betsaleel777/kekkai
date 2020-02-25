@@ -28,7 +28,7 @@ class Enseignant extends Model
                 ] ;
 
     public function setNominationAttribute($value){
-      $this->attributes['nomination']= mb_strtoupper($value) ;
+      $this->attributes['nomination'] = mb_strtoupper($value) ;
     }
 
     public function setTitreAttribute($value){
