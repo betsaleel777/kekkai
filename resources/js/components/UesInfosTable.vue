@@ -51,20 +51,25 @@ export default {
         this.$root.$on('teacher_choosen', (id) => {
             this.getOnlyOneInfosTeacher(id)
         })
-        this.$root.$on('cm_update', (cm) => {
+        this.$root.$on('cm_update', (cm, ancien) => {
             if (isNaN(cm)) {
                 this.$noty.warning('Veuillez renseigner une valeure numérique du CM')
             } else {
                 if (this.enseignants.length > 0) {
                     this.enseignants = this.enseignants.map((enseignant) => {
+                        let cm_number = Number(cm)
                         if (enseignant.status) {
-                            enseignant.cm = Number(cm)
-                            if (Number(cm) == 0) {
+                            enseignant.cm = cm_number
+                            if (cm_number == 0) {
                                 this.default('cm')
                             } else {
-                                console.log('passe aussi');
-                                this.total.cm = Number(this.total.cm) + Number(cm)
-                                this.rest.cm = Number(this.rest.cm) - Number(cm)
+                                if (String(cm_number).length < 2) {
+                                    this.total.cm = Number(this.total.cm) + cm_number
+                                    this.rest.cm = Number(this.rest.cm) - cm_number
+                                } else {
+                                    this.total.cm = Number(this.total.cm) + cm_number - Number(ancien)
+                                    this.rest.cm = Number(this.rest.cm) - cm_number + Number(ancien)
+                                }
                             }
 
                         }
@@ -73,20 +78,25 @@ export default {
                 }
             }
         })
-        this.$root.$on('td_update', (td) => {
+        this.$root.$on('td_update', (td, ancien) => {
             if (isNaN(td)) {
                 this.$noty.warning('Veuillez renseigner une valeure numérique du TD')
             } else {
                 if (this.enseignants.length > 0) {
                     this.enseignants = this.enseignants.map((enseignant) => {
+                        let td_number = Number(td)
                         if (enseignant.status) {
-                            enseignant.td = Number(td)
-                            if (Number(td) == 0) {
+                            enseignant.td = td_number
+                            if (td_number == 0) {
                                 this.default('td')
                             } else {
-                                console.log('passe aussi');
-                                this.total.td = Number(this.total.td) + Number(td)
-                                this.rest.td = Number(this.rest.td) - Number(td)
+                                if (String(td_number).length < 2) {
+                                    this.total.td = Number(this.total.td) + td_number
+                                    this.rest.td = Number(this.rest.td) - td_number
+                                } else {
+                                  this.total.td = Number(this.total.td) + td_number - Number(ancien)
+                                  this.rest.td = Number(this.rest.td) - td_number + Number(ancien)
+                                }
                             }
 
                         }
@@ -95,20 +105,25 @@ export default {
                 }
             }
         })
-        this.$root.$on('tp_update', (tp) => {
+        this.$root.$on('tp_update', (tp, ancien) => {
             if (isNaN(tp)) {
                 this.$noty.warning('Veuillez renseigner une valeure numérique du TP')
             } else {
                 if (this.enseignants.length > 0) {
                     this.enseignants = this.enseignants.map((enseignant) => {
+                        let tp_number = Number(tp)
                         if (enseignant.status) {
-                            enseignant.tp = Number(tp)
-                            if (Number(tp) == 0) {
+                            enseignant.tp = tp_number
+                            if (tp_number == 0) {
                                 this.default('tp')
                             } else {
-                                console.log('passe aussi');
-                                this.total.tp = Number(this.total.tp) + Number(tp)
-                                this.rest.tp = Number(this.rest.tp) - Number(tp)
+                              if (String(tp_number).length < 2) {
+                                this.total.tp = Number(this.total.tp) + tp_number
+                                this.rest.tp = Number(this.rest.tp) - tp_number
+                              } else {
+                                this.total.tp = Number(this.total.tp) + tp_number - Number(ancien)
+                                this.rest.tp = Number(this.rest.tp) - tp_number + Number(ancien)
+                              }
                             }
 
                         }
@@ -117,8 +132,8 @@ export default {
                 }
             }
         })
-        this.$root.$on('clear_all',() => {
-          this.resetData()
+        this.$root.$on('clear_all', () => {
+            this.resetData()
         })
     },
     data() {
@@ -197,19 +212,17 @@ export default {
                 })
             }
         },
-        resetData(){
-          this.enseignants = [],
-          this.total = {},
-          this.rest = {},
-          this.ue = {},
-          this.id = null,
-          this.currentEnseignant = null
+        resetData() {
+            this.enseignants = [],
+                this.total = {},
+                this.rest = {},
+                this.ue = {},
+                this.currentEnseignant = null
         }
     },
     beforeUpdate() {
         if (this.rest.cm === 0 && this.rest.td === 0 && this.rest.tp === 0) {
             this.$noty.warning('l\'unité d\'enseignement ' + this.ue.libelle + ' a atteint ses limites')
-            this.$root.$emit('send_disable') //to {sendButon,dropdownsAssign}
         }
 
         if (this.rest.cm > 0 || this.rest.td > 0 || this.rest.tp > 0) {

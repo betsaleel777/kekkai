@@ -1962,34 +1962,34 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   watch: {
-    cm: function cm() {
+    cm: function cm(nouveau, ancien) {
       this.cmMessageClear();
       this.cmCorrect();
 
       if (this.goodCm) {
-        this.$root.$emit('cm_update', this.cm); //uesInfosTable listen
+        this.$root.$emit('cm_update', nouveau, ancien); //uesInfosTable listen
 
-        this.$root.$emit('take_cm', this.cm); //sendButon listen
+        this.$root.$emit('take_cm', nouveau); //sendButon listen
       }
     },
-    td: function td() {
+    td: function td(nouveau, ancien) {
       this.tdMessageClear();
       this.tdCorrect();
 
       if (this.goodTd) {
-        this.$root.$emit('td_update', this.td); //uesInfosTable listen
+        this.$root.$emit('td_update', nouveau, ancien); //uesInfosTable listen
 
-        this.$root.$emit('take_td', this.td); //sendButon listen
+        this.$root.$emit('take_td', nouveau); //sendButon listen
       }
     },
-    tp: function tp() {
+    tp: function tp(nouveau, ancien) {
       this.tpMessageClear();
       this.tpCorrect();
 
       if (this.goodTp) {
-        this.$root.$emit('tp_update', this.tp); //uesInfosTable listen
+        this.$root.$emit('tp_update', nouveau, ancien); //uesInfosTable listen
 
-        this.$root.$emit('take_tp', this.tp); //sendButon listen
+        this.$root.$emit('take_tp', nouveau); //sendButon listen
       }
     }
   },
@@ -2247,21 +2247,27 @@ __webpack_require__.r(__webpack_exports__);
     this.$root.$on('teacher_choosen', function (id) {
       _this.getOnlyOneInfosTeacher(id);
     });
-    this.$root.$on('cm_update', function (cm) {
+    this.$root.$on('cm_update', function (cm, ancien) {
       if (isNaN(cm)) {
         _this.$noty.warning('Veuillez renseigner une valeure numérique du CM');
       } else {
         if (_this.enseignants.length > 0) {
           _this.enseignants = _this.enseignants.map(function (enseignant) {
-            if (enseignant.status) {
-              enseignant.cm = Number(cm);
+            var cm_number = Number(cm);
 
-              if (Number(cm) == 0) {
+            if (enseignant.status) {
+              enseignant.cm = cm_number;
+
+              if (cm_number == 0) {
                 _this["default"]('cm');
               } else {
-                console.log('passe aussi');
-                _this.total.cm = Number(_this.total.cm) + Number(cm);
-                _this.rest.cm = Number(_this.rest.cm) - Number(cm);
+                if (String(cm_number).length < 2) {
+                  _this.total.cm = Number(_this.total.cm) + cm_number;
+                  _this.rest.cm = Number(_this.rest.cm) - cm_number;
+                } else {
+                  _this.total.cm = Number(_this.total.cm) + cm_number - Number(ancien);
+                  _this.rest.cm = Number(_this.rest.cm) - cm_number + Number(ancien);
+                }
               }
             }
 
@@ -2270,21 +2276,27 @@ __webpack_require__.r(__webpack_exports__);
         }
       }
     });
-    this.$root.$on('td_update', function (td) {
+    this.$root.$on('td_update', function (td, ancien) {
       if (isNaN(td)) {
         _this.$noty.warning('Veuillez renseigner une valeure numérique du TD');
       } else {
         if (_this.enseignants.length > 0) {
           _this.enseignants = _this.enseignants.map(function (enseignant) {
-            if (enseignant.status) {
-              enseignant.td = Number(td);
+            var td_number = Number(td);
 
-              if (Number(td) == 0) {
+            if (enseignant.status) {
+              enseignant.td = td_number;
+
+              if (td_number == 0) {
                 _this["default"]('td');
               } else {
-                console.log('passe aussi');
-                _this.total.td = Number(_this.total.td) + Number(td);
-                _this.rest.td = Number(_this.rest.td) - Number(td);
+                if (String(td_number).length < 2) {
+                  _this.total.td = Number(_this.total.td) + td_number;
+                  _this.rest.td = Number(_this.rest.td) - td_number;
+                } else {
+                  _this.total.td = Number(_this.total.td) + td_number - Number(ancien);
+                  _this.rest.td = Number(_this.rest.td) - td_number + Number(ancien);
+                }
               }
             }
 
@@ -2293,21 +2305,27 @@ __webpack_require__.r(__webpack_exports__);
         }
       }
     });
-    this.$root.$on('tp_update', function (tp) {
+    this.$root.$on('tp_update', function (tp, ancien) {
       if (isNaN(tp)) {
         _this.$noty.warning('Veuillez renseigner une valeure numérique du TP');
       } else {
         if (_this.enseignants.length > 0) {
           _this.enseignants = _this.enseignants.map(function (enseignant) {
-            if (enseignant.status) {
-              enseignant.tp = Number(tp);
+            var tp_number = Number(tp);
 
-              if (Number(tp) == 0) {
+            if (enseignant.status) {
+              enseignant.tp = tp_number;
+
+              if (tp_number == 0) {
                 _this["default"]('tp');
               } else {
-                console.log('passe aussi');
-                _this.total.tp = Number(_this.total.tp) + Number(tp);
-                _this.rest.tp = Number(_this.rest.tp) - Number(tp);
+                if (String(tp_number).length < 2) {
+                  _this.total.tp = Number(_this.total.tp) + tp_number;
+                  _this.rest.tp = Number(_this.rest.tp) - tp_number;
+                } else {
+                  _this.total.tp = Number(_this.total.tp) + tp_number - Number(ancien);
+                  _this.rest.tp = Number(_this.rest.tp) - tp_number + Number(ancien);
+                }
               }
             }
 
@@ -2391,13 +2409,12 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     resetData: function resetData() {
-      this.enseignants = [], this.total = {}, this.rest = {}, this.ue = {}, this.id = null, this.currentEnseignant = null;
+      this.enseignants = [], this.total = {}, this.rest = {}, this.ue = {}, this.currentEnseignant = null;
     }
   },
   beforeUpdate: function beforeUpdate() {
     if (this.rest.cm === 0 && this.rest.td === 0 && this.rest.tp === 0) {
       this.$noty.warning('l\'unité d\'enseignement ' + this.ue.libelle + ' a atteint ses limites');
-      this.$root.$emit('send_disable'); //to {sendButon,dropdownsAssign}
     }
 
     if (this.rest.cm > 0 || this.rest.td > 0 || this.rest.tp > 0) {

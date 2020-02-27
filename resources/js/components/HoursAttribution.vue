@@ -69,28 +69,28 @@ export default {
         }
     },
     watch: {
-        cm: function() {
+        cm: function(nouveau,ancien) {
             this.cmMessageClear()
             this.cmCorrect()
             if (this.goodCm) {
-                this.$root.$emit('cm_update', this.cm) //uesInfosTable listen
-                this.$root.$emit('take_cm', this.cm) //sendButon listen
+                this.$root.$emit('cm_update', nouveau,ancien) //uesInfosTable listen
+                this.$root.$emit('take_cm', nouveau) //sendButon listen
             }
         },
-        td: function() {
+        td: function(nouveau,ancien) {
             this.tdMessageClear()
             this.tdCorrect()
             if (this.goodTd) {
-                this.$root.$emit('td_update', this.td) //uesInfosTable listen
-                this.$root.$emit('take_td', this.td)  //sendButon listen
+                this.$root.$emit('td_update', nouveau,ancien) //uesInfosTable listen
+                this.$root.$emit('take_td', nouveau)  //sendButon listen
             }
         },
-        tp: function() {
+        tp: function(nouveau,ancien) {
             this.tpMessageClear()
             this.tpCorrect()
             if (this.goodTp) {
-                this.$root.$emit('tp_update', this.tp) //uesInfosTable listen
-                this.$root.$emit('take_tp', this.tp) //sendButon listen
+                this.$root.$emit('tp_update', nouveau,ancien) //uesInfosTable listen
+                this.$root.$emit('take_tp', nouveau) //sendButon listen
             }
         }
     },
