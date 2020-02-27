@@ -117,6 +117,9 @@ export default {
                 }
             }
         })
+        this.$root.$on('clear_all',() => {
+          this.resetData()
+        })
     },
     data() {
         return {
@@ -193,6 +196,14 @@ export default {
                     console.log(err);
                 })
             }
+        },
+        resetData(){
+          this.enseignants = [],
+          this.total = {},
+          this.rest = {},
+          this.ue = {},
+          this.id = null,
+          this.currentEnseignant = null
         }
     },
     beforeUpdate() {

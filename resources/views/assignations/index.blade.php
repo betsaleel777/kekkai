@@ -53,7 +53,7 @@
         </tbody>
     </table>
 </div>
-<div class="ui basic modal">
+<div id="suppression" class="ui basic modal">
     <div class="ui icon header">
         <i class="trash icon red"></i>
         Suppression Définitive
@@ -101,7 +101,7 @@
 <script type="text/javascript" src="//cdn.datatables.net/buttons/1.5.6/js/buttons.html5.min.js"></script>
 <script type="text/javascript">
     function modalIt(enseignant, ue) {
-        $('.ui.basic.modal')
+        $('#suppression')
             .modal({
                 closable: false,
                 onDeny: function() {
@@ -118,7 +118,7 @@
     function modalExport() {
         $('#exportation')
             .modal({
-                closable: false,
+                closable: true,
                 onDeny: function() {
                     location.href = '/home/generate/ue';
                 },

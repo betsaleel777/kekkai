@@ -184,35 +184,7 @@ class EnseignantsController extends Controller
                   'enseignants_sans_repetition' => $enseignants_sans_repetition,
                   'title' => $title
                 ] ;
-        // $enseignants_sans_repetition = [] ;
-        //
-        // foreach ($enseignants as $enseignant) {
-        //   $calebasse = DB::select("SELECT sum(assignations.cm) AS cm ,sum(assignations.td) AS td,sum(assignations.tp) AS tp,ues.id,ues.libelle FROM assignations
-        //                 INNER JOIN ues ON ues.id=assignations.ue_id WHERE assignations.enseignant_id=? GROUP BY ues.id",[$enseignant->id]) ;
-        //   $jarre = ['infos' => $enseignant ,'ues' => $calebasse] ;
-        //   array_push($enseignants_sans_repetition,$jarre) ;
-        // }
-        // /**nous pourrons améliorer ensuite la requette en effectuant une procedure stocké qui vas recevoir
-        //    comme parametre la liste des id des enseignant et qui retournera en une seule fois les ues
-        //    sans repetition dans un gros jeu de resultat
-        // **/
-        // $title = 'liste d\'assignation' ;
-        // $data = [
-        //           'enseignants_sans_repetition' => $enseignants_sans_repetition,
-        //           'title' => $title
-        //         ];
         $pdf = PDF::loadView('enseignants.expdf', $data);
-        // //return $pdf->download(time().'list.pdf');
         return  $pdf->stream(time().'list.pdf',["Attachment" => false]) ;
-    }
-
-    public function getList(){
-      $enseignants = Enseignant::get() ;
-      return response()->json(['enseignants' => $enseignants]) ;
-    }
-
-    public function getInfos(int $id){
-      $enseignant = Enseignant::findOrfail($id) ;
-      return response()->json(['enseignant' => $enseignant]) ;
     }
 }

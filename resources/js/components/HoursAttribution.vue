@@ -39,6 +39,9 @@ export default {
       this.$root.$on('ues_choosen',(ue) =>{
         this.ue = ue
       })
+      this.$root.$on('clear_all',() =>{
+        this.resetData()
+      })
     },
     data() {
         return {
@@ -67,7 +70,7 @@ export default {
     },
     watch: {
         cm: function() {
-            this.clearAllMessages()
+            this.cmMessageClear()
             this.cmCorrect()
             if (this.goodCm) {
                 this.$root.$emit('cm_update', this.cm) //uesInfosTable listen
@@ -75,7 +78,7 @@ export default {
             }
         },
         td: function() {
-            this.clearAllMessages()
+            this.tdMessageClear()
             this.tdCorrect()
             if (this.goodTd) {
                 this.$root.$emit('td_update', this.td) //uesInfosTable listen
@@ -83,7 +86,7 @@ export default {
             }
         },
         tp: function() {
-            this.clearAllMessages()
+            this.tpMessageClear()
             this.tpCorrect()
             if (this.goodTp) {
                 this.$root.$emit('tp_update', this.tp) //uesInfosTable listen
@@ -94,7 +97,7 @@ export default {
     methods: {
         cmCorrect() {
             if(this.cm && !isNaN(this.cm)){
-              axios.post('/api/check/cm/'+this.cm+'/'+this.ue).then((response) => {
+              axios.get('/api/check/cm/'+this.cm+'/'+this.ue).then((response) => {
                    const {error} = response.data
                    if(error != null){
                      this.messages.cm.content = 'Valeure incorrecte d\'heures CM détectée.'
@@ -108,7 +111,7 @@ export default {
         },
         tdCorrect() {
            if(this.td && !isNaN(this.td)){
-             axios.post('/api/check/td/'+this.td+'/'+this.ue).then((response) => {
+             axios.get('/api/check/td/'+this.td+'/'+this.ue).then((response) => {
                const {error} = response.data
                if(error != null){
                  this.messages.td.content = 'Valeure incorrecte d\'heures TD détectée.'
@@ -122,7 +125,7 @@ export default {
         },
         tpCorrect() {
             if(this.tp && !isNaN(this.tp)){
-              axios.post('/api/check/tp/'+this.tp+'/'+this.ue).then((response) => {
+              axios.get('/api/check/tp/'+this.tp+'/'+this.ue).then((response) => {
                   const {error} = response.data
                   if(error != null){
                     this.messages.tp.content = 'Valeure incorrecte d\'heures TP détectée.'
@@ -134,6 +137,18 @@ export default {
               })
             }
         },
+        cmMessageClear(){
+          this.messages.cm.content = null
+          this.messages.cm.activate = false
+        },
+        tdMessageClear(){
+          this.messages.td.content = null
+          this.messages.td.activate = false
+        },
+        tpMessageClear(){
+          this.messages.tp.content = null
+          this.messages.tp.activate = false
+        },
         clearAllMessages() {
             this.messages.cm.content = null
             this.messages.td.content = null
@@ -141,6 +156,12 @@ export default {
             this.messages.cm.activate = false
             this.messages.td.activate = false
             this.messages.tp.activate = false
+        },
+        resetData(){
+          this.cm = null
+          this.td = null
+          this.tp = null
+          this.ue = null
         }
     }
 }

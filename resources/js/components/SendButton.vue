@@ -42,9 +42,10 @@ export default {
     },
     methods: {
         assign() {
-            if(Number(this.cm) !== 0 && Number(this.td) !== 0 && Number(this.tp) !== 0 && Number(this.ue) !== 0 && Number(this.enseignant) !== 0){
-              axios.get('/api/assign/'+this.ue+'/'+this.enseignant+'/'+this.cm+'/'+this.td+'/'+this.tp).then((response) => {
-                console.log(response.data);
+            if(this.cm !== null && this.td !== null && this.tp !== null && this.ue !== null && this.enseignant !== null){
+              axios.get('/api/assign/'+Number(this.ue)+'/'+Number(this.enseignant)+'/'+Number(this.cm)+'/'+Number(this.td)+'/'+Number(this.tp)).then((response) => {
+                this.$noty.success(response.data.message)
+                this.$root.$emit('clear_all') //HoursAttribution, uesInfosTable, dropdownsAssign
               }).catch((err) => {
                 console.log(err)
               })

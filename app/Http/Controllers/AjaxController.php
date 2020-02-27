@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Ue ;
+use App\Enseignant ;
 use Illuminate\Http\Request ;
+use Illuminate\Support\Facades\DB ;
 
 class AjaxController extends Controller
 {
@@ -166,6 +168,48 @@ class AjaxController extends Controller
     }
 
     public function assign(int $ue,int $ens,int $cm,int $td,int $tp){
-      return response()->json([$ue,$ens,$cm,$td,$tp]) ;
+      $enseignant = Enseignant::findOrFail($ens) ;
+      $matiere = Ue::findOrFail($ue);
+      $toAssign = [$ue => ['cm' => $cm ,'td' => $td ,'tp'=> $tp]] ;
+      $enseignant->ues()->attach($toAssign) ;
+      $message = 'a été assignéé à l\'enseignant '.$enseignant->nomination.' l\'UE: '.$matiere->libelle.', les heures suivantes:
+                  "CM" =>'.$cm.'H "TD" =>'.$td.'H TP =>'.$tp.'H .' ;
+      return response()->json(['message' => $message]) ;
+    }
+
+    public function getListEnseignant(){
+      $enseignants = Enseignant::get() ;
+      return response()->json(['enseignants' => $enseignants]) ;
+    }
+
+    public function getListUe(){
+      $ues = Ue::get() ;
+      return response()->json(['ues' => $ues]) ;
+    }
+
+    public function getTeacherOf(int $id){
+      $ue = Ue::findOrFail($id) ;
+      $enseignants = DB::select("SELECT sum(assignations.cm) as cm ,sum(assignations.td) as td,sum(assignations.tp) as tp,enseignants.id,
+                                    enseignants.nomination from assignations inner join enseignants on enseignants.id=assignations.enseignant_id
+                                    where assignations.ue_id=? group by enseignants.id",[$id]) ;
+      $cm = 0 ;
+      $td = 0 ;
+      $tp = 0 ;
+      foreach ($enseignants as $enseignant){
+          $cm += $enseignant->cm ;
+          $td += $enseignant->td ;
+          $tp += $enseignant->tp ;
+      }
+      $rest = ['cm' => $ue->heure_gr_cm-$cm ,
+               'td' => $ue->heure_gr_td-$td ,
+               'tp' => $ue->heure_gr_tp-$tp
+              ] ;
+      $total = [ 'cm' => $cm, 'td' => $td, 'tp' => $tp] ;
+      return response()->json(['ue' => $ue,'total' => $total, 'enseignants'=>$enseignants, 'rest'=> $rest]) ;
+    }
+
+    public function getInfos(int $id){
+      $enseignant = Enseignant::findOrfail($id) ;
+      return response()->json(['enseignant' => $enseignant]) ;
     }
 }

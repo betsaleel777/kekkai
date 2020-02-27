@@ -14,7 +14,7 @@
 
 <body>
     @php
-     $counter = 0 ;
+    $counter = 0 ;
     @endphp
 
     <div style="font-size:9px" class="ui container">
@@ -90,7 +90,7 @@
             <div class="two wide column"></div>
         </div>
         @if ($counter%2 === 0)
-         <div class="page-break"></div>
+        <div class="page-break"></div>
         @endif
         @endforeach
     </div>

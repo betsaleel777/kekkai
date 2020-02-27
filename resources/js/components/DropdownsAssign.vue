@@ -20,6 +20,9 @@ export default {
         this.$root.$on('send_enable', () => {
             this.hoursDisplay = true
         })
+        this.$root.$on('clear_all',() =>{
+          this.resetData()
+        })
     },
     data() {
         return {
@@ -44,7 +47,7 @@ export default {
     },
     methods: {
         getUes() {
-            axios.get('/api/ues/list').then((response) => {
+            axios.get('/api/ues/list/').then((response) => {
                 const {
                     ues
                 } = response.data
@@ -59,7 +62,7 @@ export default {
             })
         },
         getEnseigants() {
-            axios.get('/api/enseignants/list').then((response) => {
+            axios.get('/api/enseignants/list/').then((response) => {
                 const {
                     enseignants
                 } = response.data
@@ -72,6 +75,12 @@ export default {
             }).catch((err) => {
                 console.log(err);
             })
+        },
+        resetData(){
+          this.hoursDisplay = true,
+          this.ue = null,
+          this.enseignant = null
+          this.exist = true
         }
     }
 }

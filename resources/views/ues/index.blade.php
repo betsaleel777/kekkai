@@ -52,7 +52,7 @@
 </div>
 @endsection
 @section('java-script')
-<script src="//code.jquery.com/jquery-3.3.1.js"></script>
+{{-- <script src="//code.jquery.com/jquery-3.3.1.js"></script> --}}
 <script type="text/javascript" src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 <script src="//cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
 <script type="text/javascript" src="//cdn.datatables.net/buttons/1.5.6/js/dataTables.buttons.min.js"></script>

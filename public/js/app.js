@@ -1781,6 +1781,9 @@ Vue.component('attribution-hours', __webpack_require__(/*! ../components/HoursAt
     this.$root.$on('send_enable', function () {
       _this.hoursDisplay = true;
     });
+    this.$root.$on('clear_all', function () {
+      _this.resetData();
+    });
   },
   data: function data() {
     return {
@@ -1809,7 +1812,7 @@ Vue.component('attribution-hours', __webpack_require__(/*! ../components/HoursAt
     getUes: function getUes() {
       var _this2 = this;
 
-      axios.get('/api/ues/list').then(function (response) {
+      axios.get('/api/ues/list/').then(function (response) {
         var ues = response.data.ues;
         _this2.ues = ues.map(function (ue) {
           return {
@@ -1824,7 +1827,7 @@ Vue.component('attribution-hours', __webpack_require__(/*! ../components/HoursAt
     getEnseigants: function getEnseigants() {
       var _this3 = this;
 
-      axios.get('/api/enseignants/list').then(function (response) {
+      axios.get('/api/enseignants/list/').then(function (response) {
         var enseignants = response.data.enseignants;
         _this3.enseignants = enseignants.map(function (enseignant) {
           return {
@@ -1835,6 +1838,10 @@ Vue.component('attribution-hours', __webpack_require__(/*! ../components/HoursAt
       })["catch"](function (err) {
         console.log(err);
       });
+    },
+    resetData: function resetData() {
+      this.hoursDisplay = true, this.ue = null, this.enseignant = null;
+      this.exist = true;
     }
   }
 });
@@ -1925,6 +1932,9 @@ __webpack_require__.r(__webpack_exports__);
     this.$root.$on('ues_choosen', function (ue) {
       _this.ue = ue;
     });
+    this.$root.$on('clear_all', function () {
+      _this.resetData();
+    });
   },
   data: function data() {
     return {
@@ -1953,7 +1963,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   watch: {
     cm: function cm() {
-      this.clearAllMessages();
+      this.cmMessageClear();
       this.cmCorrect();
 
       if (this.goodCm) {
@@ -1963,7 +1973,7 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     td: function td() {
-      this.clearAllMessages();
+      this.tdMessageClear();
       this.tdCorrect();
 
       if (this.goodTd) {
@@ -1973,7 +1983,7 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     tp: function tp() {
-      this.clearAllMessages();
+      this.tpMessageClear();
       this.tpCorrect();
 
       if (this.goodTp) {
@@ -1988,7 +1998,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       if (this.cm && !isNaN(this.cm)) {
-        axios.post('/api/check/cm/' + this.cm + '/' + this.ue).then(function (response) {
+        axios.get('/api/check/cm/' + this.cm + '/' + this.ue).then(function (response) {
           var error = response.data.error;
 
           if (error != null) {
@@ -2006,7 +2016,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this3 = this;
 
       if (this.td && !isNaN(this.td)) {
-        axios.post('/api/check/td/' + this.td + '/' + this.ue).then(function (response) {
+        axios.get('/api/check/td/' + this.td + '/' + this.ue).then(function (response) {
           var error = response.data.error;
 
           if (error != null) {
@@ -2024,7 +2034,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this4 = this;
 
       if (this.tp && !isNaN(this.tp)) {
-        axios.post('/api/check/tp/' + this.tp + '/' + this.ue).then(function (response) {
+        axios.get('/api/check/tp/' + this.tp + '/' + this.ue).then(function (response) {
           var error = response.data.error;
 
           if (error != null) {
@@ -2038,6 +2048,18 @@ __webpack_require__.r(__webpack_exports__);
         });
       }
     },
+    cmMessageClear: function cmMessageClear() {
+      this.messages.cm.content = null;
+      this.messages.cm.activate = false;
+    },
+    tdMessageClear: function tdMessageClear() {
+      this.messages.td.content = null;
+      this.messages.td.activate = false;
+    },
+    tpMessageClear: function tpMessageClear() {
+      this.messages.tp.content = null;
+      this.messages.tp.activate = false;
+    },
     clearAllMessages: function clearAllMessages() {
       this.messages.cm.content = null;
       this.messages.td.content = null;
@@ -2045,6 +2067,12 @@ __webpack_require__.r(__webpack_exports__);
       this.messages.cm.activate = false;
       this.messages.td.activate = false;
       this.messages.tp.activate = false;
+    },
+    resetData: function resetData() {
+      this.cm = null;
+      this.td = null;
+      this.tp = null;
+      this.ue = null;
     }
   }
 });
@@ -2135,9 +2163,14 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     assign: function assign() {
-      if (Number(this.cm) !== 0 && Number(this.td) !== 0 && Number(this.tp) !== 0 && Number(this.ue) !== 0 && Number(this.enseignant) !== 0) {
-        axios.get('/api/assign/' + this.ue + '/' + this.enseignant + '/' + this.cm + '/' + this.td + '/' + this.tp).then(function (response) {
-          console.log(response.data);
+      var _this2 = this;
+
+      if (this.cm !== null && this.td !== null && this.tp !== null && this.ue !== null && this.enseignant !== null) {
+        axios.get('/api/assign/' + Number(this.ue) + '/' + Number(this.enseignant) + '/' + Number(this.cm) + '/' + Number(this.td) + '/' + Number(this.tp)).then(function (response) {
+          _this2.$noty.success(response.data.message);
+
+          _this2.$root.$emit('clear_all'); //HoursAttribution, uesInfosTable, dropdownsAssign
+
         })["catch"](function (err) {
           console.log(err);
         });
@@ -2283,6 +2316,9 @@ __webpack_require__.r(__webpack_exports__);
         }
       }
     });
+    this.$root.$on('clear_all', function () {
+      _this.resetData();
+    });
   },
   data: function data() {
     return {
@@ -2353,6 +2389,9 @@ __webpack_require__.r(__webpack_exports__);
           console.log(err);
         });
       }
+    },
+    resetData: function resetData() {
+      this.enseignants = [], this.total = {}, this.rest = {}, this.ue = {}, this.id = null, this.currentEnseignant = null;
     }
   },
   beforeUpdate: function beforeUpdate() {
